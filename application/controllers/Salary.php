@@ -315,7 +315,7 @@ class Salary extends CI_Controller {
         if (isset($_GET["select_month"])) {
             $a_date = $_GET["salary_date"];
         }
-        $data["select_month"] = $a_date;
+        $data["salary_date"] = $a_date;
         $a_date = date("Y-m-t", strtotime($a_date));
 
         $querysql = "select se.id as id, name, employee_id, location from salary_employee as se join salary_location as sl on sl.id = se.location_id order by sl.id";
@@ -323,7 +323,7 @@ class Salary extends CI_Controller {
         $employee_data = $query->result_array($query);
         $employee_data2 = [];
         foreach ($employee_data as $key => $value) {
-            $salary_data =$this->Salary_model->employeeSalary($a_date, $value['id']);
+            $salary_data = $this->Salary_model->employeeSalary($a_date, $value['id']);
             $netpay = 0;
             $salary_id = 0;
             if ($salary_data) {
@@ -342,9 +342,13 @@ class Salary extends CI_Controller {
         $salaryobj = $this->Salary_model->employeeSalarySingle($salary_id);
         $data["salaryobj"] = $salaryobj;
         $data["allownce"] = $this->Salary_model->employeeAllownceAll($salary_id);
-    
+        $data["paydate"] = date("M-Y", strtotime($salaryobj["salary_date"]));
+
         $data["deduction"] = $this->Salary_model->employeeDuductionAll($salary_id);
         $data["employee"] = $this->Curd_model->get_single2('salary_employee', $salaryobj["employee_id"]);
+
+
+
         $this->load->view("Salary/paySlip", $data);
     }
 
@@ -354,34 +358,48 @@ class Salary extends CI_Controller {
             $a_date = $_GET["salary_date"];
         }
         $data["select_month"] = $a_date;
-
-//        $a_date = date("Y-m-t");
-
-        $last_date = date("Y-m-t", strtotime($a_date));
-        $first_date = date("Y-m-01", strtotime($a_date));
-        $this->db->where("salary_date between '$first_date' and '$last_date'");
-        $query = $this->db->get("salary");
-        $salary_data = $query->result_array($query);
-        $salaryFinal = array();
-        $location_data = $this->Curd_model->get('salary_location');
-
-        foreach ($location_data as $key => $value) {
-            $value["salary"] = [];
-            $salaryFinal[$value["id"]] = $value;
-        }
-
-
-        foreach ($salary_data as $key => $value) {
-            $value["employee"] = $this->Curd_model->get_single2('salary_employee', $value["employee_id"]);
-            $value["allownce_mpf"] = $this->Salary_model->employeeAllownceMPF($value["id"]);
-            $value["allownce_no_mpf"] = $this->Salary_model->employeeAllownceNoMPF($value["id"]);
-            $value["deduction_mpf"] = $this->Salary_model->employeeDuductionMPF($value["id"]);
-            $value["deduction_no_mpf"] = $this->Salary_model->employeeDuductionNoMPF($value["id"]);
-            array_push($salaryFinal[$value["location_id"]]["salary"], $value);
-        }
-        $data["salary_report"] = $salaryFinal;
-
+        $data["salary_report"] = $this->Salary_model->salaryData($a_date);
         $this->load->view('Salary/report', $data);
+    }
+
+    function salaryReportXls() {
+        $a_date = date("M-Y");
+        if (isset($_GET["salary_date"])) {
+            $a_date = $_GET["salary_date"];
+        }
+        $salary_report = $this->Salary_model->salaryData($a_date);
+        $html = $this->load->view('Salary/reportbase', array("salary_report" => $salary_report, "remark" => true), true);
+        $filename = 'salary_report_' . $a_date . ".xls";
+        ob_clean();
+        header("Content-Disposition: attachment; filename=$filename");
+        header("Content-Type: application/vnd.ms-excel");
+        echo $html;
+    }
+
+    function salaryReportPDF() {
+        $a_date = date("M-Y");
+        if (isset($_GET["salary_date"])) {
+            $a_date = $_GET["salary_date"];
+        }
+        $salary_report = $this->Salary_model->salaryData($a_date);
+        $html = $this->load->view('Salary/reportbase', array("salary_report" => $salary_report, "remark" => true), true);
+        $filename = 'salary_report_' . $a_date . ".xls";
+        $this->load->library('m_pdf');
+     
+
+        $this->m_pdf->pdf->WriteHTML($html);
+        $this->m_pdf->pdf->Output($pdfFilePath, "D");
+    }
+
+    function deletePayslip($id) {
+        $this->db->where("id", $id);
+        $this->db->delete("salary");
+        $salarydate = $this->input->get("salary_date");
+        $this->db->where("salary_id", $salary_id);
+        $query = $this->db->delete("salary_allowances_apply");
+        $this->db->where("salary_id", $salary_id);
+        $query = $this->db->delete("salary_deduction_apply");
+        redirect(site_url("Salary/selectEmployee?salary_date=$salarydate&select_month=1"));
     }
 
 }

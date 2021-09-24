@@ -43,7 +43,7 @@ $this->load->view('layout/topmenu');
                     <div class="col-lg-4">
                         <div class="input-group date" >
                             <input type="text" class="form-control" name="salary_date" style="background: white;
-                                   opacity: 1;" readonly=""  autoclose="true" value="<?php echo $select_month; ?>">
+                                   opacity: 1;" readonly=""  autoclose="true" value="<?php echo $salary_date; ?>">
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-th"></span>
                             </div>

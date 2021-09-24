@@ -5,16 +5,22 @@
         </th>
     </tr>
     <tr style=" border-bottom:  1px solid #eeeeee; height: 30px;">
-        <td colspan="3"><span style="width: 126px; float: left;"><b>Name of Employee</b></span><span style="width: 16px; float: left;">:</span><b><?php echo $employee["name"]; ?></b></td>
+        <td colspan="3"><span style="width: 200px; float: left;"><b>Name of Employee</b></span><span style="width: 16px; float: left;">:</span><b><?php echo $employee["name"]; ?></b></td>
     </tr>
     <tr style=" border-bottom:  1px solid #eeeeee; height: 30px;">
-        <td colspan="3"><span style="width: 126px; float: left;">Employee I.D. No</span><span style="width: 16px; float: left;">:</span><?php echo $employee["employee_id"]; ?></td>
+        <td colspan="3"><span style="width: 200px; float: left;">Employee HKID#</span><span style="width: 16px; float: left;">:</span><?php echo $employee["employee_id"]; ?></td>
     </tr>
     <tr style=" border-bottom:  1px solid #eeeeee; height: 30px;">
-        <td colspan="3"><span style="width: 126px; float: left;">Contribution Period</span><span style="width: 16px; float: left;">:</span><?php echo date("M Y", strtotime($salaryobj['salary_date'])); ?></td>
+        <td colspan="3"><span style="width: 200px; float: left;">Salary</span><span style="width: 16px; float: left;">:</span><?php echo date("F Y", strtotime($salaryobj['salary_date'])); ?></td>
+    </tr>
+    <tr style=" border-bottom:  1px solid #eeeeee; height: 30px;">
+        <td colspan="3"><span style="width: 200px; float: left;"><b>MPF Scheme Name</b></span><span style="width: 16px; float: left;">:</span><b>HSBC Mandatory Provident Fund - Supertrust</b></td>
+    </tr>
+    <tr style=" border-bottom:  1px solid #eeeeee; height: 30px;">
+        <td colspan="3"><span style="width: 200px; float: left;">MPF Contribution Period</span><span style="width: 16px; float: left;">:</span><?php echo date("F Y", strtotime($salaryobj['salary_date'])); ?></td>
     </tr>
     <tr style=" border-bottom:  1px solid #000; height: 40px;">
-        <td colspan="3" ><span style="width: 126px; float: left;">Contribution Date</span><span style="width: 16px; float: left;">:</span><?php
+        <td colspan="3" ><span style="width: 200px; float: left;">MPF Contribution Date</span><span style="width: 16px; float: left;">:</span><?php
             echo date("d M Y", strtotime($salaryobj['mpf_date']));
             ?></td>
     </tr>
@@ -71,18 +77,18 @@
 
     <tr style='border-bottom: 1px solid #000;   '>
         <td></td>
-        <td>EPF Contribution
+        <td>MPF Contribution
         </td>
         <td>(<?php echo $salaryobj["mpf_employee"]; ?>)</td>
     </tr>
     <tr style='border-bottom: 1px solid #eeeeee;    height: 45px;'>
         <td></td>
-        <td>Amount Booked To Account
+        <td>Amount Banked To Account:
         </td>
         <td style='border-bottom-style: double;'><b><?php echo $salaryobj["net_salary"]; ?></b></td>
     </tr>
     <tr style="height: 50px">
-        <th colspan="2">MPF Mandatory Contribution:</th><th></th>
+        <th colspan="2">MPF Contribution:</th><th></th>
     </tr>
     <tr style='border-bottom: 1px solid #eeeeee;    '>
         <td></td>

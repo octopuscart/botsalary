@@ -43,34 +43,37 @@ $this->load->view('layout/topmenu');
             </div>
             <div class="panel-body">
 
-                    <div class="col-md-12">
+                <div class="col-md-12">
 
-                        <?php echo $this->session->flashdata('success_msg'); ?>
-                        <?php echo $this->session->flashdata('error_msg'); ?>
-                        <div class="row">
-                            <div class="col-md-12">  
-                                <div class="form-group form-group-bg">
-                                    <h3>
-                                        <?php echo $employee["name"]; ?><br/>
-                                        <small>Employee ID/HKID: #<?php echo $employee["employee_id"]; ?></small>
-                                    </h3>
+                    <?php echo $this->session->flashdata('success_msg'); ?>
+                    <?php echo $this->session->flashdata('error_msg'); ?>
+                    <div class="row form-group-bg">
+                        <div class="col-md-11">  
+                            <div class="form-group ">
+                                <h3>
+                                    <?php echo $employee["name"]; ?><br/>
+                                    <small>Employee ID/HKID: #<?php echo $employee["employee_id"]; ?></small>
+                                </h3>
 
-                                </div>
                             </div>
                         </div>
-
+                        <div>
+                            <a href="<?php echo site_url("Salary/deletePayslip/" . $salaryobj["id"]); ?>?salary_date=<?php echo $paydate; ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete Payslip</a>
+                        </div>
                     </div>
-                    <div class="col-md-12" id='printArea'>
 
-                        <?php
-                        $this->load->view('Salary/printSalaryBase', array("employee" => $employee, "salaryobj" => $salaryobj, "allownce"=>$allownce, "deduction"=>$deduction));
-                        ?>
+                </div>
+                <div class="col-md-12" id='printArea'>
+
+                    <?php
+                    $this->load->view('Salary/printSalaryBase', array("employee" => $employee, "salaryobj" => $salaryobj, "allownce" => $allownce, "deduction" => $deduction));
+                    ?>
 
 
-                    </div>
-                                            <button type="button" name="button" onclick="printDiv('printArea')" class="btn btn-primary">Print Preview</button>
+                </div>
+                <button type="button" name="button" onclick="printDiv('printArea')" class="btn btn-primary">Print Preview</button>
 
-             
+
             </div>
 
 
@@ -86,18 +89,18 @@ $this->load->view('layout/topmenu');
 
 
 <script>
-                       
-                            function printDiv(divName) {
-                                var printContents = document.getElementById(divName).innerHTML;
-                                var originalContents = document.body.innerHTML;
 
-                                document.body.innerHTML = printContents;
+                                                function printDiv(divName) {
+                                                    var printContents = document.getElementById(divName).innerHTML;
+                                                    var originalContents = document.body.innerHTML;
 
-                                window.print();
+                                                    document.body.innerHTML = printContents;
 
-                                document.body.innerHTML = originalContents;
-                            }
-                            
+                                                    window.print();
+
+                                                    document.body.innerHTML = originalContents;
+                                                }
+
 </script>
 
 
