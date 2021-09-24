@@ -1,7 +1,8 @@
 <table  style='width:100%;color:black;'>
     <tr>
-        <th colspan="3">
-            <?php echo PDF_HEADER; ?>
+        <th colspan="3" class="text-center">
+            <img src="<?php echo base_url(); ?>assets/img/logo.jpg" style="height: 80px;">
+            <h4>Monthly Payslip</h4>
         </th>
     </tr>
     <tr style=" border-bottom:  1px solid #eeeeee; height: 30px;">

@@ -16,6 +16,7 @@ $order_menu = array(
     "icon" => "fa fa-list",
     "active" => "",
     "sub_menu" => array(
+         "View Salary" => site_url("Salary/selectEmployee"),
         "Create Salary" => site_url("Salary/selectEmployee"),
         "Salary Report" => site_url("Salary/salaryReport"),
     ),
@@ -77,18 +78,7 @@ foreach ($menu_control as $key => $value) {
         <!-- begin sidebar nav -->
         <ul class="nav">
             <li class="nav-header">Navigation</li>
-            <li class="has-sub ">
-                <a href="javascript:;">
-                    <b class="caret pull-right"></b>
-                    <i class="fa fa-laptop"></i>
-                    <span>Dashboard</span>
-                </a>
-                <ul class="sub-menu">
-
-                    <li class="active"><a href="<?php echo site_url("Order/index"); ?>">Dashboard</a></li>
-
-                </ul>
-            </li>
+         
             <?php foreach ($menu_control as $mkey => $mvalue) { ?>
 
                 <li class="has-sub <?php echo $mvalue['active']; ?>">
