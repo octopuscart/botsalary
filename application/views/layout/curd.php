@@ -218,7 +218,7 @@ if ($depends) {
         });
 
         $(".editable").editable();
-     $('#tableData').DataTable({'pageLength':10});
+        $('#tableData').DataTable({'pageLength': 50});
 
 
 <?php

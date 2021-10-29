@@ -11,6 +11,8 @@ $this->load->view('layout/topmenu');
 <script src="<?php echo base_url(); ?>assets/treejs/jstree.min.js"></script>
 <link href="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet"  />
 
+<link href="<?php echo base_url(); ?>assets/plugins/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+<script src="<?php echo base_url(); ?>assets/plugins/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 
 
 <link href="<?php echo base_url(); ?>assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
@@ -30,9 +32,22 @@ $this->load->view('layout/topmenu');
     .primarytext{
         font-size: 15px;
     }
+    .pnlnotetable{
+        margin: 0px;
+
+    }
+    .pnlnotetable .headtdleft{
+        padding-left: 70px;
+        width:300px;
+    }
+    .editable{
+        width: 100px;
+        float: left;
+        text-align: right;
+    }
 </style>
 <!-- Main content -->
-<section class="content" >
+<section class="content" ng-controller="pnlControllerEdit">
     <div class="">
         <div class="well well-sm">
             <form action="" method="get">
@@ -59,19 +74,43 @@ $this->load->view('layout/topmenu');
         </div>
         <div class="panel panel-inverse">
             <div class="panel-heading">
-                <h3 class="panel-title">Salary Report</h3>
-                
+                <h3 class="panel-title">P & L Notes</h3>
+               
             </div>
+
             <div class="panel-body " id='printArea'>
+            
+
+                    <hr/>
+                    <div class="list-group" ng-repeat="(headk, headcategory) in pnlData.data">
+                        <div href="#" class="list-group-item active">
+                            <h4 style='color:white'>{{headk}}
+                                <span class='pull-right'>{{pnlData.total[headk]|currency}}</span>
+                            </h4>
+
+                        </div>
+                        <div ng-repeat="(ck, categorylist) in headcategory">
+                            <div  class="list-group-item">  <b>{{categorylist.title}}</b></div>
+                            <table class="table table-bordered pnlnotetable">
+                                <tr ng-repeat="(ck, heads) in categorylist.heads">
+                                    <td class="headtdleft">{{heads.title}}</td>
+                                    <td style='padding: 2px 10px;'>
+                                        <span  id="{{heads.id}}" data-type="text" data-pk="{{heads.id}}" data-name="head_value" data-value="{{heads.head_value}}" data-params ={'tablename':'pnl_entry'} data-url="<?php echo site_url("LocalApi/updateCurd"); ?>" data-mode="inline" class="m-l-5 editable editable-click" tabindex="-1" > {{heads.head_value}}</span>
+
+<!--                                        <input class="form-control" tabindex=""  step="0.01" ng-model="pnlData[headk][heads.title]" ng-change="calculations()"  required="" type="number" name="notes_value[]" style="width:200px" >-->
+                                        <input type="hidden" name="notes_id[]" value="{{heads.id}}" />
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
 
 
+                    </div>
+              
             </div>
-
-
         </div>
-
     </div>
-
 </section>
 <!-- end col-6 -->
 
@@ -79,13 +118,22 @@ $this->load->view('layout/topmenu');
 
 
 
-
+<script>
+<?php
+$time = strtotime($select_month);
+$entry_month = date('m', $time);
+$entry_year = date('Y', $time);
+?>
+    var entry_month = "<?php echo $entry_month;?>";
+    var entry_year = "<?php echo $entry_year;?>";
+</script>
 
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-daterangepicker/moment.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
 <script src="<?php echo base_url(); ?>assets/plugins/DataTables/js/jquery.dataTables.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/table-manage-default.demo.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/angular/accountController.js"></script>
 <script>
     function printDiv(divName) {
         var printContents = document.getElementById(divName).innerHTML;

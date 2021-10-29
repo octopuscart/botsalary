@@ -1,7 +1,9 @@
+
 <?php
 $this->load->view('layout/header');
 $this->load->view('layout/topmenu');
 ?>
+
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/treejs/themes/default/style.min.css">
 <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
 <link href="<?php echo base_url(); ?>assets/plugins/DataTables/css/data-table.css" rel="stylesheet" />
@@ -11,6 +13,8 @@ $this->load->view('layout/topmenu');
 <script src="<?php echo base_url(); ?>assets/treejs/jstree.min.js"></script>
 <link href="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet"  />
 
+<link href="<?php echo base_url(); ?>assets/plugins/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+<script src="<?php echo base_url(); ?>assets/plugins/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 
 
 <link href="<?php echo base_url(); ?>assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
@@ -30,9 +34,17 @@ $this->load->view('layout/topmenu');
     .primarytext{
         font-size: 15px;
     }
+    .pnlnotetable{
+        margin: 0px;
+
+    }
+    .pnlnotetable .headtdleft{
+        padding-left: 70px;
+        width:300px;
+    }
 </style>
 <!-- Main content -->
-<section class="content" >
+<section class="content" ng-controller="pnlControllerEdit">
     <div class="">
         <div class="well well-sm">
             <form action="" method="get">
@@ -59,19 +71,21 @@ $this->load->view('layout/topmenu');
         </div>
         <div class="panel panel-inverse">
             <div class="panel-heading">
-                <h3 class="panel-title">Salary Report</h3>
-                
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-sm btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-sm btn-icon btn-circle btn-warning" onclick="printDiv('printArea')"><i class="fa fa-print"></i></a>
+                </div>
+                <h3 class="panel-title">P & L Notes</h3>
+
             </div>
+
             <div class="panel-body " id='printArea'>
-
-
+                <?php
+                $this->load->view('pnlnotes/reportInner', array("pnldata" => $pnldata));
+                ?> 
             </div>
-
-
         </div>
-
     </div>
-
 </section>
 <!-- end col-6 -->
 
@@ -79,13 +93,22 @@ $this->load->view('layout/topmenu');
 
 
 
-
+<script>
+<?php
+$time = strtotime($select_month);
+$entry_month = date('m', $time);
+$entry_year = date('Y', $time);
+?>
+    var entry_month = "<?php echo $entry_month; ?>";
+    var entry_year = "<?php echo $entry_year; ?>";
+</script>
 
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-daterangepicker/moment.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
 <script src="<?php echo base_url(); ?>assets/plugins/DataTables/js/jquery.dataTables.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/table-manage-default.demo.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/angular/accountController.js"></script>
 <script>
     function printDiv(divName) {
         var printContents = document.getElementById(divName).innerHTML;
@@ -98,7 +121,7 @@ $this->load->view('layout/topmenu');
         document.body.innerHTML = originalContents;
     }
     $(function () {
-
+        $("title").html("Income and Expenditure Statement for the month of 31st <?php echo $c_date; ?>");
         $('.input-group.date').datepicker({
             format: "M-yyyy",
             viewMode: "months",
