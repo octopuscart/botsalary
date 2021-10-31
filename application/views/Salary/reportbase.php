@@ -1,5 +1,14 @@
-
-<table class="" border="1" style="color:black;font-size: 10px">
+<style>
+    .salarytable th, .salarytable td{
+        padding: 0px 5px;
+       
+    } 
+   .salarytable td{
+        padding: 0px 5px;
+        text-align: right;
+    } 
+</style>
+<table class="salarytable" border="1" style="color:black;font-size: 10px">
     <thead>
         <tr>
             <th colspan="12" class="text-center">
@@ -63,7 +72,7 @@
 
                     <td><?php echo $count; ?></td>
 
-                    <td>
+                    <td style="text-align: left;">
                         <?php
                         echo $svalue["employee"]["name"];
                         ?>
@@ -168,11 +177,11 @@
                 color: black;
                 border-top: 3px solid #000;
                 border-bottom: 3px solid #ff5722;">
-                <th colspan="2">TOTAL</th>
+                <th colspan="2" class='text-right'>TOTAL</th>
                 <th></th>
                 <?php
                 foreach ($totalarray as $key => $value) {
-                    echo "<th>$value</th>";
+                    echo "<th class='text-right'>$value</th>";
                 }
                 ?>
 
@@ -198,7 +207,7 @@
             <th></th>
             <?php
             foreach ($totalarray2 as $key => $value) {
-                echo "<th>$value</th>";
+                echo "<th class='text-right'>$value</th>";
             }
             ?>
 

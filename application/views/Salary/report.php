@@ -40,7 +40,7 @@ $this->load->view('layout/topmenu');
                     <label class="form-label col-form-label col-lg-2"><b>Salary Month</b><br/><small>Click on Calendar Icon</small></label>
                     <div class="col-lg-4">
                         <div class="input-group date" >
-                            <input type="text" class="form-control" name="entry_date" style="background: white;
+                            <input type="text" class="form-control" name="salary_date" style="background: white;
                                    opacity: 1;" readonly=""  autoclose="true" value="<?php echo $select_month; ?>">
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-th"></span>
@@ -51,6 +51,12 @@ $this->load->view('layout/topmenu');
                         <button class="btn btn-success" type="submit" name="select_month" value="select_month">
                             <i class="fa fa-paragraph"></i>   GET REPORT
                         </button>
+                        <button class="btn btn-success" type="button" name="select_month" value="select_month" onclick="printDiv('printArea')">
+                            <i class="fa fa-print"></i>   PRINT REPORT
+                        </button>
+                        <a class="btn btn-success" href="<?php echo site_url("Salary/salaryReportXls")."?salary_date=$select_month";?>">
+                            <i class="fa fa-print"></i>   EXPORT REPORT
+                        </a>
 
 
                     </div>
@@ -64,7 +70,9 @@ $this->load->view('layout/topmenu');
             </div>
             <div class="panel-body " id='printArea'>
 
-
+                <?php
+                $this->load->view('Salary/reportbase', array("salary_report" => $salary_report, "remark"=>false));
+                ?>
             </div>
 
 
