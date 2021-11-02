@@ -73,16 +73,25 @@ $this->load->view('layout/topmenu');
             <div class="panel-heading">
                 <div class="panel-heading-btn">
                     <a href="javascript:;" class="btn btn-sm btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                    <a href="javascript:;" class="btn btn-sm btn-icon btn-circle btn-warning" onclick="printDiv('printArea')"><i class="fa fa-print"></i></a>
                 </div>
-                <h3 class="panel-title">P & L Notes</h3>
+                <h3 class="panel-title"><?php echo $report_title; ?></h3>
 
             </div>
 
             <div class="panel-body " id='printArea'>
                 <?php
-                $this->load->view('pnlnotes/reportInner', array("pnldata" => $pnldata));
-                ?> 
+                if($report_data){
+                ?>
+                <object data="<?php echo base_url(); ?>assets/reports/<?php echo $report_data["report_file"];?>" type="application/pdf" width="100%" height="750px">
+                    <embed src="<?php echo base_url(); ?>assets/reports/<?php echo $report_data["report_file"];?>" type="application/pdf">
+                    <p>This browser does not support PDFs. Please download the PDF to view it: <a href="<?php echo base_url(); ?>assets/reports/<?php echo $report_data["report_file"];?>">Download PDF</a>.</p>
+                    </embed>
+                </object>
+                <?php
+                }else{
+                    echo "<h3>No report found.</h3>";
+                }
+                ?>
             </div>
         </div>
     </div>
@@ -121,7 +130,7 @@ $entry_year = date('Y', $time);
         document.body.innerHTML = originalContents;
     }
     $(function () {
-        $("title").html("Income and Expenditure Statement for the month of 31st <?php echo $c_date; ?>");
+        $("title").html("<?php echo $report_title; ?>");
         $('.input-group.date').datepicker({
             format: "M-yyyy",
             viewMode: "months",

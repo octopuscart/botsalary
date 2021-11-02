@@ -23,7 +23,7 @@ $order_menu = array(
 );
 array_push($menu_control, $order_menu);
 
-$order_menu = array(
+$pnl_menu = array(
     "title" => "P&L Manegement",
     "icon" => "fa fa-pie-chart",
     "active" => "",
@@ -33,7 +33,31 @@ $order_menu = array(
         "P&L Report" => site_url("PnlNotes/report"),
     ),
 );
-array_push($menu_control, $order_menu);
+array_push($menu_control, $pnl_menu);
+
+$activity_menu = array(
+    "title" => "Activity Reports",
+    "icon" => "fa fa-outdent",
+    "active" => "",
+    "sub_menu" => array(
+        "Get Reports" => site_url("Accounting/activity/activity_reports"),
+
+    ),
+);
+array_push($menu_control, $activity_menu);
+
+$bs_menu = array(
+    "title" => "BS Management",
+    "icon" => "fa fa-area-chart",
+    "active" => "",
+    "sub_menu" => array(
+        "Get Reports" => site_url("Accounting/activity/bs_reports"),
+
+    ),
+);
+array_push($menu_control, $bs_menu);
+
+
 
 $salary_menu = array(
     "title" => "Settings",
