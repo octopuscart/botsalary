@@ -226,7 +226,7 @@
                 }
                 ?>
                 <?php
-                foreach ($svalue["allownceslist"] as $key => $value) {
+                foreach ($allownceslistdict as $key => $value) {
                     echo "<th class='text-right'>" . $allownceslistdict[$key]["total"] . "</th>";
                     $allownceslistdict[$key]["gtotal"] += $allownceslistdict[$key]["total"];
                 }
