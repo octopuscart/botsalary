@@ -385,7 +385,7 @@ class Salary extends CI_Controller {
         $html = $this->load->view('Salary/reportbase', array("salary_report" => $salary_report, "remark" => true), true);
         $filename = 'salary_report_' . $a_date . ".xls";
         $this->load->library('m_pdf');
-     
+
 
         $this->m_pdf->pdf->WriteHTML($html);
         $this->m_pdf->pdf->Output($pdfFilePath, "D");
@@ -400,6 +400,50 @@ class Salary extends CI_Controller {
         $this->db->where("salary_id", $salary_id);
         $query = $this->db->delete("salary_deduction_apply");
         redirect(site_url("Salary/selectEmployee?salary_date=$salarydate&select_month=1"));
+    }
+
+    function salaryReportV2() {
+        $a_date = date("M-Y");
+        if (isset($_GET["select_month"])) {
+            $a_date = $_GET["salary_date"];
+        }
+        $data["select_month"] = $a_date;
+        $salarydata = $this->Salary_model->salaryDatav2($a_date);
+        $data["salary_report"] = $salarydata["salary_data"];
+        $data["allownceslist"] = $salarydata["allownceslist"];
+        $data["showimage"] = true;
+        $this->load->view('Salary/reportv2', $data);
+    }
+
+    function salaryReporV2tXls() {
+        $a_date = date("M-Y");
+        if (isset($_GET["salary_date"])) {
+            $a_date = $_GET["salary_date"];
+        }
+        $salarydata = $this->Salary_model->salaryDatav2($a_date);
+        $data["salary_report"] = $salarydata["salary_data"];
+        $data["allownceslist"] = $salarydata["allownceslist"];
+         $data["showimage"] = false;
+        
+        $html = $this->load->view('Salary/reportbasev2', $data, true);
+        $filename = 'salary_report_' . $a_date . ".xls";
+        ob_clean();
+        header("Content-Disposition: attachment; filename=$filename");
+        header("Content-Type: application/vnd.ms-excel");
+        echo $html;
+    }
+
+    function salaryReportV2PDF() {
+        $a_date = date("M-Y");
+        if (isset($_GET["salary_date"])) {
+            $a_date = $_GET["salary_date"];
+        }
+        $data["showimage"] = true;
+        $salarydata = $this->Salary_model->salaryDatav2($a_date);
+        $data["salary_report"] = $salarydata["salary_data"];
+        $data["allownceslist"] = $salarydata["allownceslist"];
+      echo  $html = $this->load->view('Salary/reportbasev2', $data, true);
+     
     }
 
 }
