@@ -19,6 +19,7 @@ $order_menu = array(
         "View Salary" => site_url("Salary/selectEmployee"),
         "Create Salary" => site_url("Salary/selectEmployee"),
         "Salary Report" => site_url("Salary/salaryReport"),
+         "Salary Report Details" => site_url("Salary/salaryReportV2"),
     ),
 );
 array_push($menu_control, $order_menu);
