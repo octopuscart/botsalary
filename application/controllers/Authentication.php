@@ -90,9 +90,8 @@ class Authentication extends CI_Controller {
         $data['userdata'] = $userdata;
 
 
-        $query = $this->db->get("country");
-        $countrydata = $query->result_array();
-        $data['country'] = $countrydata;
+   
+        $data['country'] = array();
 
         $config['upload_path'] = 'assets/profile_image';
         $config['allowed_types'] = '*';
