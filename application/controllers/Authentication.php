@@ -279,14 +279,14 @@ class Authentication extends CI_Controller {
                 $this->email->print_debugger();
                 $result = $this->email->send();
                 redirect('Authentication/otpCheck/' . md5($otpcheck) . "/" . $user_id);
+            } else {
+                $message = array(
+                    'title' => 'Employee Not Found',
+                    'text' => 'Invalid Employee ID# and Email.',
+                    'show' => true
+                );
+                $this->session->set_flashdata("checklogin", $message);
             }
-        } else {
-            $message = array(
-                'title' => 'Employee Not Found',
-                'text' => 'Invalid Employee ID# and Email.',
-                'show' => true
-            );
-            $this->session->set_flashdata("checklogin", $message);
         }
 
         $this->load->view('authentication/employeereg', $data);

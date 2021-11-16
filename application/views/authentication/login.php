@@ -50,7 +50,7 @@ $this->load->view('layout/header');
                     <button type="submit" name="signIn" value="signIn" class="btn btn-success btn-block btn-lg">Sign me in</button>
                 </div>
                 <div class="m-t-20 m-b-40 p-b-40">
-                    To reset your password? Click <a href="#" class="text-success">here</a> to register.
+                    For Employee Registration? Click <a href="<?php echo site_url("Authentication/registrationEmployee");?>" class="text-success">here</a> 
                 </div>
                 <hr />
                 <p class="text-center text-inverse">
