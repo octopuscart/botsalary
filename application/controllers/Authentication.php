@@ -51,7 +51,7 @@ class Authentication extends CI_Controller {
                         'log_datetime' => date('Y-m-d H:i:s'),
                         'user_id' => $checkuser->id,
                         'order_id' => "",
-                        'log_detail' => $username." Login Succesful",
+                        'log_detail' => $username . " Login Succesful",
                     );
                     $this->db->insert('system_log', $orderlog);
 
@@ -90,7 +90,7 @@ class Authentication extends CI_Controller {
         $data['userdata'] = $userdata;
 
 
-   
+
         $data['country'] = array();
 
         $config['upload_path'] = 'assets/profile_image';
@@ -144,7 +144,7 @@ class Authentication extends CI_Controller {
                         'log_datetime' => date('Y-m-d H:i:s'),
                         'user_id' => $userid,
                         'order_id' => "",
-                        'log_detail' => $userdata->username.' has changed password successfully.',
+                        'log_detail' => $userdata->username . ' has changed password successfully.',
                     );
                     $this->db->insert('system_log', $orderlog);
 
@@ -199,6 +199,25 @@ class Authentication extends CI_Controller {
 
     public function error_404() {
         $this->load->view('errors/404');
+    }
+
+    function registrationEmployee() {
+        if (isset($_POST['signIn'])) {
+            $username = $this->input->post('email');
+            $password = $this->input->post('employee_id');
+            $this->db->select('id,first_name,last_name,email,password,user_type, image');
+            $this->db->from('admin_users');
+            $this->db->where('email', $username);
+            $this->db->where('password', md5($password));
+            $this->db->limit(1);
+            $query = $this->db->get();
+            $checkuser = $query->row();
+
+            if ($checkuser) {
+                $usr = $checkuser->email;
+            }
+        }
+         $this->load->view('authentication/login', $data);
     }
 
 }
