@@ -64,7 +64,7 @@
             </tr>
             <tr  class="fontHeading2">
                 <th colspan="6" class=" text-center">
-                    Income and Expenditure Statement for the month of 31st <?php echo $c_date; ?>
+                    Income and Expenditure Statement for the month of <?php echo $c_date; ?>
                 </th>
             </tr>
         </tbody>
