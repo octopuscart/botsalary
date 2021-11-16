@@ -21,7 +21,9 @@ class Accounting extends CI_Controller {
     }
 
     public function index() {
-
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $date1 = date('Y-m-d', strtotime('-30 days'));
         $date2 = date('Y-m-d');
 
@@ -30,7 +32,9 @@ class Accounting extends CI_Controller {
     }
 
     function activity($rtype) {
-
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $a_date = date("M-Y");
         if (isset($_GET["entry_date"])) {
             $a_date = $_GET["entry_date"];
@@ -56,14 +60,16 @@ class Accounting extends CI_Controller {
     }
 
     function activityAnnual($rtype) {
-
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $entry_date = "2020-04-01";
         if (isset($_GET["entry_date"])) {
             $entry_date = $_GET["entry_date"];
         }
         $data["select_month"] = $entry_date;
-        
-        $entry_year = array("2020-04-01"=>"2020-2021");
+
+        $entry_year = array("2020-04-01" => "2020-2021");
 
         $this->db->where("report_type", $rtype);
         $this->db->where("report_date", $entry_date);
@@ -72,7 +78,7 @@ class Accounting extends CI_Controller {
         $data["report_data"] = $report_data;
 
         $report_typs = array(
-            "annual_exp_reports" => "Annual Expenses Report ".$entry_year[$entry_date]
+            "annual_exp_reports" => "Annual Expenses Report " . $entry_year[$entry_date]
         );
         $data["report_title"] = isset($report_typs[$rtype]) ? $report_typs[$rtype] : "";
 

@@ -22,7 +22,9 @@ class PnlNotes extends CI_Controller {
     }
 
     public function index() {
-
+if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $date1 = date('Y-m-d', strtotime('-30 days'));
         $date2 = date('Y-m-d');
 
@@ -31,6 +33,9 @@ class PnlNotes extends CI_Controller {
     }
 
     public function categories() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $data = array();
 
         $allowmpf_select = array("Income" => "Income", "Expenditure" => "Expenditure");
@@ -76,6 +81,9 @@ class PnlNotes extends CI_Controller {
     }
 
     public function subcategories() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $data = array();
         $mcategorydata = array();
         $m_categories_data = $this->Curd_model->get('pnl_category');
@@ -127,6 +135,9 @@ class PnlNotes extends CI_Controller {
     }
 
     function budgetEntry() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $a_date = date("Y-04-01");
         if (isset($_GET["entry_date"])) {
             $a_date = $_GET["entry_date"];
@@ -163,6 +174,9 @@ class PnlNotes extends CI_Controller {
     }
 
     function entry() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $pnldata = $this->Account_model->getPnLNoteHeads();
         $data = array();
         $a_date = date("M-Y");
@@ -193,6 +207,9 @@ class PnlNotes extends CI_Controller {
     }
 
     function edit() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $a_date = date("M-Y");
         if (isset($_GET["entry_date"])) {
             $a_date = $_GET["entry_date"];
@@ -202,6 +219,9 @@ class PnlNotes extends CI_Controller {
     }
 
     function report() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $a_date = date("M-Y");
         if (isset($_GET["entry_date"])) {
             $a_date = $_GET["entry_date"];

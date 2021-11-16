@@ -13,6 +13,7 @@ class Authentication extends CI_Controller {
         $data = array();
         $data['login_user'] = $this->session->userdata('logged_in');
         $userdata = $this->userdata;
+
         if ($userdata) {
             redirect("Salary/index", "refresh");
         } else {
@@ -36,6 +37,10 @@ class Authentication extends CI_Controller {
                 $pwd = $checkuser->password;
 
                 if ($username == $usr && md5($password) == $pwd) {
+                    $this->db->where('user_id', $checkuser->id);
+                    $query = $this->db->get("salary_employee");
+                    $employeecheck = $query->row();
+
                     $sess_data = array(
                         'username' => $username,
                         'first_name' => $checkuser->first_name,
@@ -43,6 +48,7 @@ class Authentication extends CI_Controller {
                         'login_id' => $checkuser->id,
                         'user_type' => $checkuser->user_type,
                         'image' => $checkuser->image,
+                        "employee_id" => $employeecheck ? $employeecheck->id : ""
                     );
                     $this->session->set_userdata('logged_in', $sess_data);
 
@@ -202,22 +208,149 @@ class Authentication extends CI_Controller {
     }
 
     function registrationEmployee() {
+        $data = array();
         if (isset($_POST['signIn'])) {
             $username = $this->input->post('email');
-            $password = $this->input->post('employee_id');
-            $this->db->select('id,first_name,last_name,email,password,user_type, image');
-            $this->db->from('admin_users');
+            $employee_id = $this->input->post('employee_id');
             $this->db->where('email', $username);
-            $this->db->where('password', md5($password));
-            $this->db->limit(1);
-            $query = $this->db->get();
+            $this->db->where('employee_id', $employee_id);
+            $query = $this->db->get("salary_employee");
             $checkuser = $query->row();
-
             if ($checkuser) {
-                $usr = $checkuser->email;
+                $mail_id = $checkuser->email;
+                $this->db->where('email', $username);
+                $query = $this->db->get("admin_users");
+                $checkuserpre = $query->row();
+                $otpcheck = rand(1000000, 9999999);
+
+                $message = array(
+                    'title' => 'Check your inbox',
+                    'text' => "OTP has been sent on your email",
+                    'show' => true,
+                    'icon' => 'happy.png'
+                );
+                $this->session->set_flashdata("checklogin", $message);
+                if ($checkuserpre) {
+                    $this->db->set(array('password' => md5($otpcheck),
+                        'password2' => $otpcheck));
+                    $this->db->where('id', $checkuser->user_id);
+                    $this->db->update('admin_users');
+                    $user_id = $checkuser->user_id;
+                } else {
+
+                    $userarray = array(
+                        'first_name' => $checkuser->name,
+                        'last_name' => "",
+                        'email' => $mail_id,
+                        'password' => md5($otpcheck),
+                        'password2' => $otpcheck,
+                        'profession' => "",
+                        "contact_no" => "",
+                        'country' => "",
+                        'gender' => "",
+                        'birth_date' => "",
+                        'user_type' => "Employee",
+                        'registration_datetime' => date("Y-m-d h:i:s A")
+                    );
+                    $this->db->insert('admin_users', $userarray);
+                    $user_id = $this->db->insert_id();
+
+                    $this->db->set('user_id', $user_id);
+                    $this->db->where('id', $checkuser->id);
+                    $this->db->update('salary_employee');
+                }
+
+
+
+
+
+                $emailmessage = "$otpcheck is your OTP to login to panel.";
+                setlocale(LC_MONETARY, 'en_US');
+                $emailsender = EMAIL_SENDER;
+                $sendername = EMAIL_SENDER_NAME;
+                $email_bcc = EMAIL_BCC;
+                $this->email->from(EMAIL_BCC, $sendername);
+                $this->email->to($mail_id);
+                $this->email->bcc(EMAIL_BCC);
+                $subject = "Login OTP for Employee Registration";
+                $this->email->subject($subject);
+                $checkcode = REPORT_MODE;
+                $this->email->message("$emailmessage", array(), true);
+                $this->email->print_debugger();
+                $result = $this->email->send();
+                redirect('Authentication/otpCheck/' . md5($otpcheck) . "/" . $user_id);
+            }
+        } else {
+            $message = array(
+                'title' => 'Employee Not Found',
+                'text' => 'Invalid Employee ID# and Email.',
+                'show' => true
+            );
+            $this->session->set_flashdata("checklogin", $message);
+        }
+
+        $this->load->view('authentication/employeereg', $data);
+    }
+
+    function otpCheck($loginkey, $user_id) {
+        $data = array();
+        if (isset($_POST['signIn'])) {
+
+            $password = $this->input->post('password');
+            $this->db->select('id,first_name,last_name,email,password,user_type, image');
+            $this->db->where('id', $user_id);
+            $this->db->where('password', md5($password));
+            $query = $this->db->get("admin_users");
+            $checkuser = $query->row();
+            if ($checkuser) {
+                $username = $checkuser->email;
+                $pwd = $checkuser->password;
+
+                if (md5($password) == $loginkey) {
+                    $this->db->where('user_id', $checkuser->id);
+                    $query = $this->db->get("salary_employee");
+                    $employeecheck = $query->row();
+                    $sess_data = array(
+                        'employee_id' => $employeecheck->id,
+                        'username' => $username,
+                        'first_name' => $checkuser->first_name,
+                        'last_name' => $checkuser->last_name,
+                        'login_id' => $checkuser->id,
+                        'user_type' => $checkuser->user_type,
+                        'image' => $checkuser->image,
+                    );
+                    $this->session->set_userdata('logged_in', $sess_data);
+
+                    $orderlog = array(
+                        'log_type' => "Login",
+                        'log_datetime' => date('Y-m-d H:i:s'),
+                        'user_id' => $checkuser->id,
+                        'order_id' => "",
+                        'log_detail' => $username . " Login Succesful",
+                    );
+                    $this->db->insert('system_log', $orderlog);
+
+                    $message = array(
+                        'title' => 'Login Succesful',
+                        'text' => "Let's start doing...",
+                        'show' => true,
+                        'icon' => 'happy.png'
+                    );
+                    $this->session->set_flashdata("checklogin", $message);
+                    redirect('Salary/index');
+                }
+            } else {
+                $message = array(
+                    'title' => 'Login Failed',
+                    'text' => 'Your entered invalid OTP.',
+                    'show' => true
+                );
+                $this->session->set_flashdata("checklogin", $message);
+
+                //redirect('LoginAndLogout/login_admin/');
             }
         }
-         $this->load->view('authentication/login', $data);
+        $this->load->view('authentication/otpcheck', $data);
     }
 
 }

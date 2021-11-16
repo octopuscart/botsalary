@@ -24,45 +24,10 @@ class Services extends CI_Controller {
         redirect('/');
     }
 
-    function order_mail_send($order_id) {
-        $subject = "Order Confirmation - Your Order with www.bespoketailorshk.com [$order_id] has been successfully placed!";
-        $this->Order_model->order_mail($order_id, $subject);
-    }
-
-    function order_pdf($order_id) {
-        $this->Order_model->order_pdf($order_id);
-    }
-
-    public function remove_order_status($status_id, $orderkey) {
-        $this->db->delete('user_order_status', array('id' => $status_id));
-        redirect("Order/orderdetails/$orderkey");
-    }
-
-//order list accroding to user type
-    public function newslatter($lattertype) {
-        $data['lattertype'] = $lattertype;
-        $data['exportdata'] = 'yes';
-        $date1 = date('Y-m-') . "01";
-        $date2 = date('Y-m-d');
-        if (isset($_GET['daterange'])) {
-            $daterange = $this->input->get('daterange');
-            $datelist = explode(" to ", $daterange);
-            $date1 = $datelist[0];
-            $date2 = $datelist[1];
+    function systemLogReport() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
         }
-        $daterange = $date1 . " to " . $date2;
-        $data['daterange'] = $daterange;
-        $data['users_all'] = $this->User_model->user_reports("User");
-        $this->load->view('Email/newslatter', $data);
-    }
-    
-    
-    function appointment(){
-        $data = array();
-        $this->load->view("Appointment/setnew", $data);
-    }
-    
-     function systemLogReport(){
         $data = array();
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('system_log');

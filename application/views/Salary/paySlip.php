@@ -58,7 +58,16 @@ $this->load->view('layout/topmenu');
                             </div>
                         </div>
                         <div>
-                            <a href="<?php echo site_url("Salary/deletePayslip/" . $salaryobj["id"]); ?>?salary_date=<?php echo $paydate; ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete Payslip</a>
+                            <?php if ($deletable) { ?>
+                                <a href="<?php echo site_url("Salary/deletePayslip/" . $salaryobj["id"]); ?>?salary_date=<?php echo $paydate; ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete Payslip</a>
+                                <?php
+                            } else {
+                                ?>
+                                <a href="<?php echo site_url("Salary/index"); ?>" class="btn btn-danger"><i class="fa fa-arrow-left"></i> Back</a>
+
+                                <?php
+                            }
+                            ?>
                         </div>
                     </div>
 
@@ -90,16 +99,16 @@ $this->load->view('layout/topmenu');
 
 <script>
 
-                                                function printDiv(divName) {
-                                                    var printContents = document.getElementById(divName).innerHTML;
-                                                    var originalContents = document.body.innerHTML;
+                    function printDiv(divName) {
+                        var printContents = document.getElementById(divName).innerHTML;
+                        var originalContents = document.body.innerHTML;
 
-                                                    document.body.innerHTML = printContents;
+                        document.body.innerHTML = printContents;
 
-                                                    window.print();
+                        window.print();
 
-                                                    document.body.innerHTML = originalContents;
-                                                }
+                        document.body.innerHTML = originalContents;
+                    }
 
 </script>
 

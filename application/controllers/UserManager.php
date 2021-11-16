@@ -34,8 +34,8 @@ class UserManager extends CI_Controller {
 
     public function not_granted() {
         $userdata = array();
-        $this->session->unset_userdata($userdata);
-        $this->session->sess_destroy();
+//        $this->session->unset_userdata($userdata);
+//        $this->session->sess_destroy();
         $this->load->view('errors/404');
     }
 

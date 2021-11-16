@@ -25,11 +25,30 @@ class Salary extends CI_Controller {
         $date1 = date('Y-m-d', strtotime('-30 days'));
         $date2 = date('Y-m-d');
 
+
+
         $data = array();
-        $this->load->view('Salary/dashboard', $data);
+        if ($this->user_type == 'Admin') {
+            $this->load->view('Salary/dashboard', $data);
+        } if ($this->user_type == 'Employee') {
+            $loginuser = $this->session->userdata('logged_in');
+
+            if (isset($loginuser["employee_id"])) {
+                $employee_id = $loginuser["employee_id"];
+                $this->db->where("employee_id", $employee_id);
+                $this->db->order_by("salary_date desc");
+                $query = $this->db->get("salary");
+                $salary_data = $query->result_array();
+                $data["salary"] = $salary_data;
+            }
+            $this->load->view('Salary/salarylist', $data);
+        }
     }
 
     public function allowanceCategories() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $data = array();
 
         $allowmpf_select = array("Yes" => "Yes", "No" => "No");
@@ -75,6 +94,9 @@ class Salary extends CI_Controller {
     }
 
     public function locations() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $data = array();
         $data['title'] = "Locations";
         $data['description'] = "Locations";
@@ -112,6 +134,9 @@ class Salary extends CI_Controller {
     }
 
     public function employee() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $data = array();
 
         $location_data = $this->Curd_model->get('salary_location');
@@ -203,6 +228,9 @@ class Salary extends CI_Controller {
     }
 
     function create($employee_id) {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $employee_data = $this->Curd_model->get_single2('salary_employee', $employee_id);
         $allownce_data = $this->Curd_model->get('salary_allowances');
         $location_data = $this->Curd_model->get('salary_location');
@@ -312,6 +340,9 @@ class Salary extends CI_Controller {
     }
 
     function selectEmployee() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $a_date = date("M-Y");
         if (isset($_GET["select_month"])) {
             $a_date = $_GET["salary_date"];
@@ -340,6 +371,10 @@ class Salary extends CI_Controller {
     }
 
     function paySlip($salary_id) {
+        $data["deletable"] = true;
+        if ($this->user_type != 'Admin') {
+            $data["deletable"] = false;
+        }
         $salaryobj = $this->Salary_model->employeeSalarySingle($salary_id);
         $data["salaryobj"] = $salaryobj;
         $data["allownce"] = $this->Salary_model->employeeAllownceAll($salary_id);
@@ -348,12 +383,13 @@ class Salary extends CI_Controller {
         $data["deduction"] = $this->Salary_model->employeeDuductionAll($salary_id);
         $data["employee"] = $this->Curd_model->get_single2('salary_employee', $salaryobj["employee_id"]);
 
-
-
         $this->load->view("Salary/paySlip", $data);
     }
 
     function salaryReport() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $a_date = date("M-Y");
         if (isset($_GET["select_month"])) {
             $a_date = $_GET["salary_date"];
@@ -378,6 +414,9 @@ class Salary extends CI_Controller {
     }
 
     function salaryReportPDF() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $a_date = date("M-Y");
         if (isset($_GET["salary_date"])) {
             $a_date = $_GET["salary_date"];
@@ -393,6 +432,9 @@ class Salary extends CI_Controller {
     }
 
     function deletePayslip($id) {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $this->db->where("id", $id);
         $this->db->delete("salary");
         $salarydate = $this->input->get("salary_date");
@@ -404,6 +446,9 @@ class Salary extends CI_Controller {
     }
 
     function salaryReportV2() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $a_date = date("M-Y");
         if (isset($_GET["select_month"])) {
             $a_date = $_GET["salary_date"];
@@ -417,6 +462,9 @@ class Salary extends CI_Controller {
     }
 
     function salaryReporV2tXls() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $a_date = date("M-Y");
         if (isset($_GET["salary_date"])) {
             $a_date = $_GET["salary_date"];
@@ -435,6 +483,9 @@ class Salary extends CI_Controller {
     }
 
     function salaryReportV2PDF() {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
         $a_date = date("M-Y");
         if (isset($_GET["salary_date"])) {
             $a_date = $_GET["salary_date"];

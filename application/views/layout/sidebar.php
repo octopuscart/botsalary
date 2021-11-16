@@ -10,75 +10,86 @@ $menu_control = array();
 
 
 
+if ($this->user_type == 'Admin') {
+    $order_menu = array(
+        "title" => "Salary Manegement",
+        "icon" => "fa fa-list",
+        "active" => "",
+        "sub_menu" => array(
+            "View Salary" => site_url("Salary/selectEmployee"),
+            "Create Salary" => site_url("Salary/selectEmployee"),
+            "Salary Report" => site_url("Salary/salaryReport"),
+            "Salary Report Details" => site_url("Salary/salaryReportV2"),
+        ),
+    );
+    array_push($menu_control, $order_menu);
 
-$order_menu = array(
-    "title" => "Salary Manegement",
-    "icon" => "fa fa-list",
-    "active" => "",
-    "sub_menu" => array(
-        "View Salary" => site_url("Salary/selectEmployee"),
-        "Create Salary" => site_url("Salary/selectEmployee"),
-        "Salary Report" => site_url("Salary/salaryReport"),
-        "Salary Report Details" => site_url("Salary/salaryReportV2"),
-    ),
-);
-array_push($menu_control, $order_menu);
+    $pnl_menu = array(
+        "title" => "P&L Manegement",
+        "icon" => "fa fa-pie-chart",
+        "active" => "",
+        "sub_menu" => array(
+            "Create Reports" => site_url("PnlNotes/entry"),
+            "P&L Modification" => site_url("PnlNotes/edit"),
+            "P&L Report" => site_url("PnlNotes/report"),
+        ),
+    );
+    array_push($menu_control, $pnl_menu);
 
-$pnl_menu = array(
-    "title" => "P&L Manegement",
-    "icon" => "fa fa-pie-chart",
-    "active" => "",
-    "sub_menu" => array(
-        "Create Reports" => site_url("PnlNotes/entry"),
-        "P&L Modification" => site_url("PnlNotes/edit"),
-        "P&L Report" => site_url("PnlNotes/report"),
-    ),
-);
-array_push($menu_control, $pnl_menu);
+    $activity_menu = array(
+        "title" => "Activity Reports",
+        "icon" => "fa fa-outdent",
+        "active" => "",
+        "sub_menu" => array(
+            "P&L Summary report" => site_url("Accounting/activity/activity_reports"),
+            "Annual Expenses" => site_url("Accounting/activityAnnual/annual_exp_reports"),
+            "Monthly Expenses" => site_url("Accounting/activity/monthly_exp_reports"),
+        ),
+    );
+    array_push($menu_control, $activity_menu);
 
-$activity_menu = array(
-    "title" => "Activity Reports",
-    "icon" => "fa fa-outdent",
-    "active" => "",
-    "sub_menu" => array(
-        "P&L Summary report" => site_url("Accounting/activity/activity_reports"),
-        "Annual Expenses" => site_url("Accounting/activityAnnual/annual_exp_reports"),
-        "Monthly Expenses" => site_url("Accounting/activity/monthly_exp_reports"),
-    ),
-);
-array_push($menu_control, $activity_menu);
-
-$bs_menu = array(
-    "title" => "BS Management",
-    "icon" => "fa fa-area-chart",
-    "active" => "",
-    "sub_menu" => array(
-        "Get Reports" => site_url("Accounting/activity/bs_reports"),
-    ),
-);
-array_push($menu_control, $bs_menu);
-
-
-
-$salary_menu = array(
-    "title" => "Settings",
-    "icon" => "fa  fa-wrench",
-    "active" => "",
-    "sub_menu" => array(
-        "Set Allownces" => site_url("Salary/allowanceCategories"),
-        "Set Employee" => site_url("Salary/employee"),
-        "Set Location" => site_url("Salary/locations"),
-        "salary" => "break",
-        "Set P&L Categories" => site_url("PnlNotes/categories"),
-        "Set P&L A/C Heads" => site_url("PnlNotes/subcategories"),
-        "pnl" => "break",
-        "System Log" => site_url("Services/systemLogReport"),
-        "Report Configuration" => site_url("Configuration/reportConfiguration"),
-    ),
-);
-array_push($menu_control, $salary_menu);
+    $bs_menu = array(
+        "title" => "BS Management",
+        "icon" => "fa fa-area-chart",
+        "active" => "",
+        "sub_menu" => array(
+            "Get Reports" => site_url("Accounting/activity/bs_reports"),
+        ),
+    );
+    array_push($menu_control, $bs_menu);
 
 
+
+    $salary_menu = array(
+        "title" => "Settings",
+        "icon" => "fa  fa-wrench",
+        "active" => "",
+        "sub_menu" => array(
+            "Set Allownces" => site_url("Salary/allowanceCategories"),
+            "Set Employee" => site_url("Salary/employee"),
+            "Set Location" => site_url("Salary/locations"),
+            "salary" => "break",
+            "Set P&L Categories" => site_url("PnlNotes/categories"),
+            "Set P&L A/C Heads" => site_url("PnlNotes/subcategories"),
+            "pnl" => "break",
+            "System Log" => site_url("Services/systemLogReport"),
+            "Report Configuration" => site_url("Configuration/reportConfiguration"),
+        ),
+    );
+    array_push($menu_control, $salary_menu);
+}
+else{
+     $order_menu = array(
+        "title" => "Salary",
+        "icon" => "fa fa-list",
+        "active" => "",
+        "sub_menu" => array(
+            "View Salary" => site_url("Salary/index"),
+
+        ),
+    );
+    array_push($menu_control, $order_menu);
+}
 
 
 

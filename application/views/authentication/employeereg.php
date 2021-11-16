@@ -36,10 +36,10 @@ $this->load->view('layout/header');
             
             <form action="#" method="POST" class="margin-bottom-0">
                 <div class="form-group m-b-15">
-                    <input type="text" name="email" class="form-control input-lg" placeholder="Email Address" />
+                    <input type="email" name="email" class="form-control input-lg" placeholder="Email Address" required="" />
                 </div>
                 <div class="form-group m-b-15">
-                    <input type="password" name="password" class="form-control input-lg" placeholder="Password" />
+                    <input type="text" name="employee_id" class="form-control input-lg" placeholder="Employee ID" required="" />
                 </div>
                 <!--                <div class="checkbox m-b-30">
                                     <label>
@@ -47,7 +47,7 @@ $this->load->view('layout/header');
                                     </label>
                                 </div>-->
                 <div class="login-buttons">
-                    <button type="submit" name="signIn" value="signIn" class="btn btn-success btn-block btn-lg">Sign me in</button>
+                    <button type="submit" name="signIn" value="signIn" class="btn btn-success btn-block btn-lg">Employee Registration</button>
                 </div>
                 <div class="m-t-20 m-b-40 p-b-40">
                     To reset your password? Click <a href="#" class="text-success">here</a> to register.
@@ -78,7 +78,7 @@ $this->load->view('layout/footer');
         $.gritter.add({
             title: '<?php echo $checklogin['title']; ?>',
             text: '<?php echo $checklogin['text']; ?>',
-            image: '<?php echo base_url(); ?>assets/emoji/sad.png',
+            image: '<?php echo isset($checklogin['icon']) ? base_url()."/assets/emoji/".$checklogin['icon'] : base_url() ."assets/emoji/sad.png"; ?>',
             sticky: true,
             time: '',
             class_name: 'my-sticky-class'
