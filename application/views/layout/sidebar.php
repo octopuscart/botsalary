@@ -19,7 +19,7 @@ $order_menu = array(
         "View Salary" => site_url("Salary/selectEmployee"),
         "Create Salary" => site_url("Salary/selectEmployee"),
         "Salary Report" => site_url("Salary/salaryReport"),
-         "Salary Report Details" => site_url("Salary/salaryReportV2"),
+        "Salary Report Details" => site_url("Salary/salaryReportV2"),
     ),
 );
 array_push($menu_control, $order_menu);
@@ -41,8 +41,9 @@ $activity_menu = array(
     "icon" => "fa fa-outdent",
     "active" => "",
     "sub_menu" => array(
-        "Get Reports" => site_url("Accounting/activity/activity_reports"),
-
+        "P&L Summary report" => site_url("Accounting/activity/activity_reports"),
+        "Annual Expenses" => site_url("Accounting/activityAnnual/annual_exp_reports"),
+        "Monthly Expenses" => site_url("Accounting/activity/monthly_exp_reports"),
     ),
 );
 array_push($menu_control, $activity_menu);
@@ -53,7 +54,6 @@ $bs_menu = array(
     "active" => "",
     "sub_menu" => array(
         "Get Reports" => site_url("Accounting/activity/bs_reports"),
-
     ),
 );
 array_push($menu_control, $bs_menu);
@@ -134,18 +134,19 @@ foreach ($menu_control as $key => $value) {
                         foreach ($submenu as $key => $value) {
                             if ($value == "break") {
                                 ?>
-                       <hr style="margin: 10px 0px;" />
-                                    <?php
+                                <hr style="margin: 10px 0px;" />
+                                <?php
                             } else {
                                 ?>
 
                                 <li><a href="<?php echo $value; ?>"><?php echo $key; ?></a></li>
-                            <?php }
+                                <?php
+                            }
                         }
                         ?>
                     </ul>
                 </li>
-<?php } ?>
+            <?php } ?>
             <li class="nav-header">Admin V <?php echo PANELVERSION; ?></li>
             <li class="nav-header">-</li>
         </ul>

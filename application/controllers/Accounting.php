@@ -30,7 +30,7 @@ class Accounting extends CI_Controller {
     }
 
     function activity($rtype) {
-      
+
         $a_date = date("M-Y");
         if (isset($_GET["entry_date"])) {
             $a_date = $_GET["entry_date"];
@@ -44,14 +44,39 @@ class Accounting extends CI_Controller {
         $query = $this->db->get("account_reports");
         $report_data = $query->row_array();
         $data["report_data"] = $report_data;
-        
+
         $report_typs = array(
-            "activity_reports"=>"Activity Report $a_date",
-             "bs_reports"=>"Balance sheet Report $a_date"
+            "activity_reports" => "Activity Report $a_date",
+            "bs_reports" => "Balance sheet Report $a_date",
+            "monthly_exp_reports" => "Monthly Expenses Report $a_date"
         );
-        $data["report_title"] = isset($report_typs[$rtype])?$report_typs[$rtype]:"";
-        
+        $data["report_title"] = isset($report_typs[$rtype]) ? $report_typs[$rtype] : "";
+
         $this->load->view('Accounting/activity', $data);
+    }
+
+    function activityAnnual($rtype) {
+
+        $entry_date = "2020-04-01";
+        if (isset($_GET["entry_date"])) {
+            $entry_date = $_GET["entry_date"];
+        }
+        $data["select_month"] = $entry_date;
+        
+        $entry_year = array("2020-04-01"=>"2020-2021");
+
+        $this->db->where("report_type", $rtype);
+        $this->db->where("report_date", $entry_date);
+        $query = $this->db->get("account_reports");
+        $report_data = $query->row_array();
+        $data["report_data"] = $report_data;
+
+        $report_typs = array(
+            "annual_exp_reports" => "Annual Expenses Report ".$entry_year[$entry_date]
+        );
+        $data["report_title"] = isset($report_typs[$rtype]) ? $report_typs[$rtype] : "";
+
+        $this->load->view('Accounting/activityAnnual', $data);
     }
 
 }
