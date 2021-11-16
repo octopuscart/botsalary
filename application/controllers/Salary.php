@@ -135,7 +135,8 @@ class Salary extends CI_Controller {
             "employee_id" => array("title" => "Employee ID", "required" => false, "place_holder" => "Employee ID", "type" => "text", "default" => "", "depends" => "", "width" => "100px",),
             "name" => array("title" => "Name", "required" => true, "place_holder" => "Name", "type" => "text", "default" => "", "depends" => "", "width" => "280px",),
             "base_salary" => array("title" => "Basic Salary", "required" => true, "place_holder" => "Basic Salary", "type" => "text", "default" => "", "depends" => "", "width" => "280px",),
-            "contact_no" => array("title" => "Contact No.", "required" => false, "place_holder" => "Contact No", "type" => "text", "default" => "", "depends" => "", "width" => "100px",),
+            "contact_no" => array("title" => "Contact No.", "required" => false, "place_holder" => "Contact No", "type" => "text", "default" => "", "depends" => "", "width" => "70px",),
+            "email" => array("title" => "Email ID", "required" => false, "place_holder" => "Email ID", "type" => "text", "default" => "", "depends" => "", "width" => "150px",),
             "age" => array("title" => "Age", "required" => false, "place_holder" => "Age", "type" => "text", "default" => "", "depends" => "", "width" => "100px",),
             "location_id" => array("title" => "Location", "required" => true, "place_holder" => "Location", "type" => "select", "default" => "", "depends" => "location_data", "width" => "200px",),
         );
@@ -423,8 +424,8 @@ class Salary extends CI_Controller {
         $salarydata = $this->Salary_model->salaryDatav2($a_date);
         $data["salary_report"] = $salarydata["salary_data"];
         $data["allownceslist"] = $salarydata["allownceslist"];
-         $data["showimage"] = false;
-        
+        $data["showimage"] = false;
+
         $html = $this->load->view('Salary/reportbasev2', $data, true);
         $filename = 'salary_report_' . $a_date . ".xls";
         ob_clean();
@@ -442,8 +443,7 @@ class Salary extends CI_Controller {
         $salarydata = $this->Salary_model->salaryDatav2($a_date);
         $data["salary_report"] = $salarydata["salary_data"];
         $data["allownceslist"] = $salarydata["allownceslist"];
-      echo  $html = $this->load->view('Salary/reportbasev2', $data, true);
-     
+        echo $html = $this->load->view('Salary/reportbasev2', $data, true);
     }
 
 }
