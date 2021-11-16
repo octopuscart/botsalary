@@ -51,7 +51,7 @@ class Authentication extends CI_Controller {
                         'log_datetime' => date('Y-m-d H:i:s'),
                         'user_id' => $checkuser->id,
                         'order_id' => "",
-                        'log_detail' => "Admin Login Succesful",
+                        'log_detail' => $username." Login Succesful",
                     );
                     $this->db->insert('system_log', $orderlog);
 
@@ -144,7 +144,7 @@ class Authentication extends CI_Controller {
                         'log_datetime' => date('Y-m-d H:i:s'),
                         'user_id' => $userid,
                         'order_id' => "",
-                        'log_detail' => 'Your password has been changed successfully.',
+                        'log_detail' => $userdata->username.' has changed password successfully.',
                     );
                     $this->db->insert('system_log', $orderlog);
 
@@ -181,6 +181,7 @@ class Authentication extends CI_Controller {
 
     public function logout() {
         $userdata = array();
+        $username = $this->userdata["username"];
         $this->session->unset_userdata($userdata);
         $this->session->sess_destroy();
 
@@ -189,7 +190,7 @@ class Authentication extends CI_Controller {
             'log_datetime' => date('Y-m-d H:i:s'),
             'user_id' => "",
             'order_id' => "",
-            'log_detail' => 'Admin logout from system.',
+            'log_detail' => "$username logout from system.",
         );
         $this->db->insert('system_log', $orderlog);
 
