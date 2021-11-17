@@ -53,7 +53,7 @@ $this->load->view('layout/topmenu');
                     <div class="col-lg-4">
                         <div class="input-group date" >
                             <select class="form-control" name="entry_date">
-                                <option value="2020-04-01">2020-2021</option>
+                                <option value="2021-04-01">2021-2022</option>
                             </select>
                         </div>
                     </div>
