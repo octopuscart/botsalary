@@ -63,13 +63,13 @@ class Accounting extends CI_Controller {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
-        $entry_date = "2020-04-01";
+        $entry_date = "2021-04-01";
         if (isset($_GET["entry_date"])) {
             $entry_date = $_GET["entry_date"];
         }
         $data["select_month"] = $entry_date;
 
-        $entry_year = array("2020-04-01" => "2020-2021");
+        $entry_year = array("2021-04-01" => "2021-2022");
 
         $this->db->where("report_type", $rtype);
         $this->db->where("report_date", $entry_date);

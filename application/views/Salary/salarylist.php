@@ -105,7 +105,7 @@ $this->load->view('layout/topmenu');
 
 <script>
     $(function () {
-        $('#tableData').DataTable({'pageLength': 10});
+         $('#tableData').DataTable({'pageLength': 50});
     })
 </script>
 
