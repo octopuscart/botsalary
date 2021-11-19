@@ -58,7 +58,7 @@
     </tr>
     <tr style='border-bottom: 1px solid #000;   '>
         <td></td>
-        <td>EPF Contribution
+        <td>MPF Contribution
         </td>
         <td>({{salaryData.mpf_employee}})</td>
     </tr>
