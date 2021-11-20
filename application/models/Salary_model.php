@@ -78,7 +78,8 @@ class Salary_model extends CI_Model {
 
     function mpfSalary($base_salary, $salary_id) {
         $mpfamount = $this->employeeAllownceMPF($salary_id);
-        return $base_salary + $mpfamount;
+        $mpfduduction = $this->employeeDuductionMPF($salary_id);
+        return ($base_salary-$mpfduduction) + $mpfamount;
     }
 
     function appliedMpf($first_date, $last_date) {

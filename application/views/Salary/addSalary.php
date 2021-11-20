@@ -130,11 +130,11 @@ $this->load->view('layout/topmenu');
                                 <input type="text" class="form-control col-md-6" name="deduction_loan_note"  ng-model="salaryData.other_duduction_note" min="0" max="{{salaryData.basic_salary}}"  ng-change="calculateSalary()"  aria-describedby="emailHelp" placeholder=""  />
                             </div>
                         </div>
-                        <input type="hidden1" name="base_salary" value="{{salaryData.basic_salary.toFixed(2)}}">
-                        <input type="hidden1" name="net_salary" value="{{salaryData.net_salary}}">
-                        <input type="hidden1" name="gross_salary" value="{{salaryData.gross_salary}}">
-                        <input type="hidden1" name="mpf_employee" value="{{salaryData.mpf_employee}}">
-                        <input type="hidden1" name="mpf_employer" value="{{salaryData.mpf_employer}}">
+                        <input type="hidden" name="base_salary" value="{{salaryData.basic_salary.toFixed(2)}}">
+                        <input type="hidden" name="net_salary" value="{{salaryData.net_salary}}">
+                        <input type="hidden" name="gross_salary" value="{{salaryData.gross_salary}}">
+                        <input type="hidden" name="mpf_employee" value="{{salaryData.mpf_employee}}">
+                        <input type="hidden" name="mpf_employer" value="{{salaryData.mpf_employer}}">
                         <br/>
                         <button type="submit" name="submit" value="submit"  class="btn btn-primary">Submit Salary</button>
 
