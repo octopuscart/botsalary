@@ -118,7 +118,7 @@ $entry_year = date('Y', $time);
 
         window.print();
 
-        document.body.innerHTML = originalContents;
+//        document.body.innerHTML = originalContents;
     }
     $(function () {
         $("title").html("Income and Expenditure Statement for the month of 31st <?php echo $c_date; ?>");

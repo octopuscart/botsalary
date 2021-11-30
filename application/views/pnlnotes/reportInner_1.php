@@ -35,7 +35,6 @@
     }
     @media print {
         @page {
-            font-size: 15px;
             margin-top: 10px;
             margin-bottom: 20px;
         }
@@ -46,7 +45,7 @@
         -webkit-print-color-adjust: exact !important;
         .heading-span{
             font-weight: 500;
-            font-size: 15px;
+            font-size: 12px;
             width: 100%;
             float: left;
             padding: 2px 10px;
@@ -60,7 +59,7 @@
         <tbody>
             <tr>
                 <th colspan="6" class=" text-center">
-                    <img src="<?php echo base_url(); ?>assets/img/logo.jpg" style="height: 50px;">
+                    <img src="<?php echo base_url(); ?>assets/img/logo.jpg" style="height: 80px;">
                 </th>
             </tr>
             <tr  class="fontHeading2">
@@ -76,14 +75,16 @@
         );
         foreach ($headdata as $plkey => $plvalue) {
             ?>
-            <tbody class="page-break-after ">
+            <tbody>
                 <tr  class="fontHeading">
+                    <th colspan="6" style="text-align: center;background: <?php echo $plvalue["color"]; ?>;"><?php echo $plkey; ?></th>
                 </tr>
             </tbody>
             <tbody>
                 <tr>
+                    <th></th>
+                    <th></th>
 
-                    <th colspan="2" style="text-align: center;background: <?php echo $plvalue["color"]; ?>;"><?php echo $plkey; ?></th>
                     <th class="text-center"><span class="heading-span">Actual</span><br/><?php echo $c_date; ?></th>
                     <th class="text-center"><span class="heading-span">Actual</span><br/><?php echo $p_date; ?></th>
                     <th class="text-center"><span class="heading-span">Actual</span><br/><?php echo $f_date; ?></th>
