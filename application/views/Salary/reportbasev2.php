@@ -11,6 +11,9 @@
     .text-right{
         text-align: right;
     }
+     .text-left{
+        text-align: left;
+    }
 </style>
 <table class="salarytable"  id='printArea' border="1" style="color:black;font-size: 10px">
     <thead>
@@ -18,9 +21,12 @@
         if($showimage){
         ?>
         <tr>
-            <th colspan="<?php echo count($allownceslist) + 12 ?>" class="text-center">
-                <img src="<?php echo base_url(); ?>assets/img/logo.jpg" style="height: 80px;">
-                <h4>Staff  Salary and  MPF Details</h4>
+            <th colspan="<?php echo count($allownceslist) ?>" class="text-left" style=";border:none">
+                <img src="<?php echo base_url(); ?>assets/img/logo.jpg" style="height: 50px;">
+               
+            </th>
+            <th colspan="12" class="text-right"  style=";border:none">
+                 <h4>Staff  Salary and  MPF Details <?php echo $salary_month_str;?></h4>
             </th>
         </tr>
         <?php

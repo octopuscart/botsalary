@@ -22,7 +22,7 @@ class PnlNotes extends CI_Controller {
     }
 
     public function index() {
-if ($this->user_type != 'Admin') {
+        if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
         $date1 = date('Y-m-d', strtotime('-30 days'));
@@ -237,7 +237,7 @@ if ($this->user_type != 'Admin') {
         $p_date = "April - " . date("F Y", $diffr);
 
         $f_date = "April - " . date("F Y", $time);
-        
+
         $byear = date("y", $time);
         $diffr = strtotime("+1 year", $time);
         $byearn = date("y", $diffr);
@@ -252,6 +252,47 @@ if ($this->user_type != 'Admin') {
         $pnldata = $this->Account_model->getPnLNoteHeadsReports($entry_month, $entry_year);
         $data["pnldata"] = $pnldata;
         $this->load->view('pnlnotes/report', $data);
+    }
+
+    function reportXls() {
+
+        $a_date = date("M-Y");
+        if (isset($_GET["entry_date"])) {
+            $a_date = $_GET["entry_date"];
+        }
+        $data["select_month"] = $a_date;
+        $time = strtotime($a_date);
+        $entry_month = date('m', $time);
+        $entry_year = date('Y', $time);
+
+        $c_date = date("F Y", $time);
+
+        $diffr = strtotime("-1 month", $time);
+        $p_date = "April - " . date("F Y", $diffr);
+
+        $f_date = "April - " . date("F Y", $time);
+
+        $byear = date("y", $time);
+        $diffr = strtotime("+1 year", $time);
+        $byearn = date("y", $diffr);
+
+        $b_date = "April $byear - March $byearn";
+
+        $data["c_date"] = $c_date;
+        $data["p_date"] = $p_date;
+        $data["f_date"] = $f_date;
+        $data["b_date"] = $b_date;
+
+        $pnldata = $this->Account_model->getPnLNoteHeadsReports($entry_month, $entry_year);
+        $data["pnldata"] = $pnldata;
+
+        $html = $this->load->view('pnlnotes/reportInner', $data, true);
+        $filename = 'pnl_notes_report_' . $a_date . ".xls";
+        ob_clean();
+        header("Content-Disposition: attachment; filename=$filename");
+        header("Content-Type: application/vnd.ms-excel");
+        echo $html;
+       
     }
 
 }

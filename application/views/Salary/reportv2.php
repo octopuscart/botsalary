@@ -73,7 +73,7 @@ $this->load->view('layout/topmenu');
     zoom: 0.9;'>
 
                 <?php
-                $this->load->view('Salary/reportbasev2', array("salary_report" => $salary_report, "remark"=>false));
+                $this->load->view('Salary/reportbasev2', array("salary_report" => $salary_report, "salary_month_str"=>$salary_month_str, "remark"=>false));
                 ?>
             </div>
 

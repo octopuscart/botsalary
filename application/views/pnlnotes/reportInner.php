@@ -83,7 +83,7 @@
             <tbody>
                 <tr>
 
-                    <th colspan="2" style="text-align: center;background: <?php echo $plvalue["color"]; ?>;"><?php echo $plkey; ?></th>
+                    <th colspan="2" class="fontHeading2" style="text-align: center;background: <?php echo $plvalue["color"]; ?>;"><?php echo $plkey; ?></th>
                     <th class="text-center"><span class="heading-span">Actual</span><br/><?php echo $c_date; ?></th>
                     <th class="text-center"><span class="heading-span">Actual</span><br/><?php echo $p_date; ?></th>
                     <th class="text-center"><span class="heading-span">Actual</span><br/><?php echo $f_date; ?></th>

@@ -63,6 +63,9 @@ $this->load->view('layout/topmenu');
                         <button class="btn btn-success" type="submit" name="select_month" value="select_month">
                             <i class="fa fa-paragraph"></i>   GET REPORT
                         </button>
+                        <a class="btn btn-success" href="<?php echo site_url("PnlNotes/reportXls?entry_date=".$select_month);?>">
+                            <i class="fa fa-print"></i>   EXPORT REPORT
+                        </a>
 
 
                     </div>
@@ -74,6 +77,7 @@ $this->load->view('layout/topmenu');
                 <div class="panel-heading-btn">
                     <a href="javascript:;" class="btn btn-sm btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                     <a href="javascript:;" class="btn btn-sm btn-icon btn-circle btn-warning" onclick="printDiv('printArea')"><i class="fa fa-print"></i></a>
+
                 </div>
                 <h3 class="panel-title">P & L Notes</h3>
 
@@ -115,7 +119,7 @@ $entry_year = date('Y', $time);
         var originalContents = document.body.innerHTML;
         document.body.innerHTML = printContents;
         window.print();
-//        document.body.innerHTML = originalContents;
+        document.body.innerHTML = originalContents;
     }
     $(function () {
         $("title").html("Income and Expenditure Statement for the month of 31st <?php echo $c_date; ?>");

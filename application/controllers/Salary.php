@@ -453,6 +453,9 @@ class Salary extends CI_Controller {
         if (isset($_GET["select_month"])) {
             $a_date = $_GET["salary_date"];
         }
+        $time = strtotime($a_date);
+        $entry_month = date('F-Y', $time);
+        $data["salary_month_str"] = $entry_month;
         $data["select_month"] = $a_date;
         $salarydata = $this->Salary_model->salaryDatav2($a_date);
         $data["salary_report"] = $salarydata["salary_data"];
@@ -473,6 +476,9 @@ class Salary extends CI_Controller {
         $data["salary_report"] = $salarydata["salary_data"];
         $data["allownceslist"] = $salarydata["allownceslist"];
         $data["showimage"] = false;
+        $time = strtotime($a_date);
+        $entry_month = date('F-Y', $time);
+        $data["salary_month_str"] = $entry_month;
 
         $html = $this->load->view('Salary/reportbasev2', $data, true);
         $filename = 'salary_report_' . $a_date . ".xls";
@@ -491,6 +497,9 @@ class Salary extends CI_Controller {
             $a_date = $_GET["salary_date"];
         }
         $data["showimage"] = true;
+        $time = strtotime($a_date);
+        $entry_month = date('F-Y', $time);
+        $data["salary_month_str"] = $entry_month;
         $salarydata = $this->Salary_model->salaryDatav2($a_date);
         $data["salary_report"] = $salarydata["salary_data"];
         $data["allownceslist"] = $salarydata["allownceslist"];

@@ -83,7 +83,7 @@
             <tbody>
                 <tr>
 
-                    <th colspan="2" style="text-align: center;background: <?php echo $plvalue["color"]; ?>;"><?php echo $plkey; ?></th>
+                    <th colspan="1" style="text-align: center;background: <?php echo $plvalue["color"]; ?>;"><?php echo $plkey; ?></th>
                     <th class="text-center"><span class="heading-span">Actual</span><br/><?php echo $c_date; ?></th>
                     <th class="text-center"><span class="heading-span">Actual</span><br/><?php echo $p_date; ?></th>
                     <th class="text-center"><span class="heading-span">Actual</span><br/><?php echo $f_date; ?></th>
@@ -132,7 +132,6 @@
             <tbody>
                 <tr class="fontHeading" style="background: #bbdefb;">
                     <th colspan="2" class="numbercell">Total</th>
-
                     <th  class="numbercell totalcell"><?php echo $pnldata[$plkey . "Total"]; ?></th>
                     <th  class="numbercell totalcell"><?php echo $pnldata[$plkey . "Total_P"]; ?></th>
                     <th  class="numbercell totalcell"><?php echo $pnldata[$plkey . "Total_F"]; ?></th>
@@ -148,7 +147,6 @@
         <tbody>
             <tr class="fontHeading2" style="background: yellow;">
                 <th colspan="2" class="numbercell">Surplus(Deficit) for the period</th>
-
                 <th  class="numbercell totalcell"><?php echo $pnldata["pnl_total"]; ?></th>
                 <th  class="numbercell totalcell"><?php echo $pnldata["pnl_total_p"]; ?></th>
                 <th  class="numbercell totalcell"><?php echo $pnldata["pnl_total_f"]; ?></th>
