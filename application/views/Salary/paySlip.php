@@ -39,7 +39,23 @@ $this->load->view('layout/topmenu');
 
         <div class="panel panel-inverse">
             <div class="panel-heading">
-                <h3 class="panel-title">Pay Slip For Employee ID/HKID: #<?php echo $employee["employee_id"]; ?></h3>
+                <h3 class="panel-title">Pay Slip For Employee ID/HKID: #<?php echo $employee["employee_id"]; ?>
+                    <div class="btn-group pull-right">
+                        <?php if ($deletable) { ?>
+                            <a href="<?php echo site_url("Salary/deletePayslip/" . $salaryobj["id"]); ?>?salary_date=<?php echo $paydate; ?>" class="btn btn-danger "><i class="fa fa-trash"></i> Delete Payslip</a>
+                            <?php
+                        } else {
+                            ?>
+                            <a href="<?php echo site_url("Salary/index"); ?>" class="btn btn-danger"><i class="fa fa-arrow-left"></i> Back</a>
+
+                            <?php
+                        }
+                        ?>
+
+                        <a href="<?php echo site_url("Salary/paySlipPdf/" . $salaryobj["id"] . "/I"); ?>" class="btn btn-primary"><i class="fa fa-eye"></i> View PDF</a>
+                        <a href="<?php echo site_url("Salary/paySlipPdf/" . $salaryobj["id"] . "/D"); ?>"  class="btn btn-primary"><i class="fa fa-download"></i> Download PDF</a>
+                    </div>
+                </h3>
             </div>
             <div class="panel-body">
 
@@ -48,7 +64,7 @@ $this->load->view('layout/topmenu');
                     <?php echo $this->session->flashdata('success_msg'); ?>
                     <?php echo $this->session->flashdata('error_msg'); ?>
                     <div class="row form-group-bg">
-                        <div class="col-md-11">  
+                        <div class="col-md-6">  
                             <div class="form-group ">
                                 <h3>
                                     <?php echo $employee["name"]; ?><br/>
@@ -57,19 +73,12 @@ $this->load->view('layout/topmenu');
 
                             </div>
                         </div>
-                        <div>
-                            <?php if ($deletable) { ?>
-                                <a href="<?php echo site_url("Salary/deletePayslip/" . $salaryobj["id"]); ?>?salary_date=<?php echo $paydate; ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete Payslip</a>
-                                <?php
-                            } else {
-                                ?>
-                                <a href="<?php echo site_url("Salary/index"); ?>" class="btn btn-danger"><i class="fa fa-arrow-left"></i> Back</a>
+                        <div class="col-md-6">
 
-                                <?php
-                            }
-                            ?>
                         </div>
                     </div>
+
+
 
                 </div>
                 <div class="col-md-12" id='printArea'>
@@ -80,7 +89,6 @@ $this->load->view('layout/topmenu');
 
 
                 </div>
-                <button type="button" name="button" onclick="printDiv('printArea')" class="btn btn-primary">Print Preview</button>
 
 
             </div>
@@ -99,16 +107,16 @@ $this->load->view('layout/topmenu');
 
 <script>
 
-                    function printDiv(divName) {
-                        var printContents = document.getElementById(divName).innerHTML;
-                        var originalContents = document.body.innerHTML;
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
 
-                        document.body.innerHTML = printContents;
+        document.body.innerHTML = printContents;
 
-                        window.print();
+        window.print();
 
-                        document.body.innerHTML = originalContents;
-                    }
+        document.body.innerHTML = originalContents;
+    }
 
 </script>
 

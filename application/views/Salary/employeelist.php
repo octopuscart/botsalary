@@ -81,10 +81,15 @@ $this->load->view('layout/topmenu');
                             . "<td>" . $value["name"] . "</td>"
                             . "<td>" . $value["location"] . "</td>"
                             . "<td>" . $value["net_salary"] . "</td>";
-                            if ($value["net_salary"]==0) {
-                                echo "<td><a href='" . site_url("Salary/create/" . $value["id"]) . "' class='btn btn-success'>Create Salary</a></td>";
+                            if ($value["net_salary"] == 0) {
+                                if ($createpermission) {
+                                    echo "<td><a href='" . site_url("Salary/create/" . $value["id"]) . "' class='btn btn-success'>Create Salary</a></td>";
+                                }
+                                else{
+                                    echo "<td></td>";
+                                }
                             } else {
-                                echo "<td><a href='" . site_url("Salary/paySlip/" . $value["salary_id"]) . "' class='btn btn-default'>Pay Slip</a></td>";
+                                echo "<td><a href='" . site_url("Salary/paySlip/" . $value["salary_id"]) . "' class='btn btn-inverse'>Pay Slip</a></td>";
                             }
                             echo "</tr>";
                             $count++;

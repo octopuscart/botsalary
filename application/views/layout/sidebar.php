@@ -78,13 +78,27 @@ if ($this->user_type == 'Admin') {
     );
     array_push($menu_control, $salary_menu);
 }
-else{
+if ($this->user_type == 'Employee') {
      $order_menu = array(
         "title" => "Salary",
         "icon" => "fa fa-list",
         "active" => "",
         "sub_menu" => array(
             "View Salary" => site_url("Salary/index"),
+
+        ),
+    );
+    array_push($menu_control, $order_menu);
+}
+
+
+if ($this->user_type == 'SalaryManager') {
+     $order_menu = array(
+        "title" => "Salary",
+        "icon" => "fa fa-list",
+        "active" => "",
+        "sub_menu" => array(
+            "View Salary" => site_url("Salary/selectEmployee"),
 
         ),
     );

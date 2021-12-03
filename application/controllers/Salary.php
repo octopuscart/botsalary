@@ -11,6 +11,7 @@ class Salary extends CI_Controller {
         $this->load->model('Order_model');
         $this->curd = $this->load->model('Curd_model');
         $session_user = $this->session->userdata('logged_in');
+
         if ($session_user) {
             $this->user_id = $session_user['login_id'];
         } else {
@@ -42,6 +43,9 @@ class Salary extends CI_Controller {
                 $data["salary"] = $salary_data;
             }
             $this->load->view('Salary/salarylist', $data);
+        }
+        if ($this->user_type == 'SalaryManager') {
+            redirect(site_url("Salary/selectEmployee"));
         }
     }
 
@@ -340,9 +344,23 @@ class Salary extends CI_Controller {
     }
 
     function selectEmployee() {
-        if ($this->user_type != 'Admin') {
-            redirect('UserManager/not_granted');
+        $data["createpermission"] = false;
+
+        switch ($this->user_type) {
+            case "Admin":
+                echo "";
+                $data["createpermission"] = true;
+                break;
+            case "SalaryManager":
+                echo "";
+                break;
+
+            default:
+                redirect('UserManager/not_granted');
         }
+
+
+
         $a_date = date("M-Y");
         if (isset($_GET["select_month"])) {
             $a_date = $_GET["salary_date"];
@@ -375,6 +393,7 @@ class Salary extends CI_Controller {
         if ($this->user_type != 'Admin') {
             $data["deletable"] = false;
         }
+
         $salaryobj = $this->Salary_model->employeeSalarySingle($salary_id);
         $data["salaryobj"] = $salaryobj;
         $data["allownce"] = $this->Salary_model->employeeAllownceAll($salary_id);
@@ -384,6 +403,32 @@ class Salary extends CI_Controller {
         $data["employee"] = $this->Curd_model->get_single2('salary_employee', $salaryobj["employee_id"]);
 
         $this->load->view("Salary/paySlip", $data);
+    }
+
+    function paySlipPdf($salary_id, $viewmode = "D") {
+
+        $salaryobj = $this->Salary_model->employeeSalarySingle($salary_id);
+        $data["salaryobj"] = $salaryobj;
+        $data["allownce"] = $this->Salary_model->employeeAllownceAll($salary_id);
+        $data["paydate"] = date("M-Y", strtotime($salaryobj["salary_date"]));
+
+        $data["deduction"] = $this->Salary_model->employeeDuductionAll($salary_id);
+        $data["employee"] = $this->Curd_model->get_single2('salary_employee', $salaryobj["employee_id"]);
+
+        $htmloutput = $this->load->view('Salary/printSalaryBasePdf', $data, true);
+        $sdate = date("F-Y", strtotime($salaryobj['salary_date']));
+        $empname = $data["employee"]["name"];
+        
+        $filetitle = $empname . '-' . $sdate . '-Salary.pdf';
+
+        $this->load->library('Pdf');
+        $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+        $pdf->SetProtection(array('modify', 'copy', 'print'), $data["employee"]["employee_id"], "", 0, null);
+        $pdf->AddPage();
+        $pdf->SetTitle($filetitle);
+        $pdf->writeHTML($htmloutput);
+        
+        $pdf->Output($filetitle, $viewmode);
     }
 
     function salaryReport() {
