@@ -1,7 +1,7 @@
 <table  style='width:100%;color:black;' cellspacing="5" cellpadding="1" >
     <tr>
         <th colspan="3" style="text-align: center;">
-            <img src="<?php echo base_url(); ?>assets/img/logo.jpg" width="400" height="90">
+            <img src="http://bot.octopuscart.com/assets/img/logo.jpg" width="400" height="90">
             <h4>Monthly Payslip </h4>
         </th>
     </tr>
