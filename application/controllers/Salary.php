@@ -415,20 +415,20 @@ class Salary extends CI_Controller {
         $data["deduction"] = $this->Salary_model->employeeDuductionAll($salary_id);
         $data["employee"] = $this->Curd_model->get_single2('salary_employee', $salaryobj["employee_id"]);
 
-        $htmloutput = $this->load->view('Salary/printSalaryBasePdf', $data, true);
+     echo  $htmloutput = $this->load->view('Salary/printSalaryBasePdf', $data, true);
         $sdate = date("F-Y", strtotime($salaryobj['salary_date']));
         $empname = $data["employee"]["name"];
-        
-        $filetitle = $empname . '-' . $sdate . '-Salary.pdf';
-
-        $this->load->library('Pdf');
-        $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
-        $pdf->SetProtection(array('modify', 'copy', 'print'), $data["employee"]["employee_id"], "", 0, null);
-        $pdf->AddPage();
-        $pdf->SetTitle($filetitle);
-        $pdf->writeHTML($htmloutput);
-        
-        $pdf->Output($filetitle, $viewmode);
+//        
+//        $filetitle = $empname . '-' . $sdate . '-Salary.pdf';
+//
+//        $this->load->library('Pdf');
+//        $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+////        $pdf->SetProtection(array('modify', 'copy', 'print'), $data["employee"]["employee_id"], "", 0, null);
+//        $pdf->AddPage();
+//        $pdf->SetTitle($filetitle);
+//        $pdf->writeHTML($htmloutput);
+//        
+//        $pdf->Output($filetitle, $viewmode);
     }
 
     function salaryReport() {
