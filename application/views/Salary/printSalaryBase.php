@@ -9,7 +9,10 @@
         <td colspan="3"><span style="width: 200px; float: left;"><b>Name of Employee</b></span><span style="width: 16px; float: left;">:</span><b><?php echo $employee["name"]; ?></b></td>
     </tr>
     <tr style=" border-bottom:  1px solid #eeeeee; height: 30px;">
-        <td colspan="3"><span style="width: 200px; float: left;">Employee HKID#</span><span style="width: 16px; float: left;">:</span><?php echo $employee["employee_id"]; ?></td>
+        <td colspan="3"><span style="width: 200px; float: left;">Employee HKID#</span><span style="width: 16px; float: left;">:</span><?php echo $employee["hk_id"]; ?></td>
+    </tr>
+    <tr style=" border-bottom:  1px solid #eeeeee; height: 30px;">
+        <td colspan="3"><span style="width: 200px; float: left;">Employee ID#</span><span style="width: 16px; float: left;">:</span><?php echo $employee["employee_id"]; ?></td>
     </tr>
     <tr style=" border-bottom:  1px solid #eeeeee; height: 30px;">
         <td colspan="3"><span style="width: 200px; float: left;">Salary</span><span style="width: 16px; float: left;">:</span><?php echo date("F Y", strtotime($salaryobj['salary_date'])); ?></td>

@@ -39,8 +39,12 @@
                             <div class="form-group ">
                                 <h3>
                                     <?php echo $employee["name"]; ?><br/>
-                                    <small>Employee ID/HKID: #<?php echo $employee["employee_id"]; ?></small>
+                                    <small>Employee HKID: #<?php echo $employee["hk_id"]; ?></small><br/>
+                                    <small>Employee ID: #<?php echo $employee["employee_id"]; ?></small>
                                 </h3>
+
+
+
 
                             </div>
                         </div>

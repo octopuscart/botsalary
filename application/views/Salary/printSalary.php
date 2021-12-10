@@ -10,6 +10,9 @@
     <tr style=" border-bottom:  1px solid #eeeeee; height: 30px;">
         <td colspan="3"><span style="width: 126px; float: left;">Employee I.D. No</span><span style="width: 16px; float: left;">:</span><?php echo $employee["employee_id"]; ?></td>
     </tr>
+        <tr style=" border-bottom:  1px solid #eeeeee; height: 30px;">
+        <td colspan="3"><span style="width: 126px; float: left;">HK I.D. No</span><span style="width: 16px; float: left;">:</span><?php echo $employee["hk_id"]; ?></td>
+    </tr>
     <tr style=" border-bottom:  1px solid #eeeeee; height: 30px;">
         <td colspan="3"><span style="width: 126px; float: left;">Contribution Period</span><span style="width: 16px; float: left;">:</span><?php echo  date("M Y", strtotime($c_period['salary_date'])); ?></td>
     </tr>

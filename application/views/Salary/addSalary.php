@@ -53,7 +53,7 @@ $this->load->view('layout/topmenu');
                                 <div class="form-group form-group-bg">
                                     <h3>
                                         <?php echo $employee["name"]; ?><br/>
-                                        <small>Employee ID/HKID: #<?php echo $employee["employee_id"]; ?></small>
+                                        <small>Employee ID: #<?php echo $employee["employee_id"]; ?></small>
                                     </h3>
 
                                 </div>

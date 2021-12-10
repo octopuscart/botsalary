@@ -39,7 +39,7 @@ $this->load->view('layout/header');
                     <input type="email" name="email" class="form-control input-lg" placeholder="Email Address" required="" />
                 </div>
                 <div class="form-group m-b-15">
-                    <input type="text" name="employee_id" class="form-control input-lg" placeholder="HK ID" required="" />
+                    <input type="text" name="employee_id" class="form-control input-lg" placeholder="EMPLOYEE ID" required="" />
                 </div>
                 <!--                <div class="checkbox m-b-30">
                                     <label>
