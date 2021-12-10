@@ -66,7 +66,7 @@ $this->load->view('layout/topmenu');
                 <table class="table" id="tableData">
                     <thead>
                     <th>S. No.</th>
-                    <th>Employee/HK ID#</th>
+                    <th>Employee ID#</th>
                     <th>Name</th>
                     <th>Location</th>
                     <th>Salary</th>
