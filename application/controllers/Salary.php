@@ -423,7 +423,7 @@ class Salary extends CI_Controller {
 
         $this->load->library('Pdf');
         $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
-        $pdf->SetProtection(array('modify', 'copy', 'print'), $data["employee"]["employee_id"], "", 0, null);
+//        $pdf->SetProtection(array('modify', 'copy', 'print'), $data["employee"]["employee_id"], "", 0, null);
         $pdf->AddPage();
         $pdf->SetTitle($filetitle);
         $pdf->writeHTML($htmloutput);
