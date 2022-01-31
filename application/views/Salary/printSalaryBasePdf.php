@@ -5,7 +5,7 @@
             <h4>Monthly Payslip </h4>
         </th>
     </tr>
-       <tr><td colspan="2"></td></tr>
+    <tr><td colspan="2"></td></tr>
     <tr style=" border-bottom:  1px solid rgb(255, 0, 0); height: 30px;">
         <td colspan="3"><span width="200"><b>Name of Employee</b></span><span style="width: 16px; float: left;">:</span><b><?php echo $employee["name"]; ?></b></td>
     </tr>
