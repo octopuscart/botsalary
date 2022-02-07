@@ -56,6 +56,46 @@ class Accounting extends CI_Controller {
         );
         $data["report_title"] = isset($report_typs[$rtype]) ? $report_typs[$rtype] : "";
 
+        $config['upload_path'] = 'assets/reports';
+        $config['allowed_types'] = '*';
+        if (isset($_POST['submit'])) {
+            $picture = '';
+            if (!empty($_FILES['picture']['name'])) {
+                $temp1 = rand(100, 1000000);
+                $config['overwrite'] = TRUE;
+                $ext1 = explode('.', $_FILES['picture']['name']);
+                $ext = strtolower(end($ext1));
+                $file_newname = $temp1 . $ext;
+                $picture = $file_newname;
+                $config['file_name'] = $file_newname;
+                //Load upload library and initialize configuration
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+                if ($this->upload->do_upload('picture')) {
+                    $uploadData = $this->upload->data();
+                    $picture = $uploadData['file_name'];
+                } else {
+                    $picture = '';
+                }
+            }
+            $param = "entry_date=$a_date";
+            if ($report_data) {
+                $this->db->set('report_file', $picture);
+                $this->db->where("report_type", $rtype);
+                $this->db->where("report_date", $entry_date);
+                $this->db->update("account_reports");
+            } else {
+                $reportinsert = array(
+                    "report_type" => $rtype,
+                    "report_file" => $picture,
+                    "report_date" => $entry_date,
+                );
+                $this->db->insert("account_reports", $reportinsert);
+            }
+
+            redirect(site_url("Accounting/activity/$rtype?$param"));
+        }
+
         $this->load->view('Accounting/activity', $data);
     }
 

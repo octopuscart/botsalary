@@ -106,6 +106,7 @@
                     <?php
                     $loopdata = $mcvalue["heads"] ? $mcvalue["heads"] : $mcvalue["heads_p"];
                     foreach ($loopdata as $mhkey => $mhvalue) {
+                       
                         ?>
                         <tr>
                             <td class="numbercell" width:50px;"><?php echo $mckey + 1; ?>.<?php echo $mhkey + 1; ?></td>
@@ -113,7 +114,7 @@
                             <td class="numbercell"><?php echo number_format($mcvalue["heads"] ? $mcvalue["heads"][$mhkey]["head_value"] : '0', 2, '.', ','); ?></td>
                             <td class="numbercell"><?php echo number_format($mcvalue["heads_p"] ? $mcvalue["heads_p"][$mhkey]["head_value"] : '0', 2, '.', ','); ?></td>
 
-                            <td class="numbercell"><?php echo number_format(($mcvalue["heads_f"][$mhkey]["head_value"]), 2, '.', ','); ?></td>
+                            <td class="numbercell"><?php echo number_format(($mcvalue["heads_f"]?$mcvalue["heads_f"][$mhkey]["head_value"]:0), 2, '.', ','); ?></td>
                             <td class="numbercell"><?php echo number_format($mcvalue["heads_b"] ? $mcvalue["heads_b"][$mhkey]["head_value"] : '0', 2, '.', ','); ?></td>
                         </tr>
 

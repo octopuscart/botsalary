@@ -83,10 +83,11 @@ class Account_model extends CI_Model {
     }
 
     function getPnLCategoryHeadsReportSum($category_id, $entry_month, $entry_year) {
+        $startyear = START_YEAR;
         $query = "
             SELECT title, pe.id, sum(pe.head_value) as head_value FROM pnl_category_heads as pch 
       join pnl_entry as pe on pch.id=pe.head_id where pch.category_id = $category_id
-       and  entry_date BETWEEN '$entry_year-04-01' and '$entry_year-$entry_month-01' group by pe.head_id
+       and  entry_date BETWEEN '$startyear-04-01' and '$entry_year-$entry_month-01' group by pe.head_id
            order by pch.display_index asc
        ";
 
