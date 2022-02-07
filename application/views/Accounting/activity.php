@@ -91,16 +91,17 @@ $this->load->view('layout/topmenu');
                 } else {
                     echo "<h3>No report found.</h3>";
                     ?>
-                    <form action="#" method="post" enctype="multipart/form-data" class="col-md-4 well well-sm">
-                       
-                            <input type="file" name="picture" required="" accept="application/pdf">
-<hr/>
-                            <button type="submit" name="submit" class="btn btn-warning" ><i class="fa fa-upload"></i> Upload File</button>
 
-                    </form>
                     <?php
                 }
                 ?>
+                <form action="#" method="post" enctype="multipart/form-data" class="col-md-4 well well-sm">
+
+                    <input type="file" name="picture" required="" accept="application/pdf">
+                    <hr/>
+                    <button type="submit" name="submit" class="btn btn-warning" ><i class="fa fa-upload"></i> Upload File</button>
+
+                </form>
             </div>
         </div>
     </div>
