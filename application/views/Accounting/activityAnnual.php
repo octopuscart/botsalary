@@ -78,18 +78,25 @@ $this->load->view('layout/topmenu');
 
             <div class="panel-body " id='printArea'>
                 <?php
-                if($report_data){
-                ?>
-                <object data="<?php echo base_url(); ?>assets/reports/<?php echo $report_data["report_file"];?>" type="application/pdf" width="100%" height="750px">
-                    <embed src="<?php echo base_url(); ?>assets/reports/<?php echo $report_data["report_file"];?>" type="application/pdf">
-                    <p>This browser does not support PDFs. Please download the PDF to view it: <a href="<?php echo base_url(); ?>assets/reports/<?php echo $report_data["report_file"];?>">Download PDF</a>.</p>
-                    </embed>
-                </object>
-                <?php
-                }else{
+                if ($report_data) {
+                    ?>
+                    <object data="<?php echo base_url(); ?>assets/reports/<?php echo $report_data["report_file"]; ?>" type="application/pdf" width="100%" height="750px">
+                        <embed src="<?php echo base_url(); ?>assets/reports/<?php echo $report_data["report_file"]; ?>" type="application/pdf">
+                        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="<?php echo base_url(); ?>assets/reports/<?php echo $report_data["report_file"]; ?>">Download PDF</a>.</p>
+                        </embed>
+                    </object>
+                    <?php
+                } else {
                     echo "<h3>No report found.</h3>";
                 }
                 ?>
+                <form action="#" method="post" enctype="multipart/form-data" class="col-md-4 well well-sm">
+
+                    <input type="file" name="picture" required="" accept="application/pdf">
+                    <hr/>
+                    <button type="submit" name="submit" class="btn btn-warning" ><i class="fa fa-upload"></i> Upload File</button>
+
+                </form>
             </div>
         </div>
     </div>
@@ -127,7 +134,7 @@ $entry_year = date('Y', $time);
 
         document.body.innerHTML = originalContents;
     }
-  
+
 </script>
 <?php
 $this->load->view('layout/footer');
