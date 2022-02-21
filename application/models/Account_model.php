@@ -202,7 +202,7 @@ class Account_model extends CI_Model {
                 $value2["total_f"] = number_format($now_entrydata["total"], 2, '.', ',');
                 $total_f += $now_entrydata["total"];
 
-                $budgetdata = $this->getPnLCategoryHeadsBudgetReport($value2["id"], "04", $entry_year);
+                $budgetdata = $this->getPnLCategoryHeadsBudgetReport($value2["id"], "04", START_YEAR);
                 $value2["heads_b"] = $budgetdata["head"];
                 $value2["total_b"] = number_format($budgetdata["total"], 2, '.', ',');
                 $total_b += $budgetdata["total"];
