@@ -233,13 +233,15 @@ class PnlNotes extends CI_Controller {
 
         $c_date = date("F Y", $time);
 
+
         $diffr = strtotime("-1 month", $time);
         $p_date = "April - " . date("F Y", $diffr);
 
         $f_date = "April - " . date("F Y", $time);
 
-        $byear = date("y", $time);
-        $diffr = strtotime("+1 year", $time);
+        $btime = strtotime(START_YEAR."-04-01");
+        $byear = date("y", $btime);
+        $diffr = strtotime("+1 year", $btime);
         $byearn = date("y", $diffr);
 
         $b_date = "April $byear - March $byearn";
@@ -292,7 +294,6 @@ class PnlNotes extends CI_Controller {
         header("Content-Disposition: attachment; filename=$filename");
         header("Content-Type: application/vnd.ms-excel");
         echo $html;
-       
     }
 
 }
