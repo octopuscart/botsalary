@@ -7,12 +7,22 @@ if ($userdata) {
 }
 $menu_control = array();
 
-
-
-
 if ($this->user_type == 'Admin') {
     $order_menu = array(
-        "title" => "Salary Manegement",
+        "title" => "Salary Manegement 22",
+        "icon" => "fa fa-list",
+        "active" => "",
+        "sub_menu" => array(
+            "View Salary" => site_url("SalaryV2/selectEmployee"),
+            "Create Salary" => site_url("SalaryV2/selectEmployee"),
+            "Salary Report" => site_url("SalaryV2/salaryReport"),
+            "Allowance Report" => site_url("SalaryV2/allowanceReports"),
+        ),
+    );
+    array_push($menu_control, $order_menu);
+
+    $order_menu = array(
+        "title" => "Salary Manegement 21",
         "icon" => "fa fa-list",
         "active" => "",
         "sub_menu" => array(
@@ -87,13 +97,12 @@ if ($this->user_type == 'Admin') {
     array_push($menu_control, $salary_menu);
 }
 if ($this->user_type == 'Employee') {
-     $order_menu = array(
+    $order_menu = array(
         "title" => "Salary",
         "icon" => "fa fa-list",
         "active" => "",
         "sub_menu" => array(
             "View Salary" => site_url("Salary/index"),
-
         ),
     );
     array_push($menu_control, $order_menu);
@@ -101,13 +110,12 @@ if ($this->user_type == 'Employee') {
 
 
 if ($this->user_type == 'SalaryManager') {
-     $order_menu = array(
+    $order_menu = array(
         "title" => "Salary",
         "icon" => "fa fa-list",
         "active" => "",
         "sub_menu" => array(
             "View Salary" => site_url("Salary/selectEmployee"),
-
         ),
     );
     array_push($menu_control, $order_menu);
@@ -143,7 +151,7 @@ foreach ($menu_control as $key => $value) {
                 </div>
                 <div class="info textoverflow" >
 
-                    <?php echo $userdata['first_name']; ?>
+<?php echo $userdata['first_name']; ?>
                     <small class="textoverflow" title="<?php echo $userdata['username']; ?>"><?php echo $userdata['username']; ?></small>
                 </div>
             </li>
@@ -153,7 +161,7 @@ foreach ($menu_control as $key => $value) {
         <ul class="nav">
             <li class="nav-header">Navigation</li>
 
-            <?php foreach ($menu_control as $mkey => $mvalue) { ?>
+<?php foreach ($menu_control as $mkey => $mvalue) { ?>
 
                 <li class="has-sub <?php echo $mvalue['active']; ?>">
                     <a href="javascript:;">
@@ -162,11 +170,11 @@ foreach ($menu_control as $key => $value) {
                         <span><?php echo $mvalue['title']; ?></span>
                     </a>
                     <ul class="sub-menu">
-                        <?php
-                        $submenu = $mvalue['sub_menu'];
-                        foreach ($submenu as $key => $value) {
-                            if ($value == "break") {
-                                ?>
+    <?php
+    $submenu = $mvalue['sub_menu'];
+    foreach ($submenu as $key => $value) {
+        if ($value == "break") {
+            ?>
                                 <hr style="margin: 10px 0px;" />
                                 <?php
                             } else {
@@ -179,7 +187,7 @@ foreach ($menu_control as $key => $value) {
                         ?>
                     </ul>
                 </li>
-            <?php } ?>
+                    <?php } ?>
             <li class="nav-header">Admin V <?php echo PANELVERSION; ?></li>
             <li class="nav-header">-</li>
         </ul>
