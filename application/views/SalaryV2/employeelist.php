@@ -81,7 +81,7 @@ $this->load->view('layout/topmenu');
                             . "<td>" . $value["name"] . "</td>"
                             . "<td>" . $value["location"] . "</td>"
                             . "<td>" . $value["net_salary"] . "</td>";
-                            if ($value["has_salary"]) {
+                            if (!$value["has_salary"]) {
                                 if ($createpermission) {
                                     echo "<td><a href='" . site_url("SalaryV2/create/" . $value["id"]) . "' class='btn btn-success'>Create Salary</a></td>";
                                 }
