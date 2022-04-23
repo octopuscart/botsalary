@@ -16,7 +16,7 @@
             <tr>
                 <th colspan="12" class="text-center" style='height: 80px;'>
                     <img src="<?php echo base_url(); ?>assets/img/logo.jpg" style="height: 80px;">
-                    <h4>Staff  Salary and  MPF Details</h4>
+                    <h4>Staff  Salary and  MPF Details <?php    echo  $salary_month;?></h4>
                 </th>
             </tr>
             <?php

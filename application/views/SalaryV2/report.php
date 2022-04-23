@@ -65,13 +65,13 @@ $this->load->view('layout/topmenu');
         </div>
         <div class="panel panel-inverse">
             <div class="panel-heading">
-                <h3 class="panel-title">Salary Report</h3>
+                <h3 class="panel-title">Salary Report </h3>
                 
             </div>
             <div class="panel-body " id='printArea'>
 
                 <?php
-                $this->load->view('SalaryV2/reportbase', array("salary_report" => $salary_report, "remark"=>false, "showlogo"=>true));
+                $this->load->view('SalaryV2/reportbase', array("salary_report" => $salary_report, "remark"=>false, "showlogo"=>true, "salary_month"=>$salary_month));
                 ?>
             </div>
 

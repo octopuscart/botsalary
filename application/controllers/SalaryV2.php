@@ -437,6 +437,7 @@ class SalaryV2 extends CI_Controller {
             $a_date = $_GET["salary_date"];
         }
         $data["select_month"] = $a_date;
+        $data["salary_month"] = $a_date;
         $data["salary_report"] = $this->Salary_modelV2->salaryData($a_date);
         $this->load->view('SalaryV2/report', $data);
     }
@@ -565,9 +566,9 @@ class SalaryV2 extends CI_Controller {
         $data["salary_report"] = $salarydata["salary_data"];
         $data["allownceslist"] = $salarydata["allownceslist"];
         $html = $this->load->view('SalaryV2/allowanceReportsBase', $data, true);
-        
+
         $filetitle = "test.pdf";
-        
+
         $this->load->library('Pdf');
         $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
 //        $pdf->SetProtection(array('modify', 'copy', 'print'), $data["employee"]["employee_id"], "", 0, null);
