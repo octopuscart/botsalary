@@ -370,10 +370,13 @@ class SalaryV2 extends CI_Controller {
             $salary_data = $this->Salary_modelV2->employeeSalary($a_date, $value['id']);
             $netpay = 0;
             $salary_id = 0;
+            $has_salary = 0;
             if ($salary_data) {
                 $netpay = $salary_data["net_salary"];
                 $salary_id = $salary_data["id"];
+                $has_salary = 1;
             }
+            $value["has_salary"] = $has_salary;
             $value["net_salary"] = $netpay;
             $value["salary_id"] = $salary_id;
             array_push($employee_data2, $value);
