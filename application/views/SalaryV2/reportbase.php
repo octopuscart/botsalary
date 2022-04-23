@@ -13,10 +13,14 @@
         <?php
         if ($showlogo) {
             ?>
-            <tr>
-                <th colspan="12" class="text-center" style='height: 80px;'>
+           
+              <tr>
+                <th  class="text-left" style=";border:none">
                     <img src="<?php echo base_url(); ?>assets/img/logo.jpg" style="height: 80px;">
-                    <h4>Staff  Salary and  MPF Details <?php    echo  $salary_month;?></h4>
+
+                </th>
+                <th colspan="11" class="text-right"  style=";border:none">
+                    <h4>Staff  Salary and  MPF Details <?php echo $salary_month; ?></h4>
                 </th>
             </tr>
             <?php
