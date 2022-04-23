@@ -93,6 +93,19 @@ if ($this->user_type == 'Employee') {
         ),
     );
     array_push($menu_control, $order_menu);
+    
+    $order_menu = array(
+    "title" => "Salary Manegement 21",
+    "icon" => "fa fa-list",
+    "active" => "",
+    "sub_menu" => array(
+        "View Salary" => site_url("Salary/selectEmployee"),
+        "Create Salary" => site_url("Salary/selectEmployee"),
+        "Salary Report" => site_url("Salary/salaryReport"),
+        "Salary Report Details" => site_url("Salary/salaryReportV2"),
+    ),
+);
+array_push($menu_control, $order_menu);
 }
 
 
@@ -108,18 +121,7 @@ if ($this->user_type == 'SalaryManager') {
     array_push($menu_control, $order_menu);
 }
 
-$order_menu = array(
-    "title" => "Salary Manegement 21",
-    "icon" => "fa fa-list",
-    "active" => "",
-    "sub_menu" => array(
-        "View Salary" => site_url("Salary/selectEmployee"),
-        "Create Salary" => site_url("Salary/selectEmployee"),
-        "Salary Report" => site_url("Salary/salaryReport"),
-        "Salary Report Details" => site_url("Salary/salaryReportV2"),
-    ),
-);
-array_push($menu_control, $order_menu);
+
 
 foreach ($menu_control as $key => $value) {
     $submenu = $value['sub_menu'];
