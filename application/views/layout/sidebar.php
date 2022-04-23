@@ -21,19 +21,6 @@ if ($this->user_type == 'Admin') {
     );
     array_push($menu_control, $order_menu);
 
-    $order_menu = array(
-        "title" => "Salary Manegement 21",
-        "icon" => "fa fa-list",
-        "active" => "",
-        "sub_menu" => array(
-            "View Salary" => site_url("Salary/selectEmployee"),
-            "Create Salary" => site_url("Salary/selectEmployee"),
-            "Salary Report" => site_url("Salary/salaryReport"),
-            "Salary Report Details" => site_url("Salary/salaryReportV2"),
-        ),
-    );
-    array_push($menu_control, $order_menu);
-
     $pnl_menu = array(
         "title" => "P&L Manegement",
         "icon" => "fa fa-pie-chart",
@@ -115,18 +102,24 @@ if ($this->user_type == 'SalaryManager') {
         "icon" => "fa fa-list",
         "active" => "",
         "sub_menu" => array(
-            "View Salary" => site_url("Salary/selectEmployee"),
+            "View Salary" => site_url("SalaryV2/selectEmployee"),
         ),
     );
     array_push($menu_control, $order_menu);
 }
 
-
-
-
-
-
-
+$order_menu = array(
+    "title" => "Salary Manegement 21",
+    "icon" => "fa fa-list",
+    "active" => "",
+    "sub_menu" => array(
+        "View Salary" => site_url("Salary/selectEmployee"),
+        "Create Salary" => site_url("Salary/selectEmployee"),
+        "Salary Report" => site_url("Salary/salaryReport"),
+        "Salary Report Details" => site_url("Salary/salaryReportV2"),
+    ),
+);
+array_push($menu_control, $order_menu);
 
 foreach ($menu_control as $key => $value) {
     $submenu = $value['sub_menu'];
@@ -170,15 +163,15 @@ foreach ($menu_control as $key => $value) {
                         <span><?php echo $mvalue['title']; ?></span>
                     </a>
                     <ul class="sub-menu">
-    <?php
-    $submenu = $mvalue['sub_menu'];
-    foreach ($submenu as $key => $value) {
-        if ($value == "break") {
-            ?>
+                <?php
+                $submenu = $mvalue['sub_menu'];
+                foreach ($submenu as $key => $value) {
+                    if ($value == "break") {
+                        ?>
                                 <hr style="margin: 10px 0px;" />
-                                <?php
-                            } else {
-                                ?>
+            <?php
+        } else {
+            ?>
 
                                 <li><a href="<?php echo $value; ?>"><?php echo $key; ?></a></li>
                                 <?php
