@@ -82,6 +82,18 @@ if ($this->user_type == 'Admin') {
         ),
     );
     array_push($menu_control, $salary_menu);
+    $order_menu = array(
+        "title" => "Salary Manegement 21",
+        "icon" => "fa fa-list",
+        "active" => "",
+        "sub_menu" => array(
+            "View Salary" => site_url("Salary/selectEmployee"),
+            "Create Salary" => site_url("Salary/selectEmployee"),
+            "Salary Report" => site_url("Salary/salaryReport"),
+            "Salary Report Details" => site_url("Salary/salaryReportV2"),
+        ),
+    );
+    array_push($menu_control, $order_menu);
 }
 if ($this->user_type == 'Employee') {
     $order_menu = array(
@@ -93,19 +105,6 @@ if ($this->user_type == 'Employee') {
         ),
     );
     array_push($menu_control, $order_menu);
-    
-    $order_menu = array(
-    "title" => "Salary Manegement 21",
-    "icon" => "fa fa-list",
-    "active" => "",
-    "sub_menu" => array(
-        "View Salary" => site_url("Salary/selectEmployee"),
-        "Create Salary" => site_url("Salary/selectEmployee"),
-        "Salary Report" => site_url("Salary/salaryReport"),
-        "Salary Report Details" => site_url("Salary/salaryReportV2"),
-    ),
-);
-array_push($menu_control, $order_menu);
 }
 
 
@@ -165,24 +164,24 @@ foreach ($menu_control as $key => $value) {
                         <span><?php echo $mvalue['title']; ?></span>
                     </a>
                     <ul class="sub-menu">
-                <?php
-                $submenu = $mvalue['sub_menu'];
-                foreach ($submenu as $key => $value) {
-                    if ($value == "break") {
-                        ?>
-                                <hr style="margin: 10px 0px;" />
-            <?php
-        } else {
+    <?php
+    $submenu = $mvalue['sub_menu'];
+    foreach ($submenu as $key => $value) {
+        if ($value == "break") {
             ?>
+                                <hr style="margin: 10px 0px;" />
+                                <?php
+                            } else {
+                                ?>
 
                                 <li><a href="<?php echo $value; ?>"><?php echo $key; ?></a></li>
-                                <?php
-                            }
-                        }
-                        ?>
+            <?php
+        }
+    }
+    ?>
                     </ul>
                 </li>
-                    <?php } ?>
+<?php } ?>
             <li class="nav-header">Admin V <?php echo PANELVERSION; ?></li>
             <li class="nav-header">-</li>
         </ul>
