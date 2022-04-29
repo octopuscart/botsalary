@@ -8,15 +8,15 @@ if ($userdata) {
 $menu_control = array();
 
 if ($this->user_type == 'Admin') {
-    $order_menu = array(
-        "title" => "Salary Manegement 22",
+     $order_menu = array(
+        "title" => "Salary Manegement 21",
         "icon" => "fa fa-list",
         "active" => "",
         "sub_menu" => array(
-            "View Salary" => site_url("SalaryV2/selectEmployee"),
-            "Create Salary" => site_url("SalaryV2/selectEmployee"),
-            "Salary Report" => site_url("SalaryV2/salaryReport"),
-            "Allowance Report" => site_url("SalaryV2/allowanceReports"),
+            "View Salary" => site_url("Salary/selectEmployee"),
+            "Create Salary" => site_url("Salary/selectEmployee"),
+            "Salary Report" => site_url("Salary/salaryReport"),
+            "Salary Report Details" => site_url("Salary/salaryReportV2"),
         ),
     );
     array_push($menu_control, $order_menu);
@@ -82,15 +82,17 @@ if ($this->user_type == 'Admin') {
         ),
     );
     array_push($menu_control, $salary_menu);
+   
+    
     $order_menu = array(
-        "title" => "Salary Manegement 21",
+        "title" => "Salary Manegement 22",
         "icon" => "fa fa-list",
         "active" => "",
         "sub_menu" => array(
-            "View Salary" => site_url("Salary/selectEmployee"),
-            "Create Salary" => site_url("Salary/selectEmployee"),
-            "Salary Report" => site_url("Salary/salaryReport"),
-            "Salary Report Details" => site_url("Salary/salaryReportV2"),
+            "View Salary" => site_url("SalaryV2/selectEmployee"),
+            "Create Salary" => site_url("SalaryV2/selectEmployee"),
+            "Salary Report" => site_url("SalaryV2/salaryReport"),
+            "Allowance Report" => site_url("SalaryV2/allowanceReports"),
         ),
     );
     array_push($menu_control, $order_menu);
@@ -114,7 +116,7 @@ if ($this->user_type == 'SalaryManager') {
         "icon" => "fa fa-list",
         "active" => "",
         "sub_menu" => array(
-            "View Salary" => site_url("SalaryV2/selectEmployee"),
+            "View Salary" => site_url("Salary/selectEmployee"),
         ),
     );
     array_push($menu_control, $order_menu);
