@@ -70,7 +70,7 @@ $this->load->view('layout/topmenu');
                     <th>Name</th>
                     <th>Location</th>
                     <th>Salary</th>
-                    <th style="width:100px"></th>
+                    <th style="width:250px"></th>
                     </thead>
                     <tbody>
                         <?php
@@ -80,18 +80,19 @@ $this->load->view('layout/topmenu');
                             . "<td>" . $value["employee_id"] . "</td>"
                             . "<td>" . $value["name"] . "</td>"
                             . "<td>" . $value["location"] . "</td>"
-                            . "<td>" . $value["net_salary"] . "</td>";
+                            . "<td>" . $value["net_salary"] . "</td><td>";
                             if ($value["net_salary"] == 0) {
                                 if ($createpermission) {
-                                    echo "<td><a href='" . site_url("Salary/create/" . $value["id"]) . "' class='btn btn-success'>Create Salary</a></td>";
-                                }
-                                else{
-                                    echo "<td></td>";
+                                    echo "<a href='" . site_url("Salary/create/" . $value["id"]) . "' class='btn btn-success'>Create Salary</a>";
+                                } else {
+                                    
                                 }
                             } else {
-                                echo "<td><a href='" . site_url("Salary/paySlip/" . $value["salary_id"]) . "' class='btn btn-inverse'>Pay Slip</a></td>";
+                                echo "<a href='" . site_url("Salary/paySlip/" . $value["salary_id"]) . "' class='btn btn-inverse'>Pay Slip</a>";
                             }
-                            echo "</tr>";
+
+                            echo "&nbsp;&nbsp;<a href='" . site_url("Salary/viewEmplyeeSalary/" . $value["id"]) . "' class='btn btn-inverse'>View Salary</a>";
+                            echo "</td></tr>";
                             $count++;
                         }
                         ?>

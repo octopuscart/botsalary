@@ -36,29 +36,38 @@ $this->load->view('layout/topmenu');
 <!-- Main content -->
 <section class="content" >
     <div class="">
-     
+
         <div class="panel panel-inverse">
             <div class="panel-heading">
-                <h3 class="panel-title">View Salary</h3>
+                <h3 class="panel-title">
+                    <b><?php echo $employee["name"]; ?></b>, EMP ID#: <?php echo $employee["employee_id"]; ?>, HK ID#: <?php echo $employee["hk_id"]; ?>
+                <div class="btn-group pull-right">
+              
+                        <a href="<?php echo site_url("Salary/viewEmplyeeSalaryPDF/" . $employee["id"] . "/I"); ?>" class="btn btn-primary"><i class="fa fa-eye"></i> View PDF</a>
+                    </div>
+                
+                </h3>
             </div>
             <div class="panel-body">
                 <table class="table" id="tableData">
                     <thead>
-                    <th>S. No.</th>
-                    <th>Salary Month</th>
-                    <th>Base Salary</th>
-                    <th>Net Salary</th>
-                    <th>Employee MPF</th>
-                    <th>Employer MPF</th>
-                    <th style="width:100px"></th>
+                        <tr>
+                            <th>S. No.</th>
+                            <th>Salary Month</th>
+                            <th>Base Salary</th>
+                            <th>Net Salary</th>
+                            <th>Employee MPF</th>
+                            <th>Employer MPF</th>
+                            <th style="width:100px"></th>
+                        </tr>
                     </thead>
                     <tbody>
                         <?php
                         $count = 1;
                         foreach ($salary as $key => $value) {
-                            
+
                             echo "<tr><td>$count</td>"
-                            . "<td>" . date("M-Y", strtotime( $value["salary_date"] )). "</td>"
+                            . "<td>" . date("M-Y", strtotime($value["salary_date"])) . "</td>"
                             . "<td>" . $value["base_salary"] . "</td>"
                             . "<td>" . $value["net_salary"] . "</td>"
                             . "<td>" . $value["mpf_employee"] . "</td>"
@@ -105,7 +114,7 @@ $this->load->view('layout/topmenu');
 
 <script>
     $(function () {
-         $('#tableData').DataTable({'pageLength': 50});
+        $('#tableData').DataTable({'pageLength': 50});
     })
 </script>
 

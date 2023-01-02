@@ -26,8 +26,6 @@ class Salary extends CI_Controller {
         $date1 = date('Y-m-d', strtotime('-30 days'));
         $date2 = date('Y-m-d');
 
-
-
         $data = array();
         if ($this->user_type == 'Admin') {
             $this->load->view('Salary/dashboard', $data);
@@ -155,7 +153,6 @@ class Salary extends CI_Controller {
 
         $data['depends'] = $dependes;
 
-
         $data['title'] = "Employee";
         $data['description'] = "";
         $data['form_title'] = "Add Employee";
@@ -169,8 +166,6 @@ class Salary extends CI_Controller {
             "age" => array("title" => "Age", "required" => false, "place_holder" => "Age", "type" => "text", "default" => "", "depends" => "", "width" => "100px",),
             "location_id" => array("title" => "Location", "required" => true, "place_holder" => "Location", "type" => "select", "default" => "", "depends" => "location_data", "width" => "200px",),
         );
-
-
 
         if (isset($_POST['submitData'])) {
             $postarray = array();
@@ -248,7 +243,6 @@ class Salary extends CI_Controller {
         $data["employee"] = $employee_data;
         $data["allownce"] = $allownce_data;
         $data["mpf_percent"] = "5";
-
 
         $data["c_period"] = $this->getSessionDates();
 
@@ -415,10 +409,10 @@ class Salary extends CI_Controller {
         $data["deduction"] = $this->Salary_model->employeeDuductionAll($salary_id);
         $data["employee"] = $this->Curd_model->get_single2('salary_employee', $salaryobj["employee_id"]);
 
-       $htmloutput = $this->load->view('Salary/printSalaryBasePdf', $data, true);
+        $htmloutput = $this->load->view('Salary/printSalaryBasePdf', $data, true);
         $sdate = date("F-Y", strtotime($salaryobj['salary_date']));
         $empname = $data["employee"]["name"];
-        
+
         $filetitle = $empname . '-' . $sdate . '-Salary.pdf';
 
         $this->load->library('Pdf');
@@ -427,7 +421,7 @@ class Salary extends CI_Controller {
         $pdf->AddPage();
         $pdf->SetTitle($filetitle);
         $pdf->writeHTML($htmloutput);
-        
+
         $pdf->Output($filetitle, $viewmode);
     }
 
@@ -470,7 +464,6 @@ class Salary extends CI_Controller {
         $html = $this->load->view('Salary/reportbase', array("salary_report" => $salary_report, "remark" => true), true);
         $filename = 'salary_report_' . $a_date . ".xls";
         $this->load->library('m_pdf');
-
 
         $this->m_pdf->pdf->WriteHTML($html);
         $this->m_pdf->pdf->Output($pdfFilePath, "D");
@@ -549,6 +542,35 @@ class Salary extends CI_Controller {
         $data["salary_report"] = $salarydata["salary_data"];
         $data["allownceslist"] = $salarydata["allownceslist"];
         echo $html = $this->load->view('Salary/reportbasev2', $data, true);
+    }
+
+    function viewEmplyeeSalaryData($emp_id) {
+        $data["employee"] = $this->Curd_model->get_single2('salary_employee', $emp_id);
+        $this->db->where("employee_id", $emp_id);
+        $this->db->order_by("salary_date desc");
+        $query = $this->db->get("salary");
+        $salary_data = $query->result_array();
+        $data["salary"] = $salary_data;
+        return $data;
+    }
+
+    function viewEmplyeeSalary($emp_id) {
+        $data = $this->viewEmplyeeSalaryData($emp_id);
+        $this->load->view('Salary/salarylist', $data);
+    }
+
+    function viewEmplyeeSalaryPDF($emp_id,  $viewmode = "D") {
+        $data = $this->viewEmplyeeSalaryData($emp_id);
+        $html = $this->load->view('Salary/salarylistReport', $data, true);
+        $filename = 'salary_report_' . $data["employee"]["employee_id"] . ".pdf";
+        $this->load->library('Pdf');
+        $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+//        $pdf->SetProtection(array('modify', 'copy', 'print'), $data["employee"]["employee_id"], "", 0, null);
+        $pdf->AddPage();
+        $pdf->SetTitle($filename);
+        $pdf->writeHTML($html);
+
+        $pdf->Output($filename, $viewmode);
     }
 
 }
