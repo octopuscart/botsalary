@@ -45,6 +45,9 @@ class Salary extends CI_Controller {
         if ($this->user_type == 'SalaryManager') {
             redirect(site_url("Salary/selectEmployee"));
         }
+        if ($this->user_type == 'WebAdmin') {
+            redirect(site_url("WebControl/index"));
+        }
     }
 
     public function allowanceCategories() {

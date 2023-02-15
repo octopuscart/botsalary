@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class CMS extends CI_Controller {
+class WebControl extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -17,44 +17,9 @@ class CMS extends CI_Controller {
         $this->user_type = $this->session->logged_in['user_type'];
     }
 
-    public function allowanceCategories() {
-        if ($this->user_type != 'Admin') {
-            redirect('UserManager/not_granted');
-        }
+    public function index() {
         $data = array();
-        $data['title'] = "Allowances Categories";
-        $data['description'] = "Allowances Categories";
-        $data['form_title'] = "Add Allowances";
-        $data['table_name'] = 'salary_allowances';
-        $form_attr = array(
-            "title" => array("title" => "Allowances Name", "required" => true, "place_holder" => "Allowances Name", "type" => "text", "default" => ""),
-            "apply_mpf" => array("title" => "", "required" => false, "place_holder" => "Apply MPF", "type" => "select", "default" => ""),
-            "display_index" => array("title" => "", "required" => false, "place_holder" => "", "type" => "hidden", "default" => ""),
-        );
-
-        if (isset($_POST['submitData'])) {
-            $postarray = array();
-            foreach ($form_attr as $key => $value) {
-                $postarray[$key] = $this->input->post($key);
-            }
-            $this->Curd_model->insert('salary_allowances', $postarray);
-            redirect("CMS/allowanceCategories");
-        }
-
-
-        $categories_data = $this->Curd_model->get('salary_allowances');
-        $data['list_data'] = $categories_data;
-
-        $fields = array(
-            "id" => array("title" => "ID#", "width" => "100px"),
-            "title" => array("title" => "Allowances Name", "width" => "50%"),
-            "apply_mpf" => array("title" => "Apply MPF", "width" => "50%"),
-        );
-
-        $data['fields'] = $fields;
-
-        $data['form_attr'] = $form_attr;
-        $this->load->view('layout/curd', $data);
+        $this->load->view('WebControl/dashboard', $data);
     }
 
     public function createPage() {
@@ -66,6 +31,7 @@ class CMS extends CI_Controller {
             "template" => ""
         );
         $data["pageobj"] = $pageobj;
+        $data["operation"] = "create";
         if (isset($_POST["update_data"])) {
             $content_pages = array(
                 "title" => $this->input->post("title"),
@@ -76,28 +42,43 @@ class CMS extends CI_Controller {
             );
             $this->db->insert("content_pages", $content_pages);
             $last_id = $this->db->insert_id();
-            redirect("CMS/editPage/$last_id");
+            redirect("WebControl/editPage/$last_id");
         }
-        $this->load->view('CMS/Pages/create', $data);
+        $this->load->view('WebControl/Pages/create', $data);
     }
 
     public function pageList() {
         $data = array();
+        $this->db->where('page_type', 'main');
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('content_pages');
         $templatelist = $query->result_array();
         $data['pagelist'] = $templatelist;
-        $this->load->view('CMS/Pages/list', $data);
+        $this->load->view('WebControl/Pages/list', $data);
     }
 
     public function editPage($id = 0) {
         $this->db->where('id', $id);
         $query = $this->db->get('content_pages');
+        $data["operation"] = "edit";
+        $metaDataList = [];
         if ($query) {
             $pageobj = $query->row_array();
+            $this->db->where('page_id', $id);
+            $query = $this->db->get("content_page_meta");
+            $contentDataMeta = $query->result_array();
+            if ($contentDataMeta) {
+                foreach ($contentDataMeta as $key => $value) {
+                    $this->db->where('id', $value["meta_value"]);
+                    $query = $this->db->get("content_pages");
+                    $contentMetaData = $query->row_array();
+                    array_push($metaDataList, $contentMetaData);
+                }
+            }
         } else {
             $pageobj = array("title" => "", "content" => "", "uri" => "");
         }
+        $data["metaData"] = $metaDataList;
         $data["pageobj"] = $pageobj;
         if (isset($_POST["update_data"])) {
             $content_pages = array(
@@ -106,9 +87,9 @@ class CMS extends CI_Controller {
             );
             $this->db->where('id', $id);
             $this->db->update("content_pages", $content_pages);
-            redirect("CMS/editPage/$id");
+            redirect("WebControl/editPage/$id");
         }
-        $this->load->view('CMS/Pages/create', $data);
+        $this->load->view('WebControl/Pages/create', $data);
     }
 
 }
