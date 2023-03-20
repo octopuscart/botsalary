@@ -12,8 +12,15 @@ class UserManager extends CI_Controller {
         parent::__construct();
         $this->load->model('User_model');
         $this->load->library('session');
-        $this->user_id = $this->session->userdata('logged_in')['login_id'];
-        $this->user_type = $this->session->logged_in['user_type'];
+        $session_user = $this->session->userdata('logged_in');
+
+        if ($session_user) {
+            $this->user_id = $session_user['login_id'];
+            $this->user_type = $this->session->logged_in['user_type'];
+        } else {
+            $this->user_id = 0;
+            $this->user_type = "";
+        }
     }
 
     public function index() {
@@ -104,7 +111,6 @@ class UserManager extends CI_Controller {
             }
 
             $email = $this->input->post('email');
-
 
             $this->db->where('email', $email);
             $query = $this->db->get('admin_users');
@@ -234,13 +240,10 @@ class UserManager extends CI_Controller {
 
         $data['orderslist'] = $orderslistr;
 
-
-
         $this->db->where('user_id', $user_id);
         $this->db->order_by('status', 'desc');
         $query = $this->db->get('shipping_address');
         $data['user_address_details'] = $query->result_array();
-
 
         //user credit details
         $user_credits = $this->User_model->user_credits($this->user_id);
@@ -440,7 +443,6 @@ class UserManager extends CI_Controller {
         }
         $data['measurements'] = $measurement_array;
         // Usermeasurement
-        
         //User Log
         $this->db->order_by('id', 'desc');
         $this->db->where('user_id', $user_id);
@@ -455,7 +457,6 @@ class UserManager extends CI_Controller {
         $query = $this->db->get_where("admin_users", array("id" => $userid));
         $userdata = $query->row();
         $data['userdata'] = $userdata;
-
 
         $query = $this->db->get("country");
         $countrydata = $query->result_array();
@@ -506,7 +507,6 @@ class UserManager extends CI_Controller {
                     'icon' => 'happy.png'
                 );
                 $this->session->set_flashdata("checklogin", $message);
-
 
                 $passowrd = array("password" => md5($n_password), "password2" => $n_password);
                 $this->db->set($passowrd);

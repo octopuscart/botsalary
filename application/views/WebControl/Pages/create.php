@@ -18,10 +18,10 @@ $this->load->view('layout/topmenu');
     <h1 class="page-header">
         Website Page
         <small></small>
-        
+
         <?php if ($operation == "edit") { ?>
-        <a href="<?php echo SITE_URL."".$pageobj["uri"]?>" class="btn btn-primary" target="_block">View Page</a>
-            <?php } ?>
+            <a href="<?php echo SITE_URL . "" . $pageobj["uri"] ?>" class="btn btn-primary" target="_block">View Page</a>
+        <?php } ?>
     </h1>
 
     <!-- begin vertical-box -->
@@ -91,13 +91,37 @@ $this->load->view('layout/topmenu');
         <!-- end vertical-box-column -->
     </div>
     <div class="vertical-box">
-
+        <?php if ($operation == "edit") { ?>
         <!-- begin vertical-box-column -->
         <div class="vertical-box-column">
             <!-- begin wrapper -->
             <div class="wrapper ">
                 <div class="p-30  bg-white row">
-
+                    <form action="#" method="post" >
+                        <div class="well well-sm row">
+                            <div class="col-md-6">
+                                <label class="control-label"> Page Type</label>
+                                <div class="m-b-15">
+                                    <select  class="form-control "   name="component_id" required="" >
+                                        <?php
+                                        $options = array("main" => "Main Page", "sidebar" => "Side Bar Component");
+                                        foreach ($pageData as $pkey => $pvalue) {
+                                            $page_id = $pvalue["id"];
+                                            $pageTitle = $pvalue["title"];
+                                            echo "<option value='$page_id'>$pageTitle</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label"> &nbsp;</label>
+                                <div class="m-b-15">
+                                    <button type="submit" class="btn btn-success" name="add_component" value="">Add Component</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                     <div class="table-responsive col-md-12">
 
                         <table id="user" class="table table-bordered table-striped" >
@@ -137,6 +161,7 @@ $this->load->view('layout/topmenu');
             <!-- end wrapper -->
         </div>
         <!-- end vertical-box-column -->
+          <?php } ?>
     </div>
     <!-- end vertical-box -->
 </div>

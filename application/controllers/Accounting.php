@@ -32,9 +32,9 @@ class Accounting extends CI_Controller {
     }
 
     function activity($rtype) {
-        if ($this->user_type != 'Admin') {
-            redirect('UserManager/not_granted');
-        }
+//        if ($this->user_type != 'Admin') {
+//            redirect('UserManager/not_granted');
+//        }
         $a_date = date("M-Y");
         if (isset($_GET["entry_date"])) {
             $a_date = $_GET["entry_date"];
