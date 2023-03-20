@@ -43,6 +43,45 @@ $this->load->view('layout/topmenu');
         width:300px;
     }
 </style>
+<style>
+    .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 140px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 150%;
+        left: 50%;
+        margin-left: -75px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+</style>
 <!-- Main content -->
 <section class="content" ng-controller="pnlControllerEdit">
     <div class="">
@@ -65,7 +104,7 @@ $this->load->view('layout/topmenu');
                         <?php
                         foreach ($filescategorydata as $key => $value) {
                             ?>
-                            <option><?php echo $value["meta_value"];?></option>
+                            <option><?php echo $value["meta_value"]; ?></option>
                             <?php
                         }
                         ?>
@@ -103,11 +142,18 @@ $this->load->view('layout/topmenu');
                             . "<td>" . $value["file_name"] . "</td>"
                             . "<td>" . $value["file_caption"] . "</td>"
                             . "<td>" . $value["file_category"] . "</td>"
-                            . "<td>" . $value["datetime"] . "</td><td>"
-                            . "</tr>";
-                            $count++;
-                        }
-                        ?>
+                            . "<td>" . $value["datetime"] . "</td>";
+                            ?>
+                        <td >
+                        <button class='btn btn-warning' onclick="myFunction('<?php echo base_url(); ?>assets/content_files/<?php echo $value["file_name"]; ?>')" onmouseout="outFunc()">
+                            Copy text
+                        </button>
+                        </td>
+                        <?php
+                        echo "</tr>";
+                        $count++;
+                    }
+                    ?>
                     </tbody>
                 </table>
             </div>
@@ -128,9 +174,21 @@ $this->load->view('layout/topmenu');
 <script src="<?php echo base_url(); ?>assets/js/table-manage-default.demo.min.js"></script>
 <script>
 
-    $(function () {
+                        $(function () {
 
-    })
+                        })
+</script>
+<script>
+    function myFunction(inputtxt) {
+     
+        navigator.clipboard.writeText(inputtxt);
+
+  
+          alert("Copied the text: " + inputtxt);
+    }
+
+    function outFunc() {
+    }
 </script>
 <?php
 $this->load->view('layout/footer');
