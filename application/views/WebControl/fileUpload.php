@@ -62,9 +62,14 @@ $this->load->view('layout/topmenu');
                     <input type="text" name="fileName" class="form-control" required="" >
                     <br/>
                     <select name="fileCategory" class="form-control" required="" >
-                        <option>
-                            
-                        </option>
+                        <?php
+                        foreach ($filescategorydata as $key => $value) {
+                            ?>
+                            <option><?php echo $value["meta_value"];?></option>
+                            <?php
+                        }
+                        ?>
+
                     </select>
 
                     <br/>
@@ -75,6 +80,38 @@ $this->load->view('layout/topmenu');
                 </form>
             </div>
         </div>
+
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <h3 class="panel-title">Select Employee</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table" id="tableData">
+                    <thead>
+                    <th>S. No.</th>
+                    <th>Employee ID#</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Salary</th>
+                    <th style="width:250px"></th>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $count = 1;
+                        foreach ($filesdata as $key => $value) {
+                            echo "<tr><td>$count</td>"
+                            . "<td>" . $value["file_name"] . "</td>"
+                            . "<td>" . $value["file_caption"] . "</td>"
+                            . "<td>" . $value["file_category"] . "</td>"
+                            . "<td>" . $value["datetime"] . "</td><td>"
+                            . "</tr>";
+                            $count++;
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </section>
 <!-- end col-6 -->
@@ -83,42 +120,16 @@ $this->load->view('layout/topmenu');
 
 
 
-<script>
-<?php
-$time = strtotime($select_month);
-$entry_month = date('m', $time);
-$entry_year = date('Y', $time);
-?>
-    var entry_month = "<?php echo $entry_month; ?>";
-    var entry_year = "<?php echo $entry_year; ?>";
-</script>
 
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-daterangepicker/moment.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
 <script src="<?php echo base_url(); ?>assets/plugins/DataTables/js/jquery.dataTables.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/table-manage-default.demo.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/angular/accountController.js"></script>
 <script>
-    function printDiv(divName) {
-        var printContents = document.getElementById(divName).innerHTML;
-        var originalContents = document.body.innerHTML;
 
-        document.body.innerHTML = printContents;
-
-        window.print();
-
-        document.body.innerHTML = originalContents;
-    }
     $(function () {
-        $("title").html("<?php echo $report_title; ?>");
-        $('.input-group.date').datepicker({
-            format: "M-yyyy",
-            viewMode: "months",
-            minViewMode: "months",
-            todayHighlight: true,
-            autoclose: true,
-        })
+
     })
 </script>
 <?php

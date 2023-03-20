@@ -53,6 +53,25 @@ class WebControl extends CI_Controller {
         $this->load->view('WebControl/Pages/create', $data);
     }
 
+    public function botMembersList() {
+        if ($this->user_type != 'WebAdmin') {
+            redirect('UserManager/not_granted');
+        }
+        $data = array();
+        $this->db->order_by('display_index');
+        $query = $this->db->get('content_bot_members');
+        $memberslist = $query->result_array();
+        $data['memberslist'] = $memberslist;
+
+//        $this->db->where('id', $id);
+        $this->db->where( "file_category", "Bot Members");
+        $query = $this->db->get("content_files");
+        $filesdata = $query->result_array();
+        $data["filesdata"] = $filesdata;
+        
+        $this->load->view('WebControl/Pages/botmembers', $data);
+    }
+
     public function pageList() {
         if ($this->user_type != 'WebAdmin') {
             redirect('UserManager/not_granted');
@@ -129,6 +148,15 @@ class WebControl extends CI_Controller {
         }
         $a_date = date("Ymdhis");
 
+        $query = $this->db->get("content_files");
+        $filesdata = $query->result_array();
+        $data["filesdata"] = $filesdata;
+
+        $this->db->where('meta_key', "file_category");
+        $query = $this->db->get("content_page_meta");
+        $filescategorydata = $query->result_array();
+        $data["filescategorydata"] = $filescategorydata;
+
         $config['upload_path'] = 'assets/content_files';
         $config['allowed_types'] = '*';
         if (isset($_POST['submit'])) {
@@ -155,6 +183,7 @@ class WebControl extends CI_Controller {
 
             $fileinsert = array(
                 "file_name" => $picture,
+                "file_category" => $this->input->post("fileCategory"),
                 "file_caption" => $this->input->post("fileName"),
                 "datetime" => date("Y-m-d H:i:s a"),
             );
