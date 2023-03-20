@@ -129,12 +129,13 @@ if ($this->user_type == 'WebAdmin') {
         "sub_menu" => array(
             "Create Pages" => site_url("WebControl/createPage"),
             "View Pages" => site_url("WebControl/pageList"),
+            "Bot Members" => site_url("WebControl/botMembersList"),
         ),
     );
     array_push($menu_control, $web_menu);
     $web_menu2 = array(
         "title" => "Web Files",
-        "icon" => "fa fa-files",
+        "icon" => "fa fa-file",
         "active" => "",
         "sub_menu" => array(
             "Add Files" => site_url("WebControl/contentFiles"),
