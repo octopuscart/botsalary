@@ -122,7 +122,7 @@ if ($this->user_type == 'SalaryManager') {
 }
 
 if ($this->user_type == 'WebAdmin') {
-    $order_menu = array(
+    $web_menu = array(
         "title" => "Website Pages",
         "icon" => "fa fa-list",
         "active" => "",
@@ -131,7 +131,16 @@ if ($this->user_type == 'WebAdmin') {
             "View Pages" => site_url("WebControl/pageList"),
         ),
     );
-    array_push($menu_control, $order_menu);
+    array_push($menu_control, $web_menu);
+    $web_menu2 = array(
+        "title" => "Web Files",
+        "icon" => "fa fa-files",
+        "active" => "",
+        "sub_menu" => array(
+            "Add Files" => site_url("WebControl/contentFiles"),
+        ),
+    );
+    array_push($menu_control, $web_menu2);
 }
 
 

@@ -61,6 +61,13 @@ $this->load->view('layout/topmenu');
                     <label class="control-label"> File Caption</label>
                     <input type="text" name="fileName" class="form-control" required="" >
                     <br/>
+                    <select name="fileCategory" class="form-control" required="" >
+                        <option>
+                            
+                        </option>
+                    </select>
+
+                    <br/>
                     <input type="file" name="fileData" required="" accept="image/jpeg,image/jpg,image/png,application/pdf">
                     <hr/>
                     <button type="submit" name="submit" class="btn btn-warning" ><i class="fa fa-upload"></i> Upload File</button>
