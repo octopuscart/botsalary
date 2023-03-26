@@ -17,6 +17,7 @@ if ($this->user_type == 'Admin') {
             "Create Salary" => site_url("Salary/selectEmployee"),
             "Salary Report" => site_url("Salary/salaryReport"),
             "Salary Report Details" => site_url("Salary/salaryReportV2"),
+            "Annual Salary Report"=>site_url("Salary/viewAnnualSalary")
         ),
     );
     array_push($menu_control, $order_menu);
@@ -130,11 +131,12 @@ if ($this->user_type == 'WebAdmin') {
             "Create Pages" => site_url("WebControl/createPage"),
             "View Pages" => site_url("WebControl/pageList"),
             "Bot Members" => site_url("WebControl/botMembersList"),
+            "Contact List"=>site_url("WebControl/contactPageList"),
         ),
     );
     array_push($menu_control, $web_menu);
     $web_menu2 = array(
-        "title" => "Web Files",
+        "title" => "Settings",
         "icon" => "fa fa-file",
         "active" => "",
         "sub_menu" => array(

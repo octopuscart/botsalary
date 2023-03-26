@@ -64,11 +64,11 @@ class WebControl extends CI_Controller {
         $data['memberslist'] = $memberslist;
 
 //        $this->db->where('id', $id);
-        $this->db->where( "file_category", "Bot Members");
+        $this->db->where("file_category", "Bot Members");
         $query = $this->db->get("content_files");
         $filesdata = $query->result_array();
         $data["filesdata"] = $filesdata;
-        
+
         $this->load->view('WebControl/Pages/botmembers', $data);
     }
 
@@ -193,6 +193,52 @@ class WebControl extends CI_Controller {
         }
 
         $this->load->view('WebControl/fileUpload', $data);
+    }
+
+    public function contactPageList() {
+        $data = array();
+        $data['title'] = "Set Contact For Website";
+        $data['description'] = "Contact List";
+        $data['form_title'] = "Contact";
+        $data['table_name'] = "content_contact_data";
+        $data["link"] = "WebControl/contactPageList";
+        $form_attr = array(
+            "title" => array("title" => "Title", "width" => "250px", "required" => true, "place_holder" => "Title", "type" => "text", "default" => ""),
+            "sub_title" => array("title" => "Sub Title", "width" => "250px", "required" => true, "place_holder" => "Sub Title", "type" => "text", "default" => ""),
+            "address" => array("title" => "Address", "width" => "300px", "required" => true, "place_holder" => "Address", "type" => "textarea", "default" => ""),
+            "contact_no" => array("title" => "Contact No.", "width" => "250px", "required" => true, "place_holder" => "Contact No.", "type" => "text", "default" => ""),
+            "fax_no" => array("title" => "Fax No.", "width" => "250px", "required" => true, "place_holder" => "Fax No.", "type" => "text", "default" => ""),
+            "email" => array("title" => "Email", "width" => "250px", "required" => true, "place_holder" => "Email", "type" => "text", "default" => ""),
+            "image" => array("title" => "Image", "width" => "300px", "required" => true, "place_holder" => "Image", "type" => "textarea", "default" => ""),
+            "display_index" => array("title" => "Display Index", "required" => false, "place_holder" => "Display Index", "type" => "number", "default" => ""),
+        );
+        $data['form_attr'] = $form_attr;
+        $rdata = $this->Curd_model->curdForm($data);
+
+        $this->load->view('layout/curd2', $rdata);
+    }
+
+    public function announcementList() {
+        $data = array();
+        $data['title'] = "Set Announcement";
+        $data['description'] = "Announcement List";
+        $data['form_title'] = "Announcement";
+        $data['table_name'] = "content_contact_data";
+        $data["link"] = "WebControl/contactPageList";
+        $form_attr = array(
+            "title" => array("title" => "Title", "width" => "250px", "required" => true, "place_holder" => "Title", "type" => "text", "default" => ""),
+            "sub_title" => array("title" => "Sub Title", "width" => "250px", "required" => true, "place_holder" => "Sub Title", "type" => "text", "default" => ""),
+            "address" => array("title" => "Address", "width" => "300px", "required" => true, "place_holder" => "Address", "type" => "textarea", "default" => ""),
+            "contact_no" => array("title" => "Contact No.", "width" => "250px", "required" => true, "place_holder" => "Contact No.", "type" => "text", "default" => ""),
+            "fax_no" => array("title" => "Fax No.", "width" => "250px", "required" => true, "place_holder" => "Fax No.", "type" => "text", "default" => ""),
+            "email" => array("title" => "Email", "width" => "250px", "required" => true, "place_holder" => "Email", "type" => "text", "default" => ""),
+            "image" => array("title" => "Image", "width" => "300px", "required" => true, "place_holder" => "Image", "type" => "textarea", "default" => ""),
+            "display_index" => array("title" => "Display Index", "required" => false, "place_holder" => "Display Index", "type" => "number", "default" => ""),
+        );
+        $data['form_attr'] = $form_attr;
+        $rdata = $this->Curd_model->curdForm($data);
+
+        $this->load->view('layout/curd2', $rdata);
     }
 
 }

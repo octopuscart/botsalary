@@ -562,7 +562,7 @@ class Salary extends CI_Controller {
         $this->load->view('Salary/salarylist', $data);
     }
 
-    function viewEmplyeeSalaryPDF($emp_id,  $viewmode = "D") {
+    function viewEmplyeeSalaryPDF($emp_id, $viewmode = "D") {
         $data = $this->viewEmplyeeSalaryData($emp_id);
         $html = $this->load->view('Salary/salarylistReport', $data, true);
         $filename = 'salary_report_' . $data["employee"]["employee_id"] . ".pdf";
@@ -574,6 +574,69 @@ class Salary extends CI_Controller {
         $pdf->writeHTML($html);
 
         $pdf->Output($filename, $viewmode);
+    }
+
+    function annulaSalaryData() {
+        $data = array();
+        $report_title = "";
+        $location_data = $this->Curd_model->get('salary_location');
+
+        $salaryFinal = array();
+
+        foreach ($location_data as $key => $value) {
+            $value["salary"] = [];
+            $salaryFinal["" . $value["id"]] = $value;
+        }
+        $querysql = "select sl.id as location_id, se.id as id, name, employee_id, location from salary_employee as se join salary_location as sl on sl.id = se.location_id order by se.id";
+        $query = $this->db->query($querysql);
+        $employee_data = $query->result_array($query);
+        $dateData = array();
+        $fromDate = START_YEAR . "-04-01";
+        $endData = "2023-03-31";
+        
+        $report_title = "Salary Report From $fromDate to $endData";
+        foreach ($employee_data as $ekey => $evalue) {
+            $emp_id = $evalue["id"];
+            $this->db->select("gross_salary, salary_date");
+            $this->db->where("salary_date between '$fromDate' and '$endData'");
+            $this->db->where("employee_id", $emp_id);
+            $this->db->order_by("salary_date asc");
+            $query = $this->db->get("salary");
+            $salary_data = $query->result_array();
+            $salaryDataEmployee = array();
+            if (count($salary_data)) {
+                foreach ($salary_data as $dkey => $dvalue) {
+                    $wsldate = date("M-Y", strtotime($dvalue["salary_date"]));
+                    $dateData[$wsldate] = $wsldate;
+                    $salaryDataEmployee[$wsldate] = $dvalue["gross_salary"];
+                }
+            }
+
+            $evalue["salaryData"] = $salaryDataEmployee;
+            array_push($salaryFinal[$evalue["location_id"]]["salary"], $evalue);
+        }
+
+
+//        $data = $this->viewEmplyeeSalaryData($emp_id);
+        $data["salary_report"] = $salaryFinal;
+        $data["salary_date_list"] = $dateData;
+        $data["report_title"] = $report_title;
+        return $data;
+    }
+
+    function viewAnnualSalaryXls() {
+         $data = $this->annulaSalaryData();
+        $html = $this->load->view('Salary/salarylistReportAnnual', $data, true);
+        $filename = 'annual_salary_report_' . $a_date . ".xls";
+        ob_clean();
+        header("Content-Disposition: attachment; filename=$filename");
+        header("Content-Type: application/vnd.ms-excel");
+        echo $html;
+    }
+
+    function viewAnnualSalary() {
+        $data = $this->annulaSalaryData();
+        $this->load->view('Salary/annualSalary', $data);
     }
 
 }
