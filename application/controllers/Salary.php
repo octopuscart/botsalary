@@ -594,7 +594,7 @@ class Salary extends CI_Controller {
         $fromDate = START_YEAR . "-04-01";
         $endData = "2023-03-31";
         
-        $report_title = "Annual Gross Salary Report $fromDate - $endData";
+        $report_title = "Annual Gross Salary Report 2022 - 2023";
         foreach ($employee_data as $ekey => $evalue) {
             $emp_id = $evalue["id"];
             $this->db->select("gross_salary, salary_date");
