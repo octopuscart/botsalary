@@ -84,7 +84,7 @@ $this->load->view('layout/topmenu');
 
             <div class="panel-body " id='printArea'>
                 <?php
-                $this->load->view('Salary/salarylistReportAnnual', array("salary_report" => $salary_report, "salary_date_list" => $salary_date_list));
+                $this->load->view('Salary/salarylistReportAnnual', array("salary_report" => $salary_report, "salary_date_list" => $salary_date_list, "report_title"=>$report_title));
                 ?>
             </div>
         </div>

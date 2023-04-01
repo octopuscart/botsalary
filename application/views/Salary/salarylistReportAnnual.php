@@ -10,6 +10,11 @@
 </style>
 <table class="salarytable" border="1" style="color:black;font-size: 10px">
     <thead>
+        <tr>
+            <th colspan="15">
+                <?php echo $report_title;?>
+            </th>
+        </tr>
 
         <tr>
             <th>S. No.</th>
