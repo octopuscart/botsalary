@@ -139,13 +139,13 @@ $this->load->view('layout/topmenu');
                         $count = 1;
                         foreach ($filesdata as $key => $value) {
                             echo "<tr><td>$count</td>"
-                            . "<td><img src='https://bot.islamictrusthk.org/assets/photo-gallery/" . $value["file_name"] . "' height='50px' width='50px;'></td>"
+                            . "<td><img src='".  base_url() ."assets/content_files/" . $value["file_name"] . "' height='50px' width='50px;'></td>"
                             . "<td>" . $value["file_caption"] . "</td>"
                             . "<td>" . $value["file_category"] . "</td>"
                             . "<td>" . $value["datetime"] . "</td>";
                             ?>
                         <td >
-                        <button class='btn btn-warning' onclick="myFunction('<?php echo base_url(); ?>assets/photo-gallery/<?php echo $value["file_name"]; ?>')" onmouseout="outFunc()">
+                        <button class='btn btn-warning' onclick="myFunction('<?php echo base_url(); ?>assets/content_files/<?php echo $value["file_name"]; ?>')" onmouseout="outFunc()">
                             Copy Image URL
                         </button>
                         </td>
