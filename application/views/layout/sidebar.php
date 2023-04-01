@@ -136,6 +136,16 @@ if ($this->user_type == 'WebAdmin') {
     );
     array_push($menu_control, $web_menu);
     $web_menu2 = array(
+        "title" => "Photo Gallery",
+        "icon" => "fa fa-photo",
+        "active" => "",
+        "sub_menu" => array(
+            "Add Album" => site_url("WebControl/photoGalleryAlbum"),
+            "Add Photos" => site_url("WebControl/photoGallery"),
+        ),
+    );
+    array_push($menu_control, $web_menu2);
+    $web_menu2 = array(
         "title" => "Settings",
         "icon" => "fa fa-file",
         "active" => "",

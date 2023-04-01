@@ -104,7 +104,7 @@ $this->load->view('layout/topmenu');
                         <?php
                         foreach ($filescategorydata as $key => $value) {
                             ?>
-                            <option><?php echo $value["meta_value"]; ?></option>
+                            <option><?php echo $value["title"]; ?></option>
                             <?php
                         }
                         ?>
@@ -125,7 +125,7 @@ $this->load->view('layout/topmenu');
                 <h3 class="panel-title">Select Employee</h3>
             </div>
             <div class="panel-body">
-                  <table class="table" id="tableData">
+                <table class="table" id="tableData">
                     <thead>
                     <th>S. No.</th>
                     <th>Image</th>

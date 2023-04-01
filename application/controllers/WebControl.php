@@ -241,6 +241,115 @@ class WebControl extends CI_Controller {
         $this->load->view('layout/curd2', $rdata);
     }
 
+    function photoGallery() {
+        $data = array();
+        if ($this->user_type != 'WebAdmin') {
+            redirect('UserManager/not_granted');
+        }
+        $a_date = date("Ymdhis");
+
+        $query = $this->db->get("content_photo_gallery");
+        $filesdata = $query->result_array();
+        $data["filesdata"] = $filesdata;
+
+        $query = $this->db->get("content_photo_gallery_category");
+        $filescategorydata = $query->result_array();
+        $data["filescategorydata"] = $filescategorydata;
+
+        $config['upload_path'] = 'assets/photo-gallery';
+        $config['allowed_types'] = '*';
+        if (isset($_POST['submit'])) {
+            $picture = '';
+            if (!empty($_FILES['fileData']['name'])) {
+                $temp1 = rand(100, 1000000);
+                $config['overwrite'] = TRUE;
+                $ext1 = explode('.', $_FILES['fileData']['name']);
+                $ext = strtolower(end($ext1));
+                $file_newname = $a_date . $temp1 . $ext;
+                $picture = $file_newname;
+                $config['file_name'] = $file_newname;
+                //Load upload library and initialize configuration
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+                if ($this->upload->do_upload('fileData')) {
+                    $uploadData = $this->upload->data();
+                    $picture = $uploadData['file_name'];
+                } else {
+                    $picture = '';
+                }
+            }
+            $filecaption = $this->input->post("fileName");
+
+            $fileinsert = array(
+                "file_name" => $picture,
+                "file_category" => $this->input->post("fileCategory"),
+                "file_caption" => $this->input->post("fileName"),
+                "datetime" => date("Y-m-d H:i:s a"),
+                "display_index" => 0,
+            );
+            $this->db->insert("content_photo_gallery", $fileinsert);
+
+            redirect(site_url("WebControl/photoGallery"));
+        }
+
+        $this->load->view('WebControl/fileUpload2', $data);
+    }
+
+    public function photoGalleryAlbumEdit() {
+        $data = array();
+        $data['title'] = "Set Photo Album";
+        $data['description'] = "Photo Album List";
+        $data['form_title'] = "Photo Album";
+        $data['table_name'] = "content_photo_gallery";
+        $data["link"] = "WebControl/photoGalleryAlbumEdit";
+        $form_attr = array(
+            "file_name" => array("title" => "Title", "width" => "250px", "required" => true, "place_holder" => "Title", "type" => "text", "default" => ""),
+            "file_category" => array("title" => "Category", "width" => "250px", "required" => true, "place_holder" => "Year", "type" => "text", "default" => ""),
+            "file_caption" => array("title" => "Caption", "width" => "300px", "required" => true, "place_holder" => "Month", "type" => "text", "default" => ""),
+            "datetime" => array("title" => "Date Time", "required" => false, "place_holder" => "Display Index", "type" => "number", "default" => ""),
+            "display_index" => array("title" => "Display Index", "required" => false, "place_holder" => "Display Index", "type" => "number", "default" => ""),
+        );
+        $data['form_attr'] = $form_attr;
+        $rdata = $this->Curd_model->curdForm($data);
+
+        $this->load->view('layout/curd2', $rdata);
+    }
+
+    public function photoGalleryAlbum() {
+        $data = array();
+        $data['title'] = "Set Photo Album";
+        $data['description'] = "Photo Album List";
+        $data['form_title'] = "Photo Album";
+        $data['table_name'] = "content_photo_gallery_category";
+        $data["link"] = "WebControl/photoGalleryAlbum";
+        $form_attr = array(
+            "title" => array("title" => "Title", "width" => "250px", "required" => true, "place_holder" => "Title", "type" => "text", "default" => ""),
+            "year" => array("title" => "Year", "width" => "250px", "required" => true, "place_holder" => "Year", "type" => "text", "default" => ""),
+            "month" => array("title" => "Month", "width" => "300px", "required" => true, "place_holder" => "Month", "type" => "text", "default" => ""),
+            "display_index" => array("title" => "Display Index", "required" => false, "place_holder" => "Display Index", "type" => "number", "default" => ""),
+        );
+        $data['form_attr'] = $form_attr;
+        $rdata = $this->Curd_model->curdForm($data);
+
+        $this->load->view('layout/curd2', $rdata);
+    }
+
+    function dbinsert() {
+        $rhingra = ["SANY0013.JPG", "SANY0036.JPG", "SANY0048.JPG", "SANY0056.JPG", "SANY0080.JPG",
+            "SANY0023.JPG", "SANY0037.JPG", "SANY0051.JPG", "SANY0058.JPG"];
+        foreach ($rhingra as $key => $value) {
+            echo $value;
+            $fileinsert = array(
+                "file_name" => $value,
+                "file_category" => "3",
+                "file_caption" => "China National Day Celebration 2016 by HK Muslims $key",
+                "datetime" => date("Y-m-d H:i:s a"),
+                "display_index" => $key
+            );
+//            $this->db->insert("content_photo_gallery", $fileinsert);
+        }
+    }
+
 }
 
 ?>
