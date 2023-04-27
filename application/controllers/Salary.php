@@ -39,6 +39,7 @@ class Salary extends CI_Controller {
                 $query = $this->db->get("salary");
                 $salary_data = $query->result_array();
                 $data["salary"] = $salary_data;
+                $data["employee"] = $this->Curd_model->get_single2('salary_employee', $employee_id);
             }
             $this->load->view('Salary/salarylist', $data);
         }
@@ -593,7 +594,7 @@ class Salary extends CI_Controller {
         $dateData = array();
         $fromDate = START_YEAR . "-04-01";
         $endData = "2023-03-31";
-        
+
         $report_title = "Annual Gross Salary Report 2022 - 2023";
         foreach ($employee_data as $ekey => $evalue) {
             $emp_id = $evalue["id"];
@@ -625,7 +626,7 @@ class Salary extends CI_Controller {
     }
 
     function viewAnnualSalaryXls() {
-         $data = $this->annulaSalaryData();
+        $data = $this->annulaSalaryData();
         $html = $this->load->view('Salary/salarylistReportAnnual', $data, true);
         $filename = 'annual_salary_report_' . $a_date . ".xls";
         ob_clean();
