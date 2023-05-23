@@ -139,6 +139,74 @@ class Salary extends CI_Controller {
         $this->load->view('layout/curd', $data);
     }
 
+    public function employeeLogin() {
+        $querysql = "select se.id as id, name, email, employee_id, location from salary_employee as se join salary_location as sl on sl.id = se.location_id order by sl.id";
+        $query = $this->db->query($querysql);
+        $employee_data = $query->result_array($query);
+        $employee_list = [];
+        foreach ($employee_data as $ekey => $evalue) {
+            $empdata = $evalue;
+            $email = ($evalue['email']);
+            $this->db->where("email", $email);
+            $query = $this->db->get("admin_users");
+            $admindata = $query->row_array();
+            if ($admindata) {
+                $empdata["password"] = $admindata["password2"];
+            } else {
+                $empdata["password"] = "";
+            }
+            array_push($employee_list, $empdata);
+        }
+        $data["employee"] = $employee_list;
+        if (isset($_POST["updatepass"])) {
+            $emp_id = $this->input->post("emp_id");
+            $emp_email = $this->input->post("emp_email");
+            $emp_name = $this->input->post("emp_name");
+            if ($emp_email) {
+                $mail_id = $emp_email;
+                $this->db->where('email', $emp_email);
+                $query = $this->db->get("admin_users");
+                $checkuserpre = $query->row();
+                $otpcheck = rand(1000000, 9999999);
+                print_r($checkuserpre);
+
+                if ($checkuserpre) {
+                    $user_id = $checkuserpre->id;;
+                    $this->db->set(array('password' => md5($otpcheck),
+                        'password2' => $otpcheck));
+                    $this->db->where('id', $user_id);
+                    $this->db->update('admin_users');
+                    $user_id = $user_id;
+                } else {
+
+                    $userarray = array(
+                        'first_name' => $emp_name,
+                        'last_name' => "",
+                        'email' => $mail_id,
+                        'password' => md5($otpcheck),
+                        'password2' => $otpcheck,
+                        'profession' => "",
+                        "contact_no" => "",
+                        'country' => "",
+                        'gender' => "",
+                        'birth_date' => "",
+                        'user_type' => "Employee",
+                        'registration_datetime' => date("Y-m-d h:i:s A")
+                    );
+                    $this->db->insert('admin_users', $userarray);
+                    $user_id = $this->db->insert_id();
+
+                    $this->db->set('user_id', $user_id);
+                    $this->db->where('id', $emp_id);
+                    $this->db->update('salary_employee');
+                }
+            } 
+            redirect("Salary/employeeLogin");
+        }
+
+        $this->load->view('Salary/employeePassword', $data);
+    }
+
     public function employee() {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
