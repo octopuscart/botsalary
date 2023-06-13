@@ -63,7 +63,7 @@ $this->load->view('layout/topmenu');
 
                                             <?php
                                         } else {
-                                            if (isset(($fvalue['type']))) {
+                                            if (isset($fvalue['type'])) {
                                                 switch ($fvalue['type']) {
                                                     case "textarea":
                                                         ?>
