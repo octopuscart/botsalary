@@ -44,7 +44,7 @@ define('SEO_DESC', $configuration['seo_desc']);
 
 define('HEADERCSS', $globleConnectTheme['style_css']);
 
-define('START_YEAR', "2022");
+define('START_YEAR', "2023");
 
 
 
