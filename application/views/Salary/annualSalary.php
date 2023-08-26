@@ -52,8 +52,16 @@ $this->load->view('layout/topmenu');
                     <label class="form-label col-form-label col-lg-2"><b>Financial Report</b><br/><small>Click on Calendar Icon</small></label>
                     <div class="col-lg-4">
                         <div class="input-group date" >
-                            <select class="form-control" name="entry_date">
-                                <option value="2023-04-01">2022-2023</option>
+                            <select class="form-control" name="startYear">
+                                <?php
+                                
+                                for ($yr = 2021; $yr <= START_YEAR; $yr++) {
+                                    $sYear = $yr;
+                                    $eYear = $yr + 1;
+                              
+                                    ?>
+                                <option value="<?php echo $sYear;?>" <?php echo $sYear == $startYear ?'selected':'' ?>><?php echo $sYear;?>-<?php echo $eYear;?></option>
+                                <?php } ?>
                             </select>
                         </div>
                     </div>
@@ -66,7 +74,7 @@ $this->load->view('layout/topmenu');
                             <i class="fa fa-print"></i>   PRINT REPORT
                         </button>
 
-                        <a class="btn btn-success" href="<?php echo site_url("Salary/viewAnnualSalaryXls")?>">
+                        <a class="btn btn-success" href="<?php echo site_url("Salary/viewAnnualSalaryXls?startYear=$startYear") ?>">
                             <i class="fa fa-print"></i>   EXPORT XLS
                         </a>
                     </div>
@@ -84,7 +92,7 @@ $this->load->view('layout/topmenu');
 
             <div class="panel-body " id='printArea'>
                 <?php
-                $this->load->view('Salary/salarylistReportAnnual', array("salary_report" => $salary_report, "salary_date_list" => $salary_date_list, "report_title"=>$report_title));
+                $this->load->view('Salary/salarylistReportAnnual', array("salary_report" => $salary_report, "salary_date_list" => $salary_date_list, "report_title" => $report_title));
                 ?>
             </div>
         </div>
@@ -97,13 +105,7 @@ $this->load->view('layout/topmenu');
 
 
 <script>
-<?php
-$time = strtotime($select_month);
-$entry_month = date('m', $time);
-$entry_year = date('Y', $time);
-?>
-    var entry_month = "<?php echo $entry_month; ?>";
-    var entry_year = "<?php echo $entry_year; ?>";
+
 </script>
 
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-daterangepicker/moment.js"></script>

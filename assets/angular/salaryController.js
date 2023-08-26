@@ -36,6 +36,7 @@ Admin.controller('salaryController', function ($scope, $http, $filter, $timeout)
 
     $scope.calculateSalary = function () {
         var salary = $scope.salaryData.basic_salary - $scope.salaryData.duduction;
+        console.log(salary, "base salary");
         var allowncempf_y = 0;
         var allowncempf_n = 0;
         for (allwanceindex in $scope.salaryData.allowances) {
@@ -55,35 +56,32 @@ Admin.controller('salaryController', function ($scope, $http, $filter, $timeout)
 
         var grosssalary = salary + allowncempf_y + allowncempf_n;
         $scope.salaryData.gross_salary = (grosssalary).toFixed(2);
+        var mpf_salary = salary+allowncempf_y;
 
         var mpf_employee = (mpf_deductable_salary * 0.05);
         var mpf_employer = (mpf_deductable_salary * 0.05);
         $scope.salaryData.mpf_employee = (mpf_deductable_salary * 0.05).toFixed(2);
 
-        if (grosssalary > 0 & grosssalary < 7101) {
+        if (mpf_salary > 0 & grosssalary <= 7000) {
             mpf_employee = 0;
         }
-        if (grosssalary > 30000) {
+        console.log(mpf_salary, "gress salary");
+        if (mpf_salary >= 30000) {
             mpf_employee = 1500;
             mpf_employer = 1500;
         }
 
-        if (grosssalary == 0) {
+        console.log(mpf_employee, mpf_employer, "mpf");
+        if (mpf_salary == 0) {
             mpf_employee = 0;
             mpf_employer = 0;
         }
-        if (employee_age > 64) {
+        if (employee_age >= 65) {
             mpf_employee = 0;
             mpf_employer = 0;
-
         }
         $scope.salaryData.mpf_employee = (mpf_employee).toFixed(2);
         $scope.salaryData.gross_salary = (grosssalary).toFixed(2);
-
-
-
-
-
 
         $scope.salaryData.net_salary = ((mpf_deductable_salary - (mpf_employee + $scope.salaryData.other_duduction)) + allowncempf_n).toFixed(2);
  

@@ -645,7 +645,7 @@ class Salary extends CI_Controller {
         $pdf->Output($filename, $viewmode);
     }
 
-    function annulaSalaryData() {
+    function annulaSalaryData($startYear) {
         $data = array();
         $report_title = "";
         $location_data = $this->Curd_model->get('salary_location');
@@ -660,10 +660,12 @@ class Salary extends CI_Controller {
         $query = $this->db->query($querysql);
         $employee_data = $query->result_array($query);
         $dateData = array();
-        $fromDate = START_YEAR . "-04-01";
-        $endData = "2023-03-31";
+        $fromDate = $startYear . "-04-01";
+        $startYear = $startYear;
+        $endYear = $startYear+1;
+        $endData =  "$endYear-03-31";
 
-        $report_title = "Annual Gross Salary Report 2022 - 2023";
+        $report_title = "Annual Gross Salary Report $startYear - $endData";
         foreach ($employee_data as $ekey => $evalue) {
             $emp_id = $evalue["id"];
             $this->db->select("gross_salary, salary_date");
@@ -694,7 +696,8 @@ class Salary extends CI_Controller {
     }
 
     function viewAnnualSalaryXls() {
-        $data = $this->annulaSalaryData();
+        $startYear = isset($_GET["startYear"]) ? $_GET["startYear"] : START_YEAR;
+        $data = $this->annulaSalaryData($startYear);
         $html = $this->load->view('Salary/salarylistReportAnnual', $data, true);
         $filename = 'annual_salary_report_' . $a_date . ".xls";
         ob_clean();
@@ -704,7 +707,9 @@ class Salary extends CI_Controller {
     }
 
     function viewAnnualSalary() {
-        $data = $this->annulaSalaryData();
+        $startYear = isset($_GET["startYear"]) ? $_GET["startYear"] : START_YEAR;
+        $data = $this->annulaSalaryData($startYear);
+        $data["startYear"] = $startYear;
         $this->load->view('Salary/annualSalary', $data);
     }
 
