@@ -67,7 +67,7 @@
     </tr>
     <tr style='border-bottom: 1px solid #eeeeee;    height: 45px;'>
         <td></td>
-        <td>Amount Booked To Account
+        <td>Amount Banked To Account:
         </td>
         <td style='border-bottom-style: double;'><b>{{salaryData.net_salary}}</b></td>
     </tr>
