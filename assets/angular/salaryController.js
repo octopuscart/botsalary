@@ -62,7 +62,7 @@ Admin.controller('salaryController', function ($scope, $http, $filter, $timeout)
         var mpf_employer = (mpf_deductable_salary * 0.05);
         $scope.salaryData.mpf_employee = (mpf_deductable_salary * 0.05).toFixed(2);
 
-        if (mpf_salary > 0 & grosssalary <= 7000) {
+        if (mpf_salary > 0 & grosssalary < 7100) {
             mpf_employee = 0;
         }
         console.log(mpf_salary, "gress salary");
