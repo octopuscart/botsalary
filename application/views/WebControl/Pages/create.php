@@ -37,7 +37,7 @@ $this->load->view('layout/topmenu');
                 <div class="p-30  bg-white">
 
                     <!-- begin email form -->
-                    <form action="" method="get" class="row" >
+                    <form action="" method="post" class="row" >
                         <!-- begin email to -->
 
 
