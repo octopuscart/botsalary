@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class WebControl extends CI_Controller {
+class PageControl extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -35,10 +35,10 @@ class WebControl extends CI_Controller {
             );
             $this->db->where('id', $id);
             $this->db->update("content_pages", $content_pages);
-            redirect("WebControl/editPage/$id");
+            redirect("PageControl/editPage/$id");
         }
 
-        $this->load->view('WebControl/Pages/create', $data);
+        $this->load->view('PageControl/create', $data);
     }
 
 }
