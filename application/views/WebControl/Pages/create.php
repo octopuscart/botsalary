@@ -76,7 +76,7 @@ $this->load->view('layout/topmenu');
                         <div class="m-b-15 ">
 
                             <label class="control-label">Content:</label>
-                            <textarea class=" form-control ckeditor"  name="content" id="pageContent"><?php echo $pageobj["content"]; ?></textarea>
+                            <textarea class=" form-control "  name="content" id="pageContent"><?php echo $pageobj["content"]; ?></textarea>
                             <input type="hidden" name="pageId" id="pageId" value="<?php echo $pageId;?>">
                         </div>
                         <div class="m-b-15 col-md-12">
