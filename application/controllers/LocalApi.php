@@ -153,7 +153,7 @@ class LocalApi extends REST_Controller {
         $this->response($systemlog);
     }
 
-   public function pageUpdate_post() {
+   public function pageUpdate_get() {
         header('Content-type: application/json');
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Methods: GET");

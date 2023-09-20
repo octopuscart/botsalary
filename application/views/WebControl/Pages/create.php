@@ -194,7 +194,7 @@ event.preventDefault();
         $.ajax({
 	            url: "<?php echo site_url('LocalApi/pageUpdate'); ?>",
 	            data: $("#update-form").serialize(),
-	            type: "post",
+	            type: "get",
 	            async: false,
 	            dataType: 'json',
 	            success: function(response){
