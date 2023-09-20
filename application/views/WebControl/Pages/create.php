@@ -37,7 +37,7 @@ $this->load->view('layout/topmenu');
                 <div class="p-30  bg-white">
 
                     <!-- begin email form -->
-                    <form action="<?php echo site_url("WebControl/editPage/$id")?>" method="post" class="row" >
+                    <form action="" method="get" class="row" >
                         <!-- begin email to -->
 
 
