@@ -25,31 +25,8 @@ class WebControl extends CI_Controller {
         $query = $this->db->get('content_pages');
         $data["operation"] = "edit";
         $data["pageId"] = "edit";
-        $metaDataList = [];
-        if ($query) {
-            $pageobj = $query->row_array();
-            $this->db->where('page_id', $id);
-            $this->db->where('meta_key', "side_page_key_id");
-            $query = $this->db->get("content_page_meta");
-            $contentDataMeta = $query->result_array();
-            if ($contentDataMeta) {
-                foreach ($contentDataMeta as $key => $value) {
-                    $this->db->where('id', $value["meta_value"]);
-                    $query = $this->db->get("content_pages");
-                    $contentMetaData = $query->row_array();
-                    array_push($metaDataList, $contentMetaData);
-                }
-            }
-        } else {
-            $pageobj = array("title" => "", "content" => "", "uri" => "");
-        }
-        $componentPageDataList = [];
-        $this->db->where('page_type', "sidebar");
-        $query = $this->db->get("content_pages");
-        $contentPageData = $query->result_array();
-        $data["pageData"] = $contentPageData;
+        $pageobj = $query->row_array();
 
-        $data["metaData"] = $metaDataList;
         $data["pageobj"] = $pageobj;
         if (isset($_POST["update_data"])) {
             $content_pages = array(
@@ -60,17 +37,7 @@ class WebControl extends CI_Controller {
             $this->db->update("content_pages", $content_pages);
             redirect("WebControl/editPage/$id");
         }
-        if (isset($_POST["add_component"])) {
-            $content_pages = array(
-                "page_id" => $id,
-                "meta_key" => "side_page_key_id",
-                "meta_value" => $this->input->post("component_id")
-            );
-            $this->db->insert("content_page_meta", $content_pages);
-            $last_id = $this->db->insert_id();
 
-            redirect("WebControl/editPage/$id");
-        }
         $this->load->view('WebControl/Pages/create', $data);
     }
 
