@@ -37,7 +37,7 @@ $this->load->view('layout/topmenu');
                 <div class="p-30  bg-white">
 
                     <!-- begin email form -->
-                    <form action="" method="post" class="row" enctype="multipart/form-data">
+                    <form action="" method="post" class="row" >
                         <!-- begin email to -->
 
 
@@ -73,8 +73,12 @@ $this->load->view('layout/topmenu');
                             <br/>
                             <!-- begin email content -->
                         <?php } ?>
-                            <textarea class=" form-control" name="content" ><?php echo $pageobj["content"]; ?></textarea>
+                        <div class="m-b-15 ">
 
+                            <label class="control-label">Content:</label>
+                            <textarea class=" form-control ckeditor" novalidate name="content" ><?php echo $pageobj["content"]; ?></textarea>
+
+                        </div>
                         <div class="m-b-15 col-md-12">
                             <!-- end email content -->
                             <button type="submit" name="update_data" class="btn btn-primary p-l-40 p-r-40">Save Page</button></div>
@@ -86,84 +90,78 @@ $this->load->view('layout/topmenu');
         </div>
         <!-- end vertical-box-column -->
     </div>
-    <div class="m-b-15 ">
-
-        <label class="control-label">Content:</label>
-        <textarea class=" form-control ckeditor" novalidate name="content" ><?php echo $pageobj["content"]; ?></textarea>
-
-    </div>
     <div class="vertical-box">
         <?php if ($operation == "edit") { ?>
-            <!-- begin vertical-box-column -->
-            <div class="vertical-box-column">
-                <!-- begin wrapper -->
-                <div class="wrapper ">
-                    <div class="p-30  bg-white row">
-                        <form action="#" method="post" >
-                            <div class="well well-sm row">
-                                <div class="col-md-6">
-                                    <label class="control-label"> Page Type</label>
-                                    <div class="m-b-15">
-                                        <select  class="form-control "   name="component_id" required="" >
-                                            <?php
-                                            $options = array("main" => "Main Page", "sidebar" => "Side Bar Component");
-                                            foreach ($pageData as $pkey => $pvalue) {
-                                                $page_id = $pvalue["id"];
-                                                $pageTitle = $pvalue["title"];
-                                                echo "<option value='$page_id'>$pageTitle</option>";
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="control-label"> &nbsp;</label>
-                                    <div class="m-b-15">
-                                        <button type="submit" class="btn btn-success" name="add_component" value="">Add Component</button>
-                                    </div>
+        <!-- begin vertical-box-column -->
+        <div class="vertical-box-column">
+            <!-- begin wrapper -->
+            <div class="wrapper ">
+                <div class="p-30  bg-white row">
+                    <form action="#" method="post" >
+                        <div class="well well-sm row">
+                            <div class="col-md-6">
+                                <label class="control-label"> Page Type</label>
+                                <div class="m-b-15">
+                                    <select  class="form-control "   name="component_id" required="" >
+                                        <?php
+                                        $options = array("main" => "Main Page", "sidebar" => "Side Bar Component");
+                                        foreach ($pageData as $pkey => $pvalue) {
+                                            $page_id = $pvalue["id"];
+                                            $pageTitle = $pvalue["title"];
+                                            echo "<option value='$page_id'>$pageTitle</option>";
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
                             </div>
-                        </form>
-                        <div class="table-responsive col-md-12">
-
-                            <table id="user" class="table table-bordered table-striped" >
-
-                                <tbody>
-
-                                    <?php
-                                    foreach ($metaData as $key => $value) {
-                                        ?>
-                                        <tr>
-                                            <td><?php echo $key + 1; ?></td>
-                                            <td>
-                                                <?php echo $value["title"]; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $value["uri"]; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $value["page_type"]; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $value["template"]; ?>
-                                            </td>
-                                            <td>
-                                                <a href="<?php echo site_url("WebControl/editPage/" . $value["id"]) ?>"  class="btn btn-warning">Update Page</a>
-                                            </td>
-                                        </tr>
-                                        <?php
-                                    }
-                                    ?>
-
-                                </tbody>
-                            </table>
+                            <div class="col-md-6">
+                                <label class="control-label"> &nbsp;</label>
+                                <div class="m-b-15">
+                                    <button type="submit" class="btn btn-success" name="add_component" value="">Add Component</button>
+                                </div>
+                            </div>
                         </div>
+                    </form>
+                    <div class="table-responsive col-md-12">
+
+                        <table id="user" class="table table-bordered table-striped" >
+
+                            <tbody>
+
+                                <?php
+                                foreach ($metaData as $key => $value) {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $key + 1; ?></td>
+                                        <td>
+                                            <?php echo $value["title"]; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $value["uri"]; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $value["page_type"]; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $value["template"]; ?>
+                                        </td>
+                                        <td>
+                                            <a href="<?php echo site_url("WebControl/editPage/" . $value["id"]) ?>"  class="btn btn-warning">Update Page</a>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <!-- end wrapper -->
             </div>
-            <!-- end vertical-box-column -->
-        <?php } ?>
+            <!-- end wrapper -->
+        </div>
+        <!-- end vertical-box-column -->
+          <?php } ?>
     </div>
     <!-- end vertical-box -->
 </div>
