@@ -121,7 +121,7 @@ class WebControl extends CI_Controller {
         if (isset($_POST["update_data"])) {
             $content_pages = array(
                 "title" => $this->input->post("title"),
-                "content" =>htmlspecialchars($this->input->post('content', FALSE), ENT_QUOTES, 'UTF-8'),
+                "content" => $_POST['content'],
             );
             $this->db->where('id', $id);
             $this->db->update("content_pages", $content_pages);
