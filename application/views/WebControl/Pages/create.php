@@ -37,7 +37,7 @@ $this->load->view('layout/topmenu');
                 <div class="p-30  bg-white">
 
                     <!-- begin email form -->
-                    <form action="" method="post" class="row" >
+                    <form action="<?php echo site_url("WebControl/editPage/$id")?>" method="post" class="row" >
                         <!-- begin email to -->
 
 
@@ -76,7 +76,7 @@ $this->load->view('layout/topmenu');
                         <div class="m-b-15 ">
 
                             <label class="control-label">Content:</label>
-                            <textarea class=" form-control " novalidate name="content" ><?php echo $pageobj["content"]; ?></textarea>
+                            <textarea class=" form-control ckeditor" novalidate name="content" ><?php echo $pageobj["content"]; ?></textarea>
 
                         </div>
                         <div class="m-b-15 col-md-12">
