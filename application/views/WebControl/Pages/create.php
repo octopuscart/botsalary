@@ -76,7 +76,7 @@ $this->load->view('layout/topmenu');
                         <div class="m-b-15 ">
 
                             <label class="control-label">Content:</label>
-                            <textarea class=" form-control texteditor"  name="content" ><?php echo $pageobj["content"]; ?></textarea>
+                            <textarea class=" form-control texteditor"   name="content" ><?php echo $pageobj["content"]; ?></textarea>
 
                         </div>
                         <div class="m-b-15 col-md-12">
@@ -172,7 +172,6 @@ $this->load->view('layout/topmenu');
 $this->load->view('layout/footer');
 ?>
 
-<script src="<?php echo base_url(); ?>assets/plugins/ckeditor/ckeditor.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/lib/js/wysihtml5-0.3.0.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/form-wysiwyg.demo.min.js"></script>
