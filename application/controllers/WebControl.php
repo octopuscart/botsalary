@@ -92,6 +92,7 @@ class WebControl extends CI_Controller {
         $this->db->where('id', $id);
         $query = $this->db->get('content_pages');
         $data["operation"] = "edit";
+        $data["pageId"] =$id;
         $metaDataList = [];
         if ($query) {
             $pageobj = $query->row_array();

@@ -37,14 +37,14 @@ $this->load->view('layout/topmenu');
                 <div class="p-30  bg-white">
 
                     <!-- begin email form -->
-                    <form action="" method="post" class="row" >
+                    <form action="" method="post" class="row" id="update-form" >
                         <!-- begin email to -->
 
 
                         <!--tags-->
                         <label class="control-label"> Title</label>
                         <div class="m-b-15">
-                            <input  class="form-control "   name="title" required="" value="<?php echo $pageobj["title"]; ?>"/>
+                            <input  class="form-control " id="pagetitle"  name="title" required="" value="<?php echo $pageobj["title"]; ?>"/>
                         </div>
                         <br/>
 
@@ -76,12 +76,12 @@ $this->load->view('layout/topmenu');
                         <div class="m-b-15 ">
 
                             <label class="control-label">Content:</label>
-                            <textarea class=" form-control texteditor"   name="content" ><?php echo $pageobj["content"]; ?></textarea>
-
+                            <textarea class=" form-control ckeditor"  name="content" id="pageContent"><?php echo $pageobj["content"]; ?></textarea>
+                            <input type="hidden" name="pageId" id="pageId" value="<?php echo $pageId;?>">
                         </div>
                         <div class="m-b-15 col-md-12">
                             <!-- end email content -->
-                            <button type="submit" name="update_data" class="btn btn-primary p-l-40 p-r-40">Save Page</button></div>
+                            <button type="submit" name="update_data" id="udpate_data" class="btn btn-primary p-l-40 p-r-40">Save Page</button></div>
                     </form>
                     <!-- end email form -->
                 </div>
@@ -172,14 +172,47 @@ $this->load->view('layout/topmenu');
 $this->load->view('layout/footer');
 ?>
 
+<script src="<?php echo base_url(); ?>assets/plugins/ckeditor/ckeditor.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/lib/js/wysihtml5-0.3.0.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/form-wysiwyg.demo.min.js"></script>
 
 
 <script>
+$(document).ready(function(){
+			$("#update-form").submit(function(event) {
+event.preventDefault();
+				var data = $("#update-form").serialize();
+				var url = "<?php echo site_url('LocalApi/pageUpdate'); ?>";
 
-  
-$('.texteditor').wysihtml5();
+				// Syntax
+				// $(selector).post(URL,data,function(data,status,xhr),dataType);
+     
+        CKEDITOR.instances["pageContent"].updateElement();
+        
+        
+        $.ajax({
+	            url: "<?php echo site_url('LocalApi/pageUpdate'); ?>",
+	            data: $("#update-form").serialize(),
+	            type: "post",
+	            async: false,
+	            dataType: 'json',
+	            success: function(response){
+	              
+	              
+	                alert('Successfully submitted');
+                       window.location.reload();
+	              
+	              },
+	           error: function()
+	           {
+	            alert("error");
+	           }
+          });
+					
+                                        });
+		}); 
+
+
 </script>
 

@@ -42,7 +42,6 @@ class LocalApi extends REST_Controller {
             $this->db->set($data);
             $this->db->where("id", $pk_id);
             $this->db->update("admin_users", $data);
-           
         }
     }
 
@@ -152,6 +151,20 @@ class LocalApi extends REST_Controller {
         $query = $this->db->get('system_log');
         $systemlog = $query->result_array();
         $this->response($systemlog);
+    }
+
+    function pageUpdate_post() {
+        if ($this->checklogin) {
+
+            $content_pages = array(
+                "title" => $this->post("title"),
+                "content" => $this->post("content"),
+            );
+             $this->db->set($content_pages);
+            $this->db->where('id', $this->post("pageId"));
+            $this->db->update("content_pages");
+            $this->response(array("status"=>200));
+        }
     }
 
 }
