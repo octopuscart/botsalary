@@ -154,6 +154,11 @@ class LocalApi extends REST_Controller {
     }
 
     function pageUpdate_post() {
+        header('Content-type: application/json');
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Methods: GET");
+        header("Access-Control-Allow-Methods: GET, OPTIONS");
+        header("Access-Control-Allow-Headers: Content-Type, Content-Length, Accept-Encoding");
         if ($this->checklogin) {
 
             $content_pages = array(
