@@ -37,7 +37,7 @@ if (strpos($baselink, '192.168')) {
     $baselinkmain = 'http://' . $baselinkurl . '/salary';
 
 } else {
-    $baselinkmain = 'https://' . $baselinkurl . '/';
+    $baselinkmain = "https://".$_SERVER['HTTP_HOST'];
 }
 
 $config['base_url'] = $baselinkmain;
