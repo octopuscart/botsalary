@@ -85,7 +85,7 @@ class WebControl extends CI_Controller {
         $this->load->view('WebControl/Pages/list', $data);
     }
 
-    public function editPage($id = 0) {
+    public function editContentPage($id = 0) {
         if ($this->user_type != 'WebAdmin') {
             redirect('UserManager/not_granted');
         }
@@ -126,7 +126,7 @@ class WebControl extends CI_Controller {
             );
             $this->db->where('id', $id);
             $this->db->update("content_pages", $content_pages);
-            redirect("WebControl/editPage/$id");
+            redirect("WebControl/editContentPage/$id");
         }
         if (isset($_POST["add_component"])) {
             $content_pages = array(
@@ -137,7 +137,7 @@ class WebControl extends CI_Controller {
             $this->db->insert("content_page_meta", $content_pages);
             $last_id = $this->db->insert_id();
 
-            redirect("WebControl/editPage/$id");
+            redirect("WebControl/editContentPage/$id");
         }
         $this->load->view('WebControl/Pages/create', $data);
     }

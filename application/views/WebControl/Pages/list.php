@@ -53,7 +53,7 @@ $this->load->view('layout/topmenu');
                                     <?php echo $value["template"]; ?>
                                 </td>
                                 <td>
-                                    <a href="<?php echo site_url("WebControl/editPage/" . $value["id"]) ?>"  class="btn btn-warning">Update Page</a>
+                                    <a href="<?php echo site_url("WebControl/editContentPage/" . $value["id"]) ?>"  class="btn btn-warning">Update Page</a>
                                 </td>
                             </tr>
                             <?php
