@@ -17,26 +17,27 @@ class PageControl extends CI_Controller {
         }
     }
 
-    public function editPage() {
-        $id = 26;
+    public function editPage($id=0) {
+  
         if ($this->user_type != 'WebAdmin') {
             redirect('UserManager/not_granted');
         }
         $this->db->where('id', $id);
         $query = $this->db->get('content_pages');
         $data["operation"] = "edit";
-        $data["pageId"] = "edit";
+        $data["pageId"] = "$id";
         $pageobj = $query->row_array();
 
         $data["pageobj"] = $pageobj;
+        $data["redirecturl"] = site_url("PageControl/editPage/$id"); 
         if (isset($_POST["update_data"])) {
-            $content_pages = array(
-                "title" => $this->input->post("title"),
-                "content" => $this->input->post("content"),
-            );
-            $this->db->where('id', $id);
-            $this->db->update("content_pages", $content_pages);
-            redirect("PageControl/editPage/$id");
+//            $content_pages = array(
+//                "title" => $this->input->post("title"),
+//                "content" => $this->input->post("content"),
+//            );
+//            $this->db->where('id', $id);
+//            $this->db->update("content_pages", $content_pages);
+//            redirect("PageControl/editPage/$id");
         }
 
         $this->load->view('PageControl/create', $data);

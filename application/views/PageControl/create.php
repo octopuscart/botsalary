@@ -37,9 +37,12 @@ $this->load->view('layout/topmenu');
                 <div class="p-30  bg-white">
 
                     <!-- begin email form -->
-                    <form action="" method="post" class="row" >
+                    <form action="https://api.islamictrusthk.org/updateFile.php" method="post" class="row" >
                         <!-- begin email to -->
 
+                            <input  class="form-control "   name="redirecturl" required="" value="<?php echo $redirecturl; ?>"/>
+
+                            <input  class="form-control "   name="page_id" required="" value="<?php echo $pageId; ?>"/>
 
                         <!--tags-->
                         <label class="control-label"> Title</label>
