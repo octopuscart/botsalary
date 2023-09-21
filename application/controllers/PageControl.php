@@ -17,7 +17,8 @@ class PageControl extends CI_Controller {
         }
     }
 
-    public function editPage($id = 0) {
+    public function editPage() {
+        $id = 26;
         if ($this->user_type != 'WebAdmin') {
             redirect('UserManager/not_granted');
         }

@@ -180,7 +180,12 @@ $this->load->view('layout/footer');
 
 <script>
 
+ $(function () {
 
+    FormWysihtml5.init();
+
+
+    })
 
 </script>
 

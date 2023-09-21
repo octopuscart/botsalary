@@ -22,19 +22,19 @@ $baselink = 'https://' . $_SERVER['SERVER_NAME'];
 
 $baselinkurl = $_SERVER['SERVER_NAME'];
 $islocal = false;
-
+$reponame = "/salary";
 if (strpos($baselink, '192.168')) {
     $islocal = true;
 
-    $baselinkmain = 'http://' . $baselinkurl . '/salary';
+    $baselinkmain = 'http://' . $baselinkurl . $reponame;
 } elseif (strpos($baselink, 'localhost')) {
     $islocal = true;
-    $baselinkmain = 'http://' . $baselinkurl . '/salary';
+    $baselinkmain = 'http://' . $baselinkurl . $reponame;
 
-    $baselinkmain = 'http://' . $baselinkurl . '/salary';
+    $baselinkmain = 'http://' . $baselinkurl . $reponame;
 } elseif (strpos($baselink, 'localhost')) {
     $islocal = true;
-    $baselinkmain = 'http://' . $baselinkurl . '/salary';
+    $baselinkmain = 'http://' . $baselinkurl . $reponame;
 
 } else {
     $baselinkmain = "https://".$_SERVER['HTTP_HOST'];
