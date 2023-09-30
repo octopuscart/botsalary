@@ -25,10 +25,6 @@ define('EMAIL_SENDER', $configuration['email_sender']);
 define('EMAIL_SENDER_NAME', $configuration['email_sender_name']);
 define('EMAIL_BCC', $configuration['email_bcc']);
 
-
-
-
-
 //reporting
 define('PDF_HEADER', $globleConnectReport['pdf_report_header']);
 define('EMAIL_HEADER', $globleConnectReport['email_header']);
@@ -36,35 +32,26 @@ define('EMAIL_FOOTER', $globleConnectReport['email_footer']);
 define('MESSAGE_HEADER', $globleConnectReport['message_header']);
 define('REPORT_MODE', $globleConnectReport['report_mode']);
 
-
 define('SEO_TITLE', $configuration['seo_title']);
 define('SEO_DESC', $configuration['seo_desc']);
-
-
 
 define('HEADERCSS', $globleConnectTheme['style_css']);
 
 define('START_YEAR', "2023");
 
-
-
-
-
-
 $baselink = 'http://' . $_SERVER['SERVER_NAME'];
 
 if (strpos($baselink, '192.168')) {
     $islocal = true;
-     $baselinkmainsite = 'http://' . $_SERVER['SERVER_NAME'] . $configuration['localpath']."/index.php/";;
+    $baselinkmainsite = 'http://' . $_SERVER['SERVER_NAME'] . $configuration['localpath'] . "/index.php/";
+    ;
 } elseif (strpos($baselink, 'localhost')) {
     $islocal = true;
-    $baselinkmainsite = 'http://' . $_SERVER['SERVER_NAME'] . $configuration['localpath']."/index.php/";
+    $baselinkmainsite = 'http://' . $_SERVER['SERVER_NAME'] . $configuration['localpath'] . "/index.php/";
 } else {
     $baselinkmainsite = $configuration['site_url'];
 }
 define('MAIN_WEBSITE', $baselinkmainsite);
-
-
 
 /*
   |--------------------------------------------------------------------------
@@ -148,3 +135,28 @@ defined('EXIT_USER_INPUT') OR define('EXIT_USER_INPUT', 7); // invalid user inpu
 defined('EXIT_DATABASE') OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN') OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX') OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+$apiSets = array(
+    "botMembers" => array(
+        "table" => "content_bot_members",
+        "imagefolder" => "content_files",
+        "image_field" => "image",
+        "title" => "Bot Members",
+        "foreign_key" => array(),
+        "pk" => "id",
+        "ignore_field" => array(),
+        "writable" => true,
+        "redirect_url"=>"WebControl/botMembersList",
+        "field_config" => array(
+            "image" => array(
+                "type" => "file",
+                "widget" => "imageuploaer",
+                "mime_type" => "image/*",
+                "upload_folder" => "assets/content_files",
+                "allowed_types" => 'jpg|jpeg|png|gif',
+                "url_type" => "absolute",
+            ),
+        ),
+    ),
+);
+
+define('APISET', json_encode($apiSets));

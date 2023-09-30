@@ -69,6 +69,18 @@ class WebControl extends CI_Controller {
         $filesdata = $query->result_array();
         $data["filesdata"] = $filesdata;
 
+        $current_id = $this->input->post("member_current_id");
+        $current_pos = $this->input->post("member_current_pos");
+        if ($current_id) {
+            foreach ($current_id as $idkey => $idvalue) {
+                $cpos = $current_pos[$idkey];
+                $this->db->where('id', $idvalue);
+                $this->db->update("content_bot_members", array("display_index"=>$cpos));
+            }
+            redirect("WebControl/botMembersList");
+        }
+    
+
         $this->load->view('WebControl/Pages/botmembers', $data);
     }
 
@@ -335,35 +347,35 @@ class WebControl extends CI_Controller {
     }
 
     function dbinsert() {
-        $rhingra = ["DSC_8406.jpg",   "DSC_8567.jpg",   "DSC_8686.jpg",   "DSC_8827.jpg",   "DSC_8903.jpg",   "DSC_9018.jpg",   "DSC_9071.jpg",   "DSC_9134.jpg", 
-"DSC_8453.jpg",   "DSC_8568.jpg",   "DSC_8688.jpg",   "DSC_8828.jpg",   "DSC_8904.jpg",   "DSC_9019.jpg",   "DSC_9072.jpg",   "DSC_9135.jpg", 
-"DSC_8472.jpg",   "DSC_8572.jpg",   "DSC_8689.jpg",   "DSC_8829.jpg",   "DSC_8905.jpg",   "DSC_9020.jpg",   "DSC_9074.jpg",   "DSC_9136.jpg", 
-"DSC_8473.jpg",   "DSC_8574.jpg",   "DSC_8690.jpg",   "DSC_8830.jpg",   "DSC_8906.jpg",   "DSC_9028.jpg",   "DSC_9076.jpg",   "DSC_9137.jpg", 
-"DSC_8476.jpg",   "DSC_8578.jpg",   "DSC_8691.jpg",   "DSC_8832.jpg",   "DSC_8912.jpg",   "DSC_9029.jpg",   "DSC_9077.jpg",   "DSC_9139.jpg", 
-"DSC_8477.jpg",   "DSC_8587.jpg",   "DSC_8692.jpg",   "DSC_8837.jpg",   "DSC_8913.jpg",   "DSC_9031.jpg",   "DSC_9078.jpg",   "DSC_9140.jpg", 
-"DSC_8478.jpg",   "DSC_8605.jpg",   "DSC_8697.jpg",   "DSC_8838.jpg",   "DSC_8914.jpg",   "DSC_9037.jpg",   "DSC_9082.jpg",   "DSC_9141.jpg", 
-"DSC_8479.jpg",   "DSC_8606.jpg",   "DSC_8700.jpg",   "DSC_8846.jpg",   "DSC_8916.jpg",   "DSC_9038.jpg",   "DSC_9083.jpg",   "DSC_9142.jpg", 
-"DSC_8501.jpg",   "DSC_8607.jpg",   "DSC_8733.jpg",   "DSC_8848.jpg",   "DSC_8922.jpg",   "DSC_9040.jpg",   "DSC_9098.jpg",   "DSC_9143.jpg", 
-"DSC_8515.jpg",   "DSC_8608.jpg",   "DSC_8739.jpg",   "DSC_8864.jpg",   "DSC_8933.jpg",   "DSC_9041.jpg",   "DSC_9099.jpg",   "DSC_9146.jpg", 
-"DSC_8519.jpg",   "DSC_8631.jpg",   "DSC_8740.jpg",   "DSC_8865.jpg",   "DSC_8942.jpg",   "DSC_9042.jpg",   "DSC_9100.jpg",   "DSC_9148.jpg", 
-"DSC_8520.jpg",   "DSC_8633.jpg",   "DSC_8742.jpg",   "DSC_8867.jpg",   "DSC_8943.jpg",   "DSC_9043.jpg",   "DSC_9101.jpg",   "DSC_9149.jpg", 
-"DSC_8521.jpg",   "DSC_8635.jpg",   "DSC_8745.jpg",   "DSC_8868.jpg",   "DSC_8957.jpg",   "DSC_9045.jpg",   "DSC_9102.jpg",   "DSC_9154.jpg", 
-"DSC_8522.jpg",   "DSC_8637.jpg",   "DSC_8746.jpg",   "DSC_8871.jpg",   "DSC_8958.jpg",   "DSC_9046.jpg",   "DSC_9103.jpg",   "DSC_9156.jpg", 
-"DSC_8523.jpg",   "DSC_8641.jpg",   "DSC_8747.jpg",   "DSC_8872.jpg",   "DSC_8959.jpg",   "DSC_9047.jpg",   "DSC_9104.jpg",   "DSC_9158.jpg", 
-"DSC_8524.jpg",   "DSC_8642.jpg",   "DSC_8748.jpg",   "DSC_8875.jpg",   "DSC_8960.jpg",   "DSC_9050.jpg",   "DSC_9105.jpg",   "DSC_9162.jpg", 
-"DSC_8525.jpg",   "DSC_8643.jpg",   "DSC_8797.jpg",   "DSC_8880.jpg",   "DSC_8961.jpg",   "DSC_9051.jpg",   "DSC_9106.jpg",   "DSC_9213.jpg", 
-"DSC_8527.jpg",   "DSC_8645.jpg",   "DSC_8798.jpg",   "DSC_8888.jpg",   "DSC_8962.jpg",   "DSC_9053.jpg",   "DSC_9107.jpg",   "DSC_9218.jpg", 
-"DSC_8530.jpg",   "DSC_8646.jpg",   "DSC_8799.jpg",   "DSC_8892.jpg",   "DSC_8964.jpg",   "DSC_9054.jpg",   "DSC_9109.jpg",   "DSC_9220.jpg", 
-"DSC_8531.jpg",   "DSC_8674.jpg",   "DSC_8802.jpg",   "DSC_8893.jpg",   "DSC_8971.jpg",   "DSC_9055.jpg",   "DSC_9110.jpg",   "DSC_9221.jpg", 
-"DSC_8532.jpg",   "DSC_8675.jpg",   "DSC_8806.jpg",   "DSC_8894.jpg",   "DSC_8973.jpg",   "DSC_9056.jpg",   "DSC_9114.jpg",   "DSC_9227.jpg", 
-"DSC_8538.jpg",   "DSC_8676.jpg",   "DSC_8808.jpg",   "DSC_8895.jpg",   "DSC_8974.jpg",   "DSC_9057.jpg",   "DSC_9115.jpg",   "DSC_9236.jpg", 
-"DSC_8541.jpg",   "DSC_8677.jpg",   "DSC_8810.jpg",   "DSC_8896.jpg",   "DSC_8975.jpg",   "DSC_9058.jpg",   "DSC_9122.jpg",   "DSC_9243.jpg", 
-"DSC_8542.jpg",   "DSC_8678.jpg",   "DSC_8811.jpg",   "DSC_8897.jpg",   "DSC_8994.jpg",   "DSC_9059.jpg",   "DSC_9123.jpg",   "DSC_9244.jpg", 
-"DSC_8550.jpg",   "DSC_8679.jpg",   "DSC_8812.jpg",   "DSC_8898.jpg",   "DSC_8995.jpg",   "DSC_9062.jpg",   "DSC_9124.jpg",   "DSC_9245.jpg", 
-"DSC_8551.jpg",   "DSC_8680.jpg",   "DSC_8814.jpg",   "DSC_8899.jpg",   "DSC_8996.jpg",   "DSC_9064.jpg",   "DSC_9125.jpg",   "DSC_9246.jpg", 
-"DSC_8559.jpg",   "DSC_8682.jpg",   "DSC_8815.jpg",   "DSC_8900.jpg",   "DSC_8999.jpg",   "DSC_9066.jpg",   "DSC_9128.jpg",   "DSC_9247.jpg", 
-"DSC_8561.jpg",   "DSC_8683.jpg",   "DSC_8820.jpg",   "DSC_8901.jpg",   "DSC_9014.jpg",   "DSC_9068.jpg",   "DSC_9130.jpg",   
-"DSC_8563.jpg",   "DSC_8685.jpg",   "DSC_8826.jpg",   "DSC_8902.jpg",   "DSC_9015.jpg",   "DSC_9070.jpg",   "DSC_9132.jpg", ];
+        $rhingra = ["DSC_8406.jpg", "DSC_8567.jpg", "DSC_8686.jpg", "DSC_8827.jpg", "DSC_8903.jpg", "DSC_9018.jpg", "DSC_9071.jpg", "DSC_9134.jpg",
+            "DSC_8453.jpg", "DSC_8568.jpg", "DSC_8688.jpg", "DSC_8828.jpg", "DSC_8904.jpg", "DSC_9019.jpg", "DSC_9072.jpg", "DSC_9135.jpg",
+            "DSC_8472.jpg", "DSC_8572.jpg", "DSC_8689.jpg", "DSC_8829.jpg", "DSC_8905.jpg", "DSC_9020.jpg", "DSC_9074.jpg", "DSC_9136.jpg",
+            "DSC_8473.jpg", "DSC_8574.jpg", "DSC_8690.jpg", "DSC_8830.jpg", "DSC_8906.jpg", "DSC_9028.jpg", "DSC_9076.jpg", "DSC_9137.jpg",
+            "DSC_8476.jpg", "DSC_8578.jpg", "DSC_8691.jpg", "DSC_8832.jpg", "DSC_8912.jpg", "DSC_9029.jpg", "DSC_9077.jpg", "DSC_9139.jpg",
+            "DSC_8477.jpg", "DSC_8587.jpg", "DSC_8692.jpg", "DSC_8837.jpg", "DSC_8913.jpg", "DSC_9031.jpg", "DSC_9078.jpg", "DSC_9140.jpg",
+            "DSC_8478.jpg", "DSC_8605.jpg", "DSC_8697.jpg", "DSC_8838.jpg", "DSC_8914.jpg", "DSC_9037.jpg", "DSC_9082.jpg", "DSC_9141.jpg",
+            "DSC_8479.jpg", "DSC_8606.jpg", "DSC_8700.jpg", "DSC_8846.jpg", "DSC_8916.jpg", "DSC_9038.jpg", "DSC_9083.jpg", "DSC_9142.jpg",
+            "DSC_8501.jpg", "DSC_8607.jpg", "DSC_8733.jpg", "DSC_8848.jpg", "DSC_8922.jpg", "DSC_9040.jpg", "DSC_9098.jpg", "DSC_9143.jpg",
+            "DSC_8515.jpg", "DSC_8608.jpg", "DSC_8739.jpg", "DSC_8864.jpg", "DSC_8933.jpg", "DSC_9041.jpg", "DSC_9099.jpg", "DSC_9146.jpg",
+            "DSC_8519.jpg", "DSC_8631.jpg", "DSC_8740.jpg", "DSC_8865.jpg", "DSC_8942.jpg", "DSC_9042.jpg", "DSC_9100.jpg", "DSC_9148.jpg",
+            "DSC_8520.jpg", "DSC_8633.jpg", "DSC_8742.jpg", "DSC_8867.jpg", "DSC_8943.jpg", "DSC_9043.jpg", "DSC_9101.jpg", "DSC_9149.jpg",
+            "DSC_8521.jpg", "DSC_8635.jpg", "DSC_8745.jpg", "DSC_8868.jpg", "DSC_8957.jpg", "DSC_9045.jpg", "DSC_9102.jpg", "DSC_9154.jpg",
+            "DSC_8522.jpg", "DSC_8637.jpg", "DSC_8746.jpg", "DSC_8871.jpg", "DSC_8958.jpg", "DSC_9046.jpg", "DSC_9103.jpg", "DSC_9156.jpg",
+            "DSC_8523.jpg", "DSC_8641.jpg", "DSC_8747.jpg", "DSC_8872.jpg", "DSC_8959.jpg", "DSC_9047.jpg", "DSC_9104.jpg", "DSC_9158.jpg",
+            "DSC_8524.jpg", "DSC_8642.jpg", "DSC_8748.jpg", "DSC_8875.jpg", "DSC_8960.jpg", "DSC_9050.jpg", "DSC_9105.jpg", "DSC_9162.jpg",
+            "DSC_8525.jpg", "DSC_8643.jpg", "DSC_8797.jpg", "DSC_8880.jpg", "DSC_8961.jpg", "DSC_9051.jpg", "DSC_9106.jpg", "DSC_9213.jpg",
+            "DSC_8527.jpg", "DSC_8645.jpg", "DSC_8798.jpg", "DSC_8888.jpg", "DSC_8962.jpg", "DSC_9053.jpg", "DSC_9107.jpg", "DSC_9218.jpg",
+            "DSC_8530.jpg", "DSC_8646.jpg", "DSC_8799.jpg", "DSC_8892.jpg", "DSC_8964.jpg", "DSC_9054.jpg", "DSC_9109.jpg", "DSC_9220.jpg",
+            "DSC_8531.jpg", "DSC_8674.jpg", "DSC_8802.jpg", "DSC_8893.jpg", "DSC_8971.jpg", "DSC_9055.jpg", "DSC_9110.jpg", "DSC_9221.jpg",
+            "DSC_8532.jpg", "DSC_8675.jpg", "DSC_8806.jpg", "DSC_8894.jpg", "DSC_8973.jpg", "DSC_9056.jpg", "DSC_9114.jpg", "DSC_9227.jpg",
+            "DSC_8538.jpg", "DSC_8676.jpg", "DSC_8808.jpg", "DSC_8895.jpg", "DSC_8974.jpg", "DSC_9057.jpg", "DSC_9115.jpg", "DSC_9236.jpg",
+            "DSC_8541.jpg", "DSC_8677.jpg", "DSC_8810.jpg", "DSC_8896.jpg", "DSC_8975.jpg", "DSC_9058.jpg", "DSC_9122.jpg", "DSC_9243.jpg",
+            "DSC_8542.jpg", "DSC_8678.jpg", "DSC_8811.jpg", "DSC_8897.jpg", "DSC_8994.jpg", "DSC_9059.jpg", "DSC_9123.jpg", "DSC_9244.jpg",
+            "DSC_8550.jpg", "DSC_8679.jpg", "DSC_8812.jpg", "DSC_8898.jpg", "DSC_8995.jpg", "DSC_9062.jpg", "DSC_9124.jpg", "DSC_9245.jpg",
+            "DSC_8551.jpg", "DSC_8680.jpg", "DSC_8814.jpg", "DSC_8899.jpg", "DSC_8996.jpg", "DSC_9064.jpg", "DSC_9125.jpg", "DSC_9246.jpg",
+            "DSC_8559.jpg", "DSC_8682.jpg", "DSC_8815.jpg", "DSC_8900.jpg", "DSC_8999.jpg", "DSC_9066.jpg", "DSC_9128.jpg", "DSC_9247.jpg",
+            "DSC_8561.jpg", "DSC_8683.jpg", "DSC_8820.jpg", "DSC_8901.jpg", "DSC_9014.jpg", "DSC_9068.jpg", "DSC_9130.jpg",
+            "DSC_8563.jpg", "DSC_8685.jpg", "DSC_8826.jpg", "DSC_8902.jpg", "DSC_9015.jpg", "DSC_9070.jpg", "DSC_9132.jpg",];
         foreach ($rhingra as $key => $value) {
             echo $value;
             $fileinsert = array(
@@ -376,7 +388,6 @@ class WebControl extends CI_Controller {
 //            $this->db->insert("content_photo_gallery", $fileinsert);
         }
     }
-
 }
 
 ?>

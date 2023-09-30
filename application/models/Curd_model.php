@@ -61,6 +61,62 @@ class Curd_model extends CI_Model {
         return $data;
     }
 
+    public function getApiConfig($apipath, $parent_id = 0) {
+        
+        $serviceObj = json_decode(APISET, true)[$apipath];
+    
+        $fieldsName = $this->db->list_fields($serviceObj["table"]);
+        $ignoreField = $serviceObj["ignore_field"];
+        $has_link = isset($serviceObj["child_api"]) ? true : false;
+        $writable = isset($serviceObj["writable"]) ? true : false;
+        $imageField = isset($serviceObj["image_field"]) ? $serviceObj["image_field"] : "";
+        $title = $serviceObj["title"];
+        $writelink = site_url("Services/addData/$apipath/$parent_id");
+        $redirect_url = isset($serviceObj["redirect_url"]) ? $serviceObj["redirect_url"] : "";
+        $parent_link = "";
+        if ($parent_id) {
+            $foreign_key = $serviceObj["foreign_key"];
+            $child_table = isset($serviceObj["child_api"]) ? $serviceObj["child_api"] : array();
+            $parent_table = $this->Curd_model->get_single($foreign_key["table_name"], $parent_id, $foreign_key["pk"], true);
+            $title = $title . " -> " . $parent_table[$foreign_key["title"]];
+            $parent_link_api = $foreign_key["parent_api"];
+            $parent_link = site_url("Services/tableReport/$parent_link_api");
+        }
+        $data = array(
+            "serviceObj" => $serviceObj,
+            "apipath" => $apipath,
+            "fieldsName" => $fieldsName,
+            "title" => $title,
+            "has_link" => $has_link,
+            "parent_id" => $parent_id,
+            "parent_link" => $parent_link,
+            "ignore_field" => $ignoreField,
+            "writable" => $writable,
+            "writelink" => $writelink,
+            "imageField" => $imageField,
+            "pk" => $serviceObj["pk"],
+            "redirect_url"=>$redirect_url
+        );
+        return $data;
+    }
+
+    public function generateRandomString($length = 10, $suffix = "") {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
+        }
+        return $randomString . "-" . $suffix;
+    }
+
+    public function deleteRecord($apipath, $id) {
+        $serviceObj = json_decode(APISET, true)[$apipath];
+        echo $pk_name = $serviceObj["pk"];
+        echo $id;
+        $this->db->where($pk_name, $id);
+        $this->db->delete($serviceObj["table"]);
+    }
 }
 
 ?>
