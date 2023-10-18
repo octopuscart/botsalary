@@ -324,7 +324,6 @@ class Salary extends CI_Controller {
             $mpf_date = $salarydata["mpf_date"];
             $this->setSessionsDates($salary_date, $mpf_date);
 
-            print_r($salarydata);
             $salaryinsert = array(
                 "employee_id" => $employee_id,
                 "location_id" => $employee_data["location_id"],
