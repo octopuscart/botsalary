@@ -171,7 +171,8 @@ class Salary extends CI_Controller {
                 print_r($checkuserpre);
 
                 if ($checkuserpre) {
-                    $user_id = $checkuserpre->id;;
+                    $user_id = $checkuserpre->id;
+                    ;
                     $this->db->set(array('password' => md5($otpcheck),
                         'password2' => $otpcheck));
                     $this->db->where('id', $user_id);
@@ -200,7 +201,7 @@ class Salary extends CI_Controller {
                     $this->db->where('id', $emp_id);
                     $this->db->update('salary_employee');
                 }
-            } 
+            }
             redirect("Salary/employeeLogin");
         }
 
@@ -237,6 +238,7 @@ class Salary extends CI_Controller {
             "email" => array("title" => "Email ID", "required" => false, "place_holder" => "Email ID", "type" => "text", "default" => "", "depends" => "", "width" => "150px",),
             "age" => array("title" => "Age", "required" => false, "place_holder" => "Age", "type" => "text", "default" => "", "depends" => "", "width" => "100px",),
             "location_id" => array("title" => "Location", "required" => true, "place_holder" => "Location", "type" => "select", "default" => "", "depends" => "location_data", "width" => "200px",),
+            "hk_id" => array("title" => "HK ID", "required" => true, "place_holder" => "Hk ID#", "type" => "text", "default" => "", "depends" => "", "width" => "200px",),
         );
 
         if (isset($_POST['submitData'])) {
@@ -661,8 +663,8 @@ class Salary extends CI_Controller {
         $dateData = array();
         $fromDate = $startYear . "-04-01";
         $startYear = $startYear;
-        $endYear = $startYear+1;
-        $endData =  "$endYear-03-31";
+        $endYear = $startYear + 1;
+        $endData = "$endYear-03-31";
 
         $report_title = "Annual Gross Salary Report $startYear - $endData";
         foreach ($employee_data as $ekey => $evalue) {
