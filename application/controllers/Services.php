@@ -51,6 +51,26 @@ class Services extends CI_Controller {
         }
         $this->load->view('Services/addRecord', $data);
     }
+
+    public function dbBackup() {
+        $this->load->dbutil();
+
+        $prefs = array(
+            'format' => 'zip',
+            'filename' => 'BOT'.date("Y-m-d-H-i-s"). '.sql'
+        );
+
+        $backup = & $this->dbutil->backup($prefs);
+
+        $db_name = 'BOT-backup-on-' . date("Y-m-d-H-i-s") . '.zip';
+        $save = 'reports/' . $db_name;
+
+        $this->load->helper('file');
+        write_file($save, $backup);
+
+        $this->load->helper('download');
+        force_download($db_name, $backup);
+    }
 }
 
 ?>

@@ -81,6 +81,7 @@ if ($this->user_type == 'Admin') {
             "pnl" => "break",
             "System Log" => site_url("Services/systemLogReport"),
             "Report Configuration" => site_url("Configuration/reportConfiguration"),
+            "Download Backup" => site_url("Services/dbBackup"),
         ),
     );
     array_push($menu_control, $salary_menu);
