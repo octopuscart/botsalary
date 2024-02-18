@@ -16,7 +16,7 @@ $this->load->view('layout/topmenu');
         height:350px;
     }
     .image-thumbnail{
-        height:200px;
+        height:150px;
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
@@ -29,7 +29,7 @@ $this->load->view('layout/topmenu');
     <!-- end breadcrumb -->
     <!-- begin page-header -->
     <h1 class="page-header">Bot Members List 
-        <a class="btn btn-primary pull-right" href="<?php echo site_url("Services/addData/botMembers/0");?>"><i class="fa fa-plus"></i> Add Member</a>
+        <a class="btn btn-primary pull-right" href="<?php echo site_url("WebControl/addMember/0");?>"><i class="fa fa-plus"></i> Add Member</a>
     </h1>
    
       
@@ -52,13 +52,21 @@ $this->load->view('layout/topmenu');
                             ?>
                             <div class="sort-item-image col-md-3 ">
                                 <div class="thumbnail">
-                                    <div class="col-md-12">
-                                        <button class="btn btn-danger" 
-                                                style="position: absolute;right: 0;" 
+                                    <div class="col-md-12 " style="    padding: 5px;
+    background: #ddd;">
+                                        <button class="btn btn-danger pull-left" 
+                                                style="" 
                                                 type="button" 
                                                 onclick="confirmation('<?php echo site_url("Api/deleteRecordTable/content_bot_members/". $value["id"]); ?>')" >
                                             <i class="fa fa-trash"></i>
                                         </button>
+                                        <a class="btn btn-warning  pull-right" 
+                                                style="" 
+                                                type="" href="<?php echo site_url("WebControl/addMember/". $value["id"]); ?>">
+                  
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        
                                     </div>
                                     <p>Current Pos: <?php echo $key + 1; ?></p>
                                     <div class="image-thumbnail" style="background-image:url(<?php echo $value["image"]; ?>)">

@@ -63,25 +63,81 @@ class WebControl extends CI_Controller {
         $memberslist = $query->result_array();
         $data['memberslist'] = $memberslist;
 
-//        $this->db->where('id', $id);
-        $this->db->where("file_category", "Bot Members");
-        $query = $this->db->get("content_files");
-        $filesdata = $query->result_array();
-        $data["filesdata"] = $filesdata;
-
         $current_id = $this->input->post("member_current_id");
         $current_pos = $this->input->post("member_current_pos");
         if ($current_id) {
             foreach ($current_id as $idkey => $idvalue) {
                 $cpos = $current_pos[$idkey];
                 $this->db->where('id', $idvalue);
-                $this->db->update("content_bot_members", array("display_index"=>$cpos));
+                $this->db->update("content_bot_members", array("display_index" => $cpos));
             }
             redirect("WebControl/botMembersList");
         }
-    
+
 
         $this->load->view('WebControl/Pages/botmembers', $data);
+    }
+
+    public function addMember($member_id = 0) {
+        $data = array();
+        if ($this->user_type != 'WebAdmin') {
+            redirect('UserManager/not_granted');
+        }
+        $a_date = date("Ymdhis");
+
+        $this->db->where("id", $member_id);
+        $member_data_check = $this->db->get("content_bot_members")->row_array();
+        $member_data = array(
+            "name" => "",
+            "position" => "",
+            "display_index" => "",
+            "image" => ""
+        );
+        $data["has_member"] = "no";
+        if ($member_data_check) {
+            $member_data = $member_data_check;
+            $data["has_member"] = "yes";
+        }
+        $data["member_data"] = $member_data;
+
+        $config['upload_path'] = 'assets/content_files';
+        $config['allowed_types'] = '*';
+        if (isset($_POST['submit'])) {
+            $picture = '';
+            if (!empty($_FILES['imagename']['name'])) {
+                $temp1 = rand(100, 1000000);
+                $config['overwrite'] = TRUE;
+                $ext1 = explode('.', $_FILES['imagename']['name']);
+                $ext = strtolower(end($ext1));
+                $file_newname = $a_date . $temp1 . $ext;
+                $picture = $file_newname;
+                $config['file_name'] = $file_newname;
+                //Load upload library and initialize configuration
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+                if ($this->upload->do_upload('imagename')) {
+                    $uploadData = $this->upload->data();
+                    $picture = $uploadData['file_name'];
+                } else {
+                    $picture = '';
+                }
+            }
+            $member_array = array(
+                "name" => $this->input->post("name"),
+                "position" => $this->input->post("position"),
+                "display_index" => $this->input->post("display_index"),
+                "image" => base_url("assets/content_files/$picture")
+            );
+            if ($member_data_check) {
+                $this->db->where("id", $member_id);
+                $this->db->update("content_bot_members", $member_array);
+            } else {
+                $this->db->insert("content_bot_members", $member_array);
+            }
+            redirect(site_url("WebControl/botMembersList"));
+        }
+
+        $this->load->view('WebControl/addmember', $data);
     }
 
     public function pageList() {
