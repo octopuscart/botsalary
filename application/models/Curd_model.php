@@ -43,6 +43,8 @@ class Curd_model extends CI_Model {
     function curdForm($data) {
         $table_name = $data["table_name"];
         $form_attr = $data['form_attr'];
+        $data["addnew"] = isset($data["addnew"]) ? $data["addnew"] : true;
+        $data['depends'] = isset($data['depends'])? $data['depends']:[];
         if (isset($_POST['submitData'])) {
             $postarray = array();
             foreach ($form_attr as $key => $value) {
@@ -62,9 +64,9 @@ class Curd_model extends CI_Model {
     }
 
     public function getApiConfig($apipath, $parent_id = 0) {
-        
+
         $serviceObj = json_decode(APISET, true)[$apipath];
-    
+
         $fieldsName = $this->db->list_fields($serviceObj["table"]);
         $ignoreField = $serviceObj["ignore_field"];
         $has_link = isset($serviceObj["child_api"]) ? true : false;
@@ -95,7 +97,7 @@ class Curd_model extends CI_Model {
             "writelink" => $writelink,
             "imageField" => $imageField,
             "pk" => $serviceObj["pk"],
-            "redirect_url"=>$redirect_url
+            "redirect_url" => $redirect_url
         );
         return $data;
     }
@@ -116,6 +118,12 @@ class Curd_model extends CI_Model {
         echo $id;
         $this->db->where($pk_name, $id);
         $this->db->delete($serviceObj["table"]);
+    }
+
+    public function createUrlSlug($urlString) {
+        $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $urlString);
+        return strtolower($slug);
+//        return  $slug;
     }
 }
 

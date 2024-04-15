@@ -44,7 +44,7 @@ class WebControl extends CI_Controller {
                 "uri" => $this->input->post("uriname"),
                 "content" => $this->input->post("content"),
                 "page_type" => $this->input->post("page_type"),
-                "template" => "",
+                "template" => $this->input->post("template_type"),
             );
             $this->db->insert("content_pages", $content_pages);
             $last_id = $this->db->insert_id();
@@ -109,7 +109,7 @@ class WebControl extends CI_Controller {
                 $config['overwrite'] = TRUE;
                 $ext1 = explode('.', $_FILES['imagename']['name']);
                 $ext = strtolower(end($ext1));
-                $file_newname = $a_date . $temp1 . $ext;
+                $file_newname = $a_date . $temp1 .".". $ext;
                 $picture = $file_newname;
                 $config['file_name'] = $file_newname;
                 //Load upload library and initialize configuration
@@ -145,7 +145,7 @@ class WebControl extends CI_Controller {
             redirect('UserManager/not_granted');
         }
         $data = array();
-        $this->db->where('page_type', 'main');
+//        $this->db->where('page_type', 'main');
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('content_pages');
         $templatelist = $query->result_array();
@@ -172,6 +172,7 @@ class WebControl extends CI_Controller {
                     $this->db->where('id', $value["meta_value"]);
                     $query = $this->db->get("content_pages");
                     $contentMetaData = $query->row_array();
+                    $contentMetaData["meta_id"] = $value["id"];
                     array_push($metaDataList, $contentMetaData);
                 }
             }
@@ -186,13 +187,27 @@ class WebControl extends CI_Controller {
 
         $data["metaData"] = $metaDataList;
         $data["pageobj"] = $pageobj;
+//       echo $pageobj["title"];
+        $linkurl = $this->Curd_model->createUrlSlug($pageobj["title"]);
+
         if (isset($_POST["update_data"])) {
             $content_pages = array(
                 "title" => $this->input->post("title"),
                 "content" => $_POST['content'],
+                "page_type" => $this->input->post("page_type"),
+                "template" => $this->input->post("template_type"),
             );
             $this->db->where('id', $id);
             $this->db->update("content_pages", $content_pages);
+
+            $orderlog = array(
+                'log_type' => 'Page Updated',
+                'log_datetime' => date('Y-m-d H:i:s'),
+                'user_id' => $this->user_id,
+                'log_detail' => "Page has been Updated - " . $pageobj["title"]
+            );
+            $this->db->insert('system_log', $orderlog);
+
             redirect("WebControl/editPage/$id");
         }
         if (isset($_POST["add_component"])) {
@@ -207,6 +222,29 @@ class WebControl extends CI_Controller {
             redirect("WebControl/editPage/$id");
         }
         $this->load->view('WebControl/Pages/create', $data);
+    }
+
+    function deletePage($page_id) {
+        $this->db->where('id', $page_id);
+        $query = $this->db->get('content_pages');
+        $pageobj = $query->row_array();
+        $orderlog = array(
+            'log_type' => 'Page Delete',
+            'log_datetime' => date('Y-m-d H:i:s'),
+            'user_id' => $this->user_id,
+            'log_detail' => "Page has been Deleted - " . $pageobj["title"]
+        );
+        $this->db->insert('system_log', $orderlog);
+
+        $this->db->where('id', $page_id);
+        $this->db->delete("content_pages");
+        redirect("WebControl/pageList");
+    }
+
+    function removeComponent($component_id, $page_id) {
+        $this->db->where('id', $component_id);
+        $this->db->delete("content_page_meta");
+        redirect("WebControl/editPage/$page_id");
     }
 
     function contentFiles() {
@@ -234,7 +272,7 @@ class WebControl extends CI_Controller {
                 $config['overwrite'] = TRUE;
                 $ext1 = explode('.', $_FILES['fileData']['name']);
                 $ext = strtolower(end($ext1));
-                $file_newname = $a_date . $temp1 . $ext;
+                $file_newname = $a_date . $temp1 .".". $ext;
                 $picture = $file_newname;
                 $config['file_name'] = $file_newname;
                 //Load upload library and initialize configuration
@@ -291,17 +329,40 @@ class WebControl extends CI_Controller {
         $data['title'] = "Set Announcement";
         $data['description'] = "Announcement List";
         $data['form_title'] = "Announcement";
-        $data['table_name'] = "content_contact_data";
-        $data["link"] = "WebControl/contactPageList";
+        $data['table_name'] = "content_announcement";
+        $data["link"] = "WebControl/announcementList";
+        $category_select = array("fastival" => "Fastival", "general" => "General");
+
+        $dependes = array(
+            "category" => $category_select,
+        );
+
+        $data['depends'] = $dependes;
         $form_attr = array(
             "title" => array("title" => "Title", "width" => "250px", "required" => true, "place_holder" => "Title", "type" => "text", "default" => ""),
-            "sub_title" => array("title" => "Sub Title", "width" => "250px", "required" => true, "place_holder" => "Sub Title", "type" => "text", "default" => ""),
-            "address" => array("title" => "Address", "width" => "300px", "required" => true, "place_holder" => "Address", "type" => "textarea", "default" => ""),
-            "contact_no" => array("title" => "Contact No.", "width" => "250px", "required" => true, "place_holder" => "Contact No.", "type" => "text", "default" => ""),
-            "fax_no" => array("title" => "Fax No.", "width" => "250px", "required" => true, "place_holder" => "Fax No.", "type" => "text", "default" => ""),
+            "description" => array("title" => "Description", "width" => "300px", "required" => true, "place_holder" => "Description", "type" => "textarea", "default" => ""),
+            "date" => array("title" => "Date", "width" => "150px", "required" => true, "place_holder" => "Date", "type" => "text", "default" => ""),
+            "month" => array("title" => "Month (Ex: June, July)", "width" => "250px", "required" => true, "place_holder" => "Month should be in string", "type" => "text", "default" => ""),
+            "year" => array("title" => "Year", "width" => "100px", "required" => true, "place_holder" => "Year (YYYY)", "type" => "text", "default" => ""),
+            "category" => array("title" => "Category", "width" => "200px", "required" => true, "place_holder" => "Category", "type" => "select", "default" => "", "depends" => "category", "default" => ""),
+        );
+        $data['form_attr'] = $form_attr;
+        $rdata = $this->Curd_model->curdForm($data);
+
+        $this->load->view('layout/curd2', $rdata);
+    }
+
+    public function serviceEmailPageList() {
+        $data = array();
+        $data['title'] = "Set Email Receiver For Service";
+        $data['description'] = "Service Email List";
+        $data['form_title'] = "Contact";
+        $data['table_name'] = "content_service_email";
+        $data["link"] = "WebControl/serviceEmailPageList";
+        $data["addnew"] = false;
+        $form_attr = array(
+            "service_title" => array("title" => "Title", "width" => "250px", "required" => true, "place_holder" => "Service", "type" => "disabled", "default" => ""),
             "email" => array("title" => "Email", "width" => "250px", "required" => true, "place_holder" => "Email", "type" => "text", "default" => ""),
-            "image" => array("title" => "Image", "width" => "300px", "required" => true, "place_holder" => "Image", "type" => "textarea", "default" => ""),
-            "display_index" => array("title" => "Display Index", "required" => false, "place_holder" => "Display Index", "type" => "number", "default" => ""),
         );
         $data['form_attr'] = $form_attr;
         $rdata = $this->Curd_model->curdForm($data);
@@ -333,7 +394,7 @@ class WebControl extends CI_Controller {
                 $config['overwrite'] = TRUE;
                 $ext1 = explode('.', $_FILES['fileData']['name']);
                 $ext = strtolower(end($ext1));
-                $file_newname = $a_date . $temp1 . $ext;
+                $file_newname = $a_date . $temp1 .".". $ext;
                 $picture = $file_newname;
                 $config['file_name'] = $file_newname;
                 //Load upload library and initialize configuration
@@ -402,47 +463,153 @@ class WebControl extends CI_Controller {
         $this->load->view('layout/curd2', $rdata);
     }
 
-    function dbinsert() {
-        $rhingra = ["DSC_8406.jpg", "DSC_8567.jpg", "DSC_8686.jpg", "DSC_8827.jpg", "DSC_8903.jpg", "DSC_9018.jpg", "DSC_9071.jpg", "DSC_9134.jpg",
-            "DSC_8453.jpg", "DSC_8568.jpg", "DSC_8688.jpg", "DSC_8828.jpg", "DSC_8904.jpg", "DSC_9019.jpg", "DSC_9072.jpg", "DSC_9135.jpg",
-            "DSC_8472.jpg", "DSC_8572.jpg", "DSC_8689.jpg", "DSC_8829.jpg", "DSC_8905.jpg", "DSC_9020.jpg", "DSC_9074.jpg", "DSC_9136.jpg",
-            "DSC_8473.jpg", "DSC_8574.jpg", "DSC_8690.jpg", "DSC_8830.jpg", "DSC_8906.jpg", "DSC_9028.jpg", "DSC_9076.jpg", "DSC_9137.jpg",
-            "DSC_8476.jpg", "DSC_8578.jpg", "DSC_8691.jpg", "DSC_8832.jpg", "DSC_8912.jpg", "DSC_9029.jpg", "DSC_9077.jpg", "DSC_9139.jpg",
-            "DSC_8477.jpg", "DSC_8587.jpg", "DSC_8692.jpg", "DSC_8837.jpg", "DSC_8913.jpg", "DSC_9031.jpg", "DSC_9078.jpg", "DSC_9140.jpg",
-            "DSC_8478.jpg", "DSC_8605.jpg", "DSC_8697.jpg", "DSC_8838.jpg", "DSC_8914.jpg", "DSC_9037.jpg", "DSC_9082.jpg", "DSC_9141.jpg",
-            "DSC_8479.jpg", "DSC_8606.jpg", "DSC_8700.jpg", "DSC_8846.jpg", "DSC_8916.jpg", "DSC_9038.jpg", "DSC_9083.jpg", "DSC_9142.jpg",
-            "DSC_8501.jpg", "DSC_8607.jpg", "DSC_8733.jpg", "DSC_8848.jpg", "DSC_8922.jpg", "DSC_9040.jpg", "DSC_9098.jpg", "DSC_9143.jpg",
-            "DSC_8515.jpg", "DSC_8608.jpg", "DSC_8739.jpg", "DSC_8864.jpg", "DSC_8933.jpg", "DSC_9041.jpg", "DSC_9099.jpg", "DSC_9146.jpg",
-            "DSC_8519.jpg", "DSC_8631.jpg", "DSC_8740.jpg", "DSC_8865.jpg", "DSC_8942.jpg", "DSC_9042.jpg", "DSC_9100.jpg", "DSC_9148.jpg",
-            "DSC_8520.jpg", "DSC_8633.jpg", "DSC_8742.jpg", "DSC_8867.jpg", "DSC_8943.jpg", "DSC_9043.jpg", "DSC_9101.jpg", "DSC_9149.jpg",
-            "DSC_8521.jpg", "DSC_8635.jpg", "DSC_8745.jpg", "DSC_8868.jpg", "DSC_8957.jpg", "DSC_9045.jpg", "DSC_9102.jpg", "DSC_9154.jpg",
-            "DSC_8522.jpg", "DSC_8637.jpg", "DSC_8746.jpg", "DSC_8871.jpg", "DSC_8958.jpg", "DSC_9046.jpg", "DSC_9103.jpg", "DSC_9156.jpg",
-            "DSC_8523.jpg", "DSC_8641.jpg", "DSC_8747.jpg", "DSC_8872.jpg", "DSC_8959.jpg", "DSC_9047.jpg", "DSC_9104.jpg", "DSC_9158.jpg",
-            "DSC_8524.jpg", "DSC_8642.jpg", "DSC_8748.jpg", "DSC_8875.jpg", "DSC_8960.jpg", "DSC_9050.jpg", "DSC_9105.jpg", "DSC_9162.jpg",
-            "DSC_8525.jpg", "DSC_8643.jpg", "DSC_8797.jpg", "DSC_8880.jpg", "DSC_8961.jpg", "DSC_9051.jpg", "DSC_9106.jpg", "DSC_9213.jpg",
-            "DSC_8527.jpg", "DSC_8645.jpg", "DSC_8798.jpg", "DSC_8888.jpg", "DSC_8962.jpg", "DSC_9053.jpg", "DSC_9107.jpg", "DSC_9218.jpg",
-            "DSC_8530.jpg", "DSC_8646.jpg", "DSC_8799.jpg", "DSC_8892.jpg", "DSC_8964.jpg", "DSC_9054.jpg", "DSC_9109.jpg", "DSC_9220.jpg",
-            "DSC_8531.jpg", "DSC_8674.jpg", "DSC_8802.jpg", "DSC_8893.jpg", "DSC_8971.jpg", "DSC_9055.jpg", "DSC_9110.jpg", "DSC_9221.jpg",
-            "DSC_8532.jpg", "DSC_8675.jpg", "DSC_8806.jpg", "DSC_8894.jpg", "DSC_8973.jpg", "DSC_9056.jpg", "DSC_9114.jpg", "DSC_9227.jpg",
-            "DSC_8538.jpg", "DSC_8676.jpg", "DSC_8808.jpg", "DSC_8895.jpg", "DSC_8974.jpg", "DSC_9057.jpg", "DSC_9115.jpg", "DSC_9236.jpg",
-            "DSC_8541.jpg", "DSC_8677.jpg", "DSC_8810.jpg", "DSC_8896.jpg", "DSC_8975.jpg", "DSC_9058.jpg", "DSC_9122.jpg", "DSC_9243.jpg",
-            "DSC_8542.jpg", "DSC_8678.jpg", "DSC_8811.jpg", "DSC_8897.jpg", "DSC_8994.jpg", "DSC_9059.jpg", "DSC_9123.jpg", "DSC_9244.jpg",
-            "DSC_8550.jpg", "DSC_8679.jpg", "DSC_8812.jpg", "DSC_8898.jpg", "DSC_8995.jpg", "DSC_9062.jpg", "DSC_9124.jpg", "DSC_9245.jpg",
-            "DSC_8551.jpg", "DSC_8680.jpg", "DSC_8814.jpg", "DSC_8899.jpg", "DSC_8996.jpg", "DSC_9064.jpg", "DSC_9125.jpg", "DSC_9246.jpg",
-            "DSC_8559.jpg", "DSC_8682.jpg", "DSC_8815.jpg", "DSC_8900.jpg", "DSC_8999.jpg", "DSC_9066.jpg", "DSC_9128.jpg", "DSC_9247.jpg",
-            "DSC_8561.jpg", "DSC_8683.jpg", "DSC_8820.jpg", "DSC_8901.jpg", "DSC_9014.jpg", "DSC_9068.jpg", "DSC_9130.jpg",
-            "DSC_8563.jpg", "DSC_8685.jpg", "DSC_8826.jpg", "DSC_8902.jpg", "DSC_9015.jpg", "DSC_9070.jpg", "DSC_9132.jpg",];
-        foreach ($rhingra as $key => $value) {
-            echo $value;
-            $fileinsert = array(
-                "file_name" => $value,
-                "file_category" => "11",
-                "file_caption" => "MWL conference $key",
-                "datetime" => date("Y-m-d H:i:s a"),
-                "display_index" => $key
-            );
-//            $this->db->insert("content_photo_gallery", $fileinsert);
+    ///Category management 
+    public function category_api() {
+        $this->db->select('c.id as id,  c.title as text, p.id as parent, c.page_url, c.is_editable');
+        $this->db->join('content_menu as p', 'p.id = c.parent_id', 'left');
+        $this->db->from('content_menu as c');
+        $this->db->order_by('c.display_index');
+        $query = $this->db->get();
+        $result = $query->result();
+        $category = array();
+        $categorylist = array();
+        foreach ($result as $key => $value) {
+            $cat = array('id' => $value->id,
+                'parent' => $value->parent ? $value->parent : '#',
+                'state' => array('opened' => TRUE),
+                'page_url' => $value->page_url,
+                'is_editable' => $value->is_editable,
+                'a_attr' => array('selectCategory' => ($value->id)),
+                'text' => $value->text);
+            array_push($category, $cat);
+            $categorylist[$value->id] = $cat;
         }
+        echo json_encode(array('tree' => $category, 'list' => $categorylist));
+    }
+
+    //Add Categories
+    function categorie_delete($category_id) {
+        $this->db->delete('content_menu', array('id' => $category_id));
+    }
+
+    //Add Categories
+    function menuSetting() {
+
+//        $this->db->where('page_type', 'main');
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('content_pages');
+        $templatelist = $query->result_array();
+        $data['pages_list'] = $templatelist;
+
+        $this->db->select('c.id as id, c.title as text, p.id as parent, c.is_editable');
+        $this->db->join('content_menu as p', 'p.id = c.parent_id', 'left');
+        $this->db->from('content_menu as c');
+        $query = $this->db->get();
+
+        $data['category_data'] = $query->result();
+
+        if (isset($_POST['submit'])) {
+            if ($_POST['submit'] == 'Add Menu') {
+                $category_array = array(
+                    'title' => $this->input->post('category_name'),
+                    'page_url' => $this->input->post('page_url') ? $this->input->post('page_url') : "",
+                    'parent_id' => $this->input->post('parent_id'),
+                    'page_type' => $this->input->post('parent_id') ? "sub_menu" : "main",
+                );
+                $this->db->insert('content_menu', $category_array);
+            }
+            if ($_POST['submit'] == 'Edit') {
+                $category_array = array(
+                    'title' => $this->input->post('category_name'),
+                );
+                if ($this->input->post('page_url')) {
+                    $category_array["page_url"] = $this->input->post('page_url');
+                }
+                print_r($category_array);
+                $id = $this->input->post('parent_id');
+                $this->db->set($category_array);
+                $this->db->where('id', $id);
+                $this->db->update('content_menu');
+            }
+            redirect('WebControl/menuSetting');
+        }
+
+
+        $data['images'] = [];
+
+        $this->load->view('WebControl/Pages/webmenu', $data);
+    }
+
+    public function galleryImageList($album_id=1) {
+        if ($this->user_type != 'WebAdmin') {
+            redirect('UserManager/not_granted');
+        }
+        $data = array();
+        
+        $a_date = date("Ymdhis");
+        
+        $this->db->order_by('display_index');
+        $query = $this->db->get('content_photo_gallery_category');
+        $album_list = $query->result_array();
+        
+        $data["album_list"] = $album_list;
+        $data["album_id"] = $album_id;
+        
+        $this->db->where("file_category", $album_id);
+        $this->db->order_by('display_index');
+        $query = $this->db->get('content_photo_gallery');
+        $memberslist = $query->result_array();
+        $data['memberslist'] = $memberslist;
+
+        $current_id = $this->input->post("member_current_id");
+        $current_pos = $this->input->post("member_current_pos");
+        if ($current_id) {
+            foreach ($current_id as $idkey => $idvalue) {
+                $cpos = $current_pos[$idkey];
+                $this->db->where('id', $idvalue);
+                $this->db->update("content_photo_gallery", array("display_index" => $cpos));
+            }
+            redirect("WebControl/galleryImageList");
+        }
+        
+        $config['upload_path'] = 'assets/photo-gallery';
+        $config['allowed_types'] = '*';
+        if (isset($_POST['submit'])) {
+            $picture = '';
+            if (!empty($_FILES['fileData']['name'])) {
+                $temp1 = rand(100, 1000000);
+                $config['overwrite'] = TRUE;
+                $ext1 = explode('.', $_FILES['fileData']['name']);
+                $ext = strtolower(end($ext1));
+                $file_newname = $a_date . $temp1 .".". $ext;
+                $picture = $file_newname;
+                $config['file_name'] = $file_newname;
+                //Load upload library and initialize configuration
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+                if ($this->upload->do_upload('fileData')) {
+                    $uploadData = $this->upload->data();
+                    $picture = $uploadData['file_name'];
+                } else {
+                    $picture = '';
+                }
+            }
+            $filecaption = $this->input->post("fileName");
+
+            $fileinsert = array(
+                "file_name" => $picture,
+                "file_category" => $this->input->post("fileCategory"),
+                "file_caption" => $this->input->post("fileName"),
+                "datetime" => date("Y-m-d H:i:s a"),
+                "display_index" => 0,
+            );
+            $this->db->insert("content_photo_gallery", $fileinsert);
+
+            redirect(site_url("WebControl/galleryImageList/$album_id"));
+        }
+
+
+        $this->load->view('WebControl/Pages/galleryimages', $data);
     }
 }
 

@@ -127,7 +127,7 @@ if ($this->user_type == 'SalaryManager') {
 if ($this->user_type == 'WebAdmin') {
     $web_menu = array(
         "title" => "Website Pages",
-        "icon" => "fa fa-list",
+        "icon" => "fa fa-edit",
         "active" => "",
         "sub_menu" => array(
             "Create Pages" => site_url("WebControl/createPage"),
@@ -138,21 +138,46 @@ if ($this->user_type == 'WebAdmin') {
     );
     array_push($menu_control, $web_menu);
     $web_menu2 = array(
+        "title" => "Web Menu Setting",
+        "icon" => "fa fa-list",
+        "active" => "",
+        "sub_menu" => array(
+            "Set Menu" => site_url("WebControl/menuSetting"),
+
+        ),
+    );
+    array_push($menu_control, $web_menu2);
+    
+    $web_menu2 = array(
+        "title" => "Announcement",
+        "icon" => "fa fa-bullhorn",
+        "active" => "",
+        "sub_menu" => array(
+            "Set Announcement" => site_url("WebControl/announcementList"),
+
+        ),
+    );
+    array_push($menu_control, $web_menu2);
+    
+    
+    $web_menu2 = array(
         "title" => "Photo Gallery",
         "icon" => "fa fa-photo",
         "active" => "",
         "sub_menu" => array(
             "Add Album" => site_url("WebControl/photoGalleryAlbum"),
-            "Add Photos" => site_url("WebControl/photoGallery"),
+            "Add Photos" => site_url("WebControl/galleryImageList"),
         ),
     );
     array_push($menu_control, $web_menu2);
+    
     $web_menu2 = array(
         "title" => "Settings",
         "icon" => "fa fa-file",
         "active" => "",
         "sub_menu" => array(
             "Add Files" => site_url("WebControl/contentFiles"),
+            "Set Service Email"=> site_url("WebControl/serviceEmailPageList")
         ),
     );
     array_push($menu_control, $web_menu2);

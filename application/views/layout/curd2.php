@@ -25,10 +25,11 @@ $this->load->view('layout/topmenu');
     <div class="panel panel-inverse">
 
         <div class="panel-body">
-
-            <div class="m-b-15">
-                <button type="button" class="btn btn-primary p-l-40 p-r-40" data-toggle="modal" data-target="#add_item"><i class="fa fa-plus"></i> Add New</button>
-            </div>
+            <?php if ($addnew) { ?>
+                <div class="m-b-15">
+                    <button type="button" class="btn btn-primary p-l-40 p-r-40" data-toggle="modal" data-target="#add_item"><i class="fa fa-plus"></i> Add New</button>
+                </div>
+            <?php } ?>
             <div class="table-responsive">
                 <table id="user" class="table table-bordered table-striped">
                     <thead>
@@ -37,9 +38,9 @@ $this->load->view('layout/topmenu');
                             foreach ($fields as $fkey => $fvalue) {
                                 ?> 
                                 <th style='width: <?php echo $fvalue['width']; ?>'><?php echo $fvalue['title']; ?></th>
-                                <?php
-                            }
-                            ?>
+                                    <?php
+                                }
+                                ?>
                             <th></th>
                         </tr>
                     </thead>
@@ -53,18 +54,22 @@ $this->load->view('layout/topmenu');
                                     ?> 
 
                                     <td>
-                                        <?php
-                                        if ($fkey == 'id') {
-                                            ?>
+        <?php
+        if ($fkey == 'id') {
+            ?>
                                             <?php echo $vdata[$fkey]; ?>
 
                                             <?php
                                         } else {
-                                            ?>
-                                            <span  id="<?php echo $fkey; ?>" data-type="textarea" data-pk="<?php echo $vdata['id']; ?>" data-name="<?php echo $fkey; ?>" data-value="<?php echo $vdata[$fkey]; ?>" data-params ={'tablename':'<?php echo $table_name; ?>'} data-url="<?php echo site_url("LocalApi/updateCurd"); ?>" data-mode="inline" class="m-l-5 editable editable-click" tabindex="-1" > <?php echo $vdata[$fkey]; ?></span>
+                                            if ($fvalue['type'] == "disabled") {
+                                                echo $vdata[$fkey];
+                                            } else {
+                                                ?>
+                                                <span  id="<?php echo $fkey; ?>" data-type="<?php echo $fvalue['type']; ?>" data-pk="<?php echo $vdata['id']; ?>" data-name="<?php echo $fkey; ?>" data-value="<?php echo $vdata[$fkey]; ?>" data-params ={'tablename':'<?php echo $table_name; ?>'} data-url="<?php echo site_url("LocalApi/updateCurd"); ?>" data-mode="inline" class="m-l-5 editable editable-click" tabindex="-1" > <?php echo $vdata[$fkey]; ?></span>
 
-                                        </td>
-                                        <?php
+                                            </td>
+                                            <?php
+                                        }
                                     }
                                 }
                                 ?>
@@ -99,14 +104,28 @@ $this->load->view('layout/topmenu');
                         ?>
                         <div class="form-group">
                             <?php
+                            echo $fvalue['type'];
                             switch ($fvalue['type']) {
                                 case "hidden":
                                     ?>
                                     <input type="<?php echo $fvalue['type']; ?>" name="<?php echo $fkey; ?>" class="form-control"  required="<?php echo $fvalue['required']; ?>" placeholder="<?php echo $fvalue['place_holder']; ?>">
                                     <?php
                                     break;
-                                case "blue":
-                                    echo "Your favorite color is blue!";
+                                case "select":
+                                    ?>
+                                    <label for="<?php echo $fkey; ?>"><?php echo $fvalue['title']; ?></label>
+
+                                    <select name="<?php echo $fkey; ?>" class="form-control"  required="<?php echo $fvalue['required']; ?>" placeholder="<?php echo $fvalue['place_holder']; ?>">
+                                        <?php
+                                        if ($depends) {
+                                            foreach ($depends[$fvalue['depends']] as $selectkey => $selectvalue) {
+                                                echo "<option value='$selectkey'>$selectvalue</option>";
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+
+                                    <?php
                                     break;
                                 case "textarea":
                                     ?>
@@ -124,7 +143,7 @@ $this->load->view('layout/topmenu');
                             }
                             ?>
 
-                       </div>
+                        </div>
                         <?php
                     }
                     ?>
@@ -153,9 +172,7 @@ $this->load->view('layout/footer');
     $(function () {
 
 
-        $('#tags').tagit({
-            availableTags: ["c++", "java", "php", "javascript", "ruby", "python", "c"]
-        });
+
 
 
         $('.edit_detail').click(function (e) {
@@ -166,8 +183,21 @@ $this->load->view('layout/footer');
 
         $(".editable").editable();
 
+<?php
+if ($depends) {
+    foreach ($depends as $selectkey => $selectvalue) {
+        if ($selectvalue) {
+            ?>
+
+                    $('#<?php echo $selectkey; ?>').editable({
+                        source: <?php echo json_encode($selectvalue); ?>
+                    });
+            <?php
+        }
+    }
+}
+?>
 
 
-
-                })
+    });
 </script>
