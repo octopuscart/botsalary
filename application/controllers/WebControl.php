@@ -275,7 +275,7 @@ class WebControl extends CI_Controller {
             redirect('UserManager/not_granted');
         }
         $a_date = date("Ymdhis");
-
+        $this->db->order_by('id', 'desc');
         $query = $this->db->get("content_files");
         $filesdata = $query->result_array();
         $data["filesdata"] = $filesdata;
