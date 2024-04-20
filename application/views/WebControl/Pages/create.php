@@ -49,7 +49,7 @@ $this->load->view('layout/topmenu');
                         </div>
                         <br/>
 
-                        <?php if ($operation == "create") { ?>
+                        <?php if ($operation != "create1") { ?>
                             <!--tags-->
                             <label class="control-label"> URI (Page Link Suffix)</label>
                             <div class="m-b-15">
@@ -59,10 +59,7 @@ $this->load->view('layout/topmenu');
 
                             </div>
                             <br/>
-                            <p>
-                                <span class="slug-output">Generated URL Slug</span>:
-                                <span id="slug-target-span"></span>
-                            </p>
+                         
                             <!-- begin email content -->
                         <?php } ?>
 
@@ -71,8 +68,7 @@ $this->load->view('layout/topmenu');
                         <div class="m-b-15">
                             <select  class="form-control "   name="page_type" required="" >
                                 <?php
-                                $options = array("main" => "Main Page", "sidebar" => "Page Component");
-                                foreach ($options as $key => $value) {
+                                foreach (PAGE_TYPE_OPTIONS as $key => $value) {
                                     $selected = $key == $pageobj["page_type"] ? "selected" : "";
                                     echo "<option $selected value='$key'>$value</option>";
                                 }
@@ -86,8 +82,7 @@ $this->load->view('layout/topmenu');
                         <div class="m-b-15">
                             <select  class="form-control "   name="template_type" required="" >
                                 <?php
-                                $options = array("template_main" => "Main Page Template", "template_sidebar" => "Page With Sidebar", "template_basic" => "Component");
-                                foreach ($options as $key => $value) {
+                                foreach (TEMPLATE_OPTIONS as $key => $value) {
                                     $selected = $key == $pageobj["template"] ? "selected" : "";
                                     echo "<option $selected value='$key'>$value</option>";
                                 }
@@ -116,7 +111,7 @@ $this->load->view('layout/topmenu');
         <!-- end vertical-box-column -->
     </div>
     <div class="vertical-box">
-        <?php if ($operation == "edit" & $pageobj["page_type"] == 'main') { ?>
+        <?php if ($operation == "edit" & $pageobj["page_type"] != 'sidebar') { ?>
             <!-- begin vertical-box-column -->
             <div class="vertical-box-column">
                 <!-- begin wrapper -->
@@ -125,11 +120,10 @@ $this->load->view('layout/topmenu');
                         <form action="#" method="post" >
                             <div class="well well-sm row">
                                 <div class="col-md-6">
-                                    <label class="control-label"> Add Sidebar Component</label>
+                                    <label class="control-label"> Add <?php echo $component_type; ?> Component</label>
                                     <div class="m-b-15">
                                         <select  class="form-control "   name="component_id" required="" >
                                             <?php
-                                            $options = array("main" => "Main Page", "sidebar" => "Side Bar Component");
                                             foreach ($pageData as $pkey => $pvalue) {
                                                 $page_id = $pvalue["id"];
                                                 $pageTitle = $pvalue["title"];
@@ -139,6 +133,7 @@ $this->load->view('layout/topmenu');
                                         </select>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <label class="control-label"> &nbsp;</label>
                                     <div class="m-b-15">
@@ -165,15 +160,17 @@ $this->load->view('layout/topmenu');
                                                 <td>
                                                     <?php echo $value["title"]; ?>
                                                 </td>
-                                                <td>
-                                                    <?php echo $value["uri"]; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $value["page_type"]; ?>
-                                                </td>
-                                                <td>
-                                                    <a href="<?php echo site_url("WebControl/editPage/" . $value["id"]) ?>"  class="btn btn-warning">Update Page</a>
-                                                </td>
+                                                <?php if ($pageobj["page_type"] != "service") { ?>
+                                                    <td>
+                                                        <?php echo $value["uri"]; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $value["page_type"]; ?>
+                                                    </td>
+                                                    <td>
+                                                        <a href="<?php echo site_url("WebControl/editPage/" . $value["id"]) ?>"  class="btn btn-warning">Update Page</a>
+                                                    </td>
+                                                <?php } ?>
                                                 <td>
                                                     <a href="<?php echo site_url("WebControl/removeComponent/" . $value["meta_id"] . "/" . $pageobj["id"]) ?>"  class="btn btn-warning">Remove</a>
                                                 </td>

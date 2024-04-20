@@ -109,7 +109,7 @@ class WebControl extends CI_Controller {
                 $config['overwrite'] = TRUE;
                 $ext1 = explode('.', $_FILES['imagename']['name']);
                 $ext = strtolower(end($ext1));
-                $file_newname = $a_date . $temp1 .".". $ext;
+                $file_newname = $a_date . $temp1 . "." . $ext;
                 $picture = $file_newname;
                 $config['file_name'] = $file_newname;
                 //Load upload library and initialize configuration
@@ -140,16 +140,17 @@ class WebControl extends CI_Controller {
         $this->load->view('WebControl/addmember', $data);
     }
 
-    public function pageList() {
+    public function pageList($page_type = "main") {
         if ($this->user_type != 'WebAdmin') {
             redirect('UserManager/not_granted');
         }
         $data = array();
-//        $this->db->where('page_type', 'main');
+        $this->db->where("page_type='$page_type'");
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('content_pages');
         $templatelist = $query->result_array();
         $data['pagelist'] = $templatelist;
+        $data["page_type"] = PAGE_TYPE_OPTIONS[$page_type];
         $this->load->view('WebControl/Pages/list', $data);
     }
 
@@ -161,16 +162,38 @@ class WebControl extends CI_Controller {
         $query = $this->db->get('content_pages');
         $data["operation"] = "edit";
         $metaDataList = [];
+        $meta_attribute = "side_page_key_id";
         if ($query) {
             $pageobj = $query->row_array();
+            $this->db->where('page_type', "sidebar");
+            $query = $this->db->get("content_pages");
+            $contentPageData = $query->result_array();
+            $data["pageData"] = $contentPageData;
+            $data["component_type"] = "Sidebar";
+
+            if ($pageobj["page_type"] == "service") {
+                $this->db->order_by('display_index');
+                $query = $this->db->get("content_contact_data");
+                $contactList = $query->result_array();
+                $data["pageData"] = $contactList;
+                $data["component_type"] = "Contect Page";
+                $meta_attribute = "service_page_key_id";
+            }
+
+
             $this->db->where('page_id', $id);
-            $this->db->where('meta_key', "side_page_key_id");
+            $this->db->where('meta_key', $meta_attribute);
             $query = $this->db->get("content_page_meta");
             $contentDataMeta = $query->result_array();
             if ($contentDataMeta) {
                 foreach ($contentDataMeta as $key => $value) {
                     $this->db->where('id', $value["meta_value"]);
-                    $query = $this->db->get("content_pages");
+
+                    if ($pageobj["page_type"] == "service") {
+                        $query = $this->db->get("content_contact_data");
+                    } else {
+                        $query = $this->db->get("content_pages");
+                    }
                     $contentMetaData = $query->row_array();
                     $contentMetaData["meta_id"] = $value["id"];
                     array_push($metaDataList, $contentMetaData);
@@ -179,11 +202,9 @@ class WebControl extends CI_Controller {
         } else {
             $pageobj = array("title" => "", "content" => "", "uri" => "");
         }
+
+
         $componentPageDataList = [];
-        $this->db->where('page_type', "sidebar");
-        $query = $this->db->get("content_pages");
-        $contentPageData = $query->result_array();
-        $data["pageData"] = $contentPageData;
 
         $data["metaData"] = $metaDataList;
         $data["pageobj"] = $pageobj;
@@ -195,6 +216,7 @@ class WebControl extends CI_Controller {
                 "title" => $this->input->post("title"),
                 "content" => $_POST['content'],
                 "page_type" => $this->input->post("page_type"),
+                "uri" => $this->input->post("uriname"),
                 "template" => $this->input->post("template_type"),
             );
             $this->db->where('id', $id);
@@ -213,7 +235,7 @@ class WebControl extends CI_Controller {
         if (isset($_POST["add_component"])) {
             $content_pages = array(
                 "page_id" => $id,
-                "meta_key" => "side_page_key_id",
+                "meta_key" => $meta_attribute,
                 "meta_value" => $this->input->post("component_id")
             );
             $this->db->insert("content_page_meta", $content_pages);
@@ -272,7 +294,7 @@ class WebControl extends CI_Controller {
                 $config['overwrite'] = TRUE;
                 $ext1 = explode('.', $_FILES['fileData']['name']);
                 $ext = strtolower(end($ext1));
-                $file_newname = $a_date . $temp1 .".". $ext;
+                $file_newname = $a_date . $temp1 . "." . $ext;
                 $picture = $file_newname;
                 $config['file_name'] = $file_newname;
                 //Load upload library and initialize configuration
@@ -394,7 +416,7 @@ class WebControl extends CI_Controller {
                 $config['overwrite'] = TRUE;
                 $ext1 = explode('.', $_FILES['fileData']['name']);
                 $ext = strtolower(end($ext1));
-                $file_newname = $a_date . $temp1 .".". $ext;
+                $file_newname = $a_date . $temp1 . "." . $ext;
                 $picture = $file_newname;
                 $config['file_name'] = $file_newname;
                 //Load upload library and initialize configuration
@@ -540,21 +562,21 @@ class WebControl extends CI_Controller {
         $this->load->view('WebControl/Pages/webmenu', $data);
     }
 
-    public function galleryImageList($album_id=1) {
+    public function galleryImageList($album_id = 1) {
         if ($this->user_type != 'WebAdmin') {
             redirect('UserManager/not_granted');
         }
         $data = array();
-        
+
         $a_date = date("Ymdhis");
-        
+
         $this->db->order_by('display_index');
         $query = $this->db->get('content_photo_gallery_category');
         $album_list = $query->result_array();
-        
+
         $data["album_list"] = $album_list;
         $data["album_id"] = $album_id;
-        
+
         $this->db->where("file_category", $album_id);
         $this->db->order_by('display_index');
         $query = $this->db->get('content_photo_gallery');
@@ -571,7 +593,7 @@ class WebControl extends CI_Controller {
             }
             redirect("WebControl/galleryImageList");
         }
-        
+
         $config['upload_path'] = 'assets/photo-gallery';
         $config['allowed_types'] = '*';
         if (isset($_POST['submit'])) {
@@ -581,7 +603,7 @@ class WebControl extends CI_Controller {
                 $config['overwrite'] = TRUE;
                 $ext1 = explode('.', $_FILES['fileData']['name']);
                 $ext = strtolower(end($ext1));
-                $file_newname = $a_date . $temp1 .".". $ext;
+                $file_newname = $a_date . $temp1 . "." . $ext;
                 $picture = $file_newname;
                 $config['file_name'] = $file_newname;
                 //Load upload library and initialize configuration

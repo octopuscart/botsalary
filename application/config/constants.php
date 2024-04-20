@@ -52,7 +52,10 @@ if (strpos($baselink, '192.168')) {
     $baselinkmainsite = $configuration['site_url'];
 }
 define('MAIN_WEBSITE', $baselinkmainsite);
-
+$page_type_options = array("main" => "Main Page", "service" => "Service Page", "sidebar" => "Page Component");
+$template_options = array("template_main" => "Main Page Template", "template_service" => "Service Template", "template_sidebar" => "Page With Sidebar", "template_basic" => "Component");
+define('PAGE_TYPE_OPTIONS', $page_type_options);
+define('TEMPLATE_OPTIONS', $template_options);
 /*
   |--------------------------------------------------------------------------
   | Display Debug backtrace

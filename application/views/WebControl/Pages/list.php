@@ -18,7 +18,7 @@ $this->load->view('layout/topmenu');
 
     <!-- end breadcrumb -->
     <!-- begin page-header -->
-    <h1 class="page-header">Website Page List 
+    <h1 class="page-header"><?php echo $page_type;?> List 
 
     </h1>
     <!-- end page-header -->
@@ -44,13 +44,10 @@ $this->load->view('layout/topmenu');
                                     <?php echo $value["title"]; ?>
                                 </td>
                                 <td>
-                                    <?php echo $value["uri"]; ?>
+                                    <?php echo SITE_URL. $value["uri"]; ?>
                                 </td>
-                                <td>
-                                    <?php echo $value["page_type"]; ?>
-                                </td>
-                                <td>
-                                    <?php echo $value["template"]; ?>
+                              <td>
+                                  <a href="<?php echo SITE_URL. $value["uri"]; ?>" target="_blank" class="btn btn-info">View Page</a>
                                 </td>
                                 <td>
                                     <a href="<?php echo site_url("WebControl/editPage/" . $value["id"]) ?>"  class="btn btn-warning">Update Page</a>

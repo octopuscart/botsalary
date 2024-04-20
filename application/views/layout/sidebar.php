@@ -130,8 +130,10 @@ if ($this->user_type == 'WebAdmin') {
         "icon" => "fa fa-edit",
         "active" => "",
         "sub_menu" => array(
-            "Create Pages" => site_url("WebControl/createPage"),
-            "View Pages" => site_url("WebControl/pageList"),
+            "Create Page" => site_url("WebControl/createPage"),
+            "Main Pages List" => site_url("WebControl/pageList/main"),
+            "Service Pages List" => site_url("WebControl/pageList/service"),
+            "Component Pages List" => site_url("WebControl/pageList/sidebar"),
             "Bot Members" => site_url("WebControl/botMembersList"),
             "Contact List" => site_url("WebControl/contactPageList"),
         ),
