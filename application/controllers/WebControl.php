@@ -547,7 +547,7 @@ class WebControl extends CI_Controller {
                 if ($this->input->post('page_url')) {
                     $category_array["page_url"] = $this->input->post('page_url');
                 }
-                print_r($category_array);
+            
                 $id = $this->input->post('parent_id');
                 $this->db->set($category_array);
                 $this->db->where('id', $id);
