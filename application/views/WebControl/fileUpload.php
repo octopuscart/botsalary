@@ -146,7 +146,7 @@ $this->load->view('layout/topmenu');
                             ?>
                         <td >
                         <button class='btn btn-warning' onclick="myFunction('<?php echo base_url(); ?>assets/content_files/<?php echo $value["file_name"]; ?>')" onmouseout="outFunc()">
-                            Copy Image URL
+                            Copy File URL
                         </button>
                         </td>
                         <?php
