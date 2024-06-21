@@ -20,6 +20,7 @@ class Account_model extends CI_Model {
     function getPnLCategoryHeads($category_id) {
         $this->db->select("*, '' as value");
         $this->db->where("category_id", $category_id);
+        $this->db->where("status", "active");
         $this->db->order_by("display_index asc");
         $query = $this->db->get("pnl_category_heads");
         $category_head_data = $query->result_array($query);
@@ -47,7 +48,8 @@ class Account_model extends CI_Model {
     function getPnLCategoryHeadsBudgetReport($category_id, $entry_month, $entry_year) {
         $query = "SELECT title, pe.id, pe.head_value FROM pnl_category_heads as pch 
       join pnl_entry_budget as pe on pch.id=pe.head_id where pch.category_id = $category_id
-       and entry_month = '$entry_month' and entry_year = '$entry_year' order by pch.display_index asc
+       and entry_month = '$entry_month' and entry_year = '$entry_year' and status='active' order by pch.display_index asc
+           
        ";
 
         $query = $this->db->query($query);
@@ -66,7 +68,7 @@ class Account_model extends CI_Model {
     function getPnLCategoryHeadsReport($category_id, $entry_month, $entry_year) {
         $query = "SELECT title, pe.id, pe.head_value FROM pnl_category_heads as pch 
       join pnl_entry as pe on pch.id=pe.head_id where pch.category_id = $category_id
-       and entry_month = '$entry_month' and entry_year = '$entry_year' order by pch.display_index asc
+       and entry_month = '$entry_month' and entry_year = '$entry_year' and status='active' order by pch.display_index asc
        ";
 
         $query = $this->db->query($query);
@@ -87,7 +89,7 @@ class Account_model extends CI_Model {
         $query = "
             SELECT title, pe.id, sum(pe.head_value) as head_value FROM pnl_category_heads as pch 
       join pnl_entry as pe on pch.id=pe.head_id where pch.category_id = $category_id
-       and  entry_date BETWEEN '$startyear-04-01' and '$entry_year-$entry_month-01' group by pe.head_id
+       and  entry_date BETWEEN '$startyear-04-01' and '$entry_year-$entry_month-01' and status='active' group by pe.head_id
            order by pch.display_index asc
        ";
 
