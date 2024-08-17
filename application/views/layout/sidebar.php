@@ -65,6 +65,17 @@ if ($this->user_type == 'Admin') {
         ),
     );
     array_push($menu_control, $bs_menu);
+    
+     $bs_menu = array(
+        "title" => "Halal Form Management",
+        "icon" => "fa fa-bookmark",
+        "active" => "",
+        "sub_menu" => array(
+            "Reports" => site_url("HalalReports/index"),
+        ),
+    );
+    array_push($menu_control, $bs_menu);
+
 
     $salary_menu = array(
         "title" => "Settings",
