@@ -48,7 +48,7 @@ $isTest = true;
             <label for="lable_for_{name}">
                 Download File
             </label><br/>
-            <b><a href="{business_registration_file}">Click Here</a></b>
+            <b><a href="{business_registration_file}" target="_blank">Click Here</a></b>
         </div>
         {hala_form_fields_block3}  
         <div class="form-group {base-class}  halalformfield">
