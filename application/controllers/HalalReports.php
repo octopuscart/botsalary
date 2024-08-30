@@ -1,6 +1,8 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once(APPPATH . '/third_party/tcpdf-main/examples/config/tcpdf_config_alt.php');
+include_once APPPATH . '/third_party/tcpdf-main/tcpdf.php';
 
 class HalalReports extends CI_Controller {
 
@@ -35,36 +37,67 @@ class HalalReports extends CI_Controller {
         }
     }
 
-    function details($form_id) {
-        if ($this->user_type == $this->login_user) {
-            $this->db->where("id", $form_id);
-            $query = $this->db->get("hala_certification_form");
-            $halaldata = $query->row_array();
+    function getDetails($form_id, $isArray = false) {
+        $this->db->where("id", $form_id);
+        $query = $this->db->get("hala_certification_form");
+        $halaldata = $query->row_array();
 
-            $data = array();
-            $halaformdata = array();
-            $halal_form = $this->db->select("attr_details")->where("attr_key", "hala-attribute")->get("configuration_attr")->row_array();
-            if ($halal_form) {
-                $form_details = json_decode($halal_form["attr_details"]);
-                foreach ($form_details as $fkey => $formvalue) {
-//                    $formvalue["value"] = $halaldata[$formvalue->name];
-                    foreach ($formvalue as $fskey => $fsvalue) {
+        $data = array();
+        $halaformdata = array();
+        $halal_form = $this->db->select("attr_details")->where("attr_key", "hala-attribute")->get("configuration_attr")->row_array();
+        if ($halal_form) {
+            $form_details = json_decode($halal_form["attr_details"], $isArray);
+            foreach ($form_details as $fkey => $formvalue) {
+                foreach ($formvalue as $fskey => $fsvalue) {
+                    if ($isArray) {
+                        $fsvalue["value"] = $halaldata[$fsvalue["name"]];
+                        $fsvalue["mock"] = $halaldata[$fsvalue["name"]];
+                    } else {
                         $fsvalue->value = $halaldata[$fsvalue->name];
                         $fsvalue->mock = $halaldata[$fsvalue->name];
                     }
-                    $halaformdata[$fkey] = $formvalue;
                 }
+                $halaformdata[$fkey] = $formvalue;
             }
-           
-            foreach ($halaldata as $key => $value) {
-                $halaformdata[$key] = $value;
-            }
+        }
 
-            $data["halaformdata"] = $halaformdata;
+        foreach ($halaldata as $key => $value) {
 
+            $halaformdata[$key] = $value;
+        }
+        return $halaformdata;
+    }
+
+    function details($form_id) {
+        $data = array();
+        if ($this->user_type == $this->login_user) {
+            $data["halaformdata"] = $this->getDetails($form_id);
+            $data["hid"] = $form_id;
             $this->load->view('HalalService/details', $data);
         } else {
             redirect('UserManager/not_granted');
+        }
+    }
+
+    function reportPdf($form_id, $viewmode = "i") {
+        $data = array();
+        if ($this->user_type == $this->login_user) {
+            $halaformdata = $this->getDetails($form_id, true);
+//            print_r($halaformdata);
+            $halaformdata["css"] = true;
+            $htmloutput = $this->parser->parse('HalalService/halalBasePdf', $halaformdata, true);
+
+            $filetitle = "tttt" . '-report.pdf';
+            if ($viewmode != "h") {
+                $pdf = new TCPdf("P", "mm", "A4", true, 'UTF-8', false);
+                $pdf->AddPage();
+                $pdf->SetTitle($filetitle);
+                $pdf->writeHTML($htmloutput);
+                $pdf->Output($filetitle, $viewmode);
+            }
+            else{
+                echo $htmloutput;
+            }
         }
     }
 }

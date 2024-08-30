@@ -42,6 +42,7 @@ $this->load->view('layout/topmenu');
                 <h3 class="panel-title">Form ID#: <?php echo $halaformdata["form_id"]; ?>
                     <div class="btn-group pull-right">
 
+                        <a href="<?php echo site_url("HalalReports/reportPdf/" . $hid); ?>" class="btn btn-primary"><i class="fa fa-print"></i> Print Report</a>
 
                         <a href="<?php echo site_url("HalalReports/index"); ?>" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back</a>
                     </div>
@@ -50,7 +51,8 @@ $this->load->view('layout/topmenu');
             <div class="panel-body">
                 <div class="col-md-12" id='printArea'>
                     <?php
-                    echo $this->parser->parse('HalalService/detailsbase', $halaformdata, true);
+                    $halaformdata["css"] = false;
+                    echo $this->parser->parse('HalalService/halalBasePdf', $halaformdata, true);
                     ?>
                 </div>
             </div>
