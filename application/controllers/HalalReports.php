@@ -87,7 +87,7 @@ class HalalReports extends CI_Controller {
             $halaformdata["css"] = true;
             $htmloutput = $this->parser->parse('HalalService/halalBasePdf', $halaformdata, true);
 
-            $filetitle = "tttt" . '-report.pdf';
+            $filetitle = "HalaForm-".$form_id . '-report.pdf';
             if ($viewmode != "h") {
                 $pdf = new TCPdf("P", "mm", "A4", true, 'UTF-8', false);
                 $pdf->AddPage();
