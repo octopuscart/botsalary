@@ -33,8 +33,8 @@ class Salary extends CI_Controller
         if ($this->user_type == 'Admin') {
             $this->load->view('Salary/dashboard', $data);
         }
-        if ($this->user_type == 'Admin') {
-            $this->load->view('Salary/dashboard', $data);
+        if ($this->user_type == 'HalalAdmin') {
+            $this->load->view('HalalReports/index');
         }
         if ($this->user_type == 'Employee') {
             $loginuser = $this->session->userdata('logged_in');
