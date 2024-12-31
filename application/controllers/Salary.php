@@ -34,7 +34,7 @@ class Salary extends CI_Controller
             $this->load->view('Salary/dashboard', $data);
         }
         if ($this->user_type == 'HalalAdmin') {
-            $this->load->view('HalalReports/index');
+           redirect('HalalReports/index');
         }
         if ($this->user_type == 'Employee') {
             $loginuser = $this->session->userdata('logged_in');
