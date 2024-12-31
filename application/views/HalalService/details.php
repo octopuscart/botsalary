@@ -5,27 +5,33 @@ $this->load->view('layout/topmenu');
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/treejs/themes/default/style.min.css">
 
 <script src="<?php echo base_url(); ?>assets/treejs/jstree.min.js"></script>
-<link href="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet"  />
+<link href="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" />
 
 
 
-<link href="<?php echo base_url(); ?>assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
-<link href="<?php echo base_url(); ?>assets/plugins/bootstrap-eonasdan-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<link href="<?php echo base_url(); ?>assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css"
+    rel="stylesheet" />
+<link
+    href="<?php echo base_url(); ?>assets/plugins/bootstrap-eonasdan-datetimepicker/build/css/bootstrap-datetimepicker.min.css"
+    rel="stylesheet" />
 
 <style>
-    .product_image{
-        height: 200px!important;
+    .product_image {
+        height: 200px !important;
     }
-    .product_image_back{
-        background-size: contain!important;
-        background-repeat: no-repeat!important;
-        height: 200px!important;
-        background-position-x: center!important;
-        background-position-y: center!important;
+
+    .product_image_back {
+        background-size: contain !important;
+        background-repeat: no-repeat !important;
+        height: 200px !important;
+        background-position-x: center !important;
+        background-position-y: center !important;
     }
-    .primarytext{
+
+    .primarytext {
         font-size: 15px;
     }
+
     .form-group-bg {
 
         background: #f9f9f9;
@@ -34,17 +40,21 @@ $this->load->view('layout/topmenu');
     }
 </style>
 <!-- Main content -->
-<section class="content" >
+<section class="content">
     <div class="">
 
         <div class="panel panel-inverse">
             <div class="panel-heading">
                 <h3 class="panel-title">Form ID#: <?php echo $halaformdata["form_id"]; ?>
                     <div class="btn-group pull-right">
+                        <a href="<?php echo site_url("HalalReports/halalCirtificateUpdate/" . $hid); ?>" class="btn btn-danger"><i
+                                class="fa fa-edit"></i> Update Form</a>
 
-                        <a href="<?php echo site_url("HalalReports/reportPdf/" . $hid); ?>" class="btn btn-primary"><i class="fa fa-print"></i> Print Report</a>
+                        <a href="<?php echo site_url("HalalReports/reportPdf/" . $hid); ?>" class="btn btn-primary"><i
+                                class="fa fa-print"></i> Print Report</a>
 
-                        <a href="<?php echo site_url("HalalReports/index"); ?>" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back</a>
+                        <a href="<?php echo site_url("HalalReports/index"); ?>" class="btn btn-primary"><i
+                                class="fa fa-arrow-left"></i> Back</a>
                     </div>
                 </h3>
             </div>
@@ -86,6 +96,4 @@ $this->load->view('layout/topmenu');
 
 <?php
 $this->load->view('layout/footer');
-?> 
-
-
+?>

@@ -72,6 +72,7 @@ if ($this->user_type == 'Admin') {
         "active" => "",
         "sub_menu" => array(
             "Reports" => site_url("HalalReports/index"),
+            "Add Form"=>site_url("HalalReports/halalCirtificateRequests")
         ),
     );
     array_push($menu_control, $bs_menu);
@@ -196,7 +197,18 @@ if ($this->user_type == 'WebAdmin') {
     array_push($menu_control, $web_menu2);
 }
 
-
+if ($this->user_type == 'HalalAdmin') {
+    $bs_menu = array(
+        "title" => "Halal Form Management",
+        "icon" => "fa fa-bookmark",
+        "active" => "",
+        "sub_menu" => array(
+            "Reports" => site_url("HalalReports/index"),
+            "Add Form"=>site_url("HalalReports/halalCirtificateRequests")
+        ),
+    );
+    array_push($menu_control, $bs_menu);
+}
 
 
 foreach ($menu_control as $key => $value) {

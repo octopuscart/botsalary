@@ -125,6 +125,39 @@ class Curd_model extends CI_Model {
         return strtolower($slug);
 //        return  $slug;
     }
+    
+
+
+    function uploadfiles($filename, $uploadpath, $allowed_type, $prefix = "") {
+        $config['upload_path'] = $uploadpath;
+        $config['allowed_types'] = "*";
+        $picture = '';
+        $result = array("status" => "500");
+        print_r($_FILES);
+        if (!empty($_FILES[$filename]['name'])) {
+            $temp1 = $this->generateRandomString() . rand(100, 1000000);
+            $config['overwrite'] = TRUE;
+            $ext1 = explode('.', $_FILES[$filename]['name']);
+            $ext = strtolower(end($ext1));
+            $file_newname = $prefix . "-" . $temp1 . "." . $ext;
+            $picture = $file_newname;
+            $config['file_name'] = $file_newname;
+            //Load upload library and initialize configuration
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+            if ($this->upload->do_upload($filename)) {
+                $uploadData = $this->upload->data();
+                $picture = $uploadData['file_name'];
+            } else {
+                $picture = '';
+            }
+            $result["filename"] = $picture;
+            $result["status"] = "200";
+            return $result;
+        } else {
+            $result["status"] = "500";
+        }
+    }
 }
 
 ?>

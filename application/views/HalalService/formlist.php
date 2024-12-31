@@ -48,8 +48,8 @@ $this->load->view('layout/topmenu');
                     <th>Form ID#</th>
                     <th>Applicant Type</th>
                     <th>Applicant Name</th>
-                    <th>Contact Person</th>
-                    <th>Submission Date/Time</th>
+                    <th>Cuisine</th>
+                    <th>Expire Date/Status</th>
                     <th>Status</th>
                     <th style="width:100px"></th>
                     </thead>
@@ -62,9 +62,9 @@ $this->load->view('layout/topmenu');
                             . "<td>" . $value["form_id"] . "</td>"
                             . "<td>" . $value["applicant_type"] . "</td>"
                             . "<td>" . $value["applicant_name"] . "</td>"
-                            . "<td>" . $value["responsible_name"] . " " . $value["responsible_contact"] . "</td>"
-                            . "<td>" . $value["form_date"] . " " . $value["form_date"] . "</td>"
-                            . "<td>" . $value["form_id"] . "</td>";
+                            . "<td>" . $value["cuisine"] . " " . $value["responsible_contact"] . "</td>"
+                            . "<td>" . $value["expiry_date"] . " " . $value["renew_status"] . "</td>"
+                            . "<td>" . $value["status"] . "</td>";
                             echo "<td><a href='" . site_url("HalalReports/details/" . $value["id"]) . "' class='btn btn-primary'>View Details</a></td>";
 
                             echo "</tr>";

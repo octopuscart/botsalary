@@ -1,10 +1,12 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Salary extends CI_Controller {
+class Salary extends CI_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->model('Salary_model');
         $this->load->model('User_model');
@@ -21,7 +23,8 @@ class Salary extends CI_Controller {
         $this->user_type = $this->session->logged_in['user_type'];
     }
 
-    public function index() {
+    public function index()
+    {
 
         $date1 = date('Y-m-d', strtotime('-30 days'));
         $date2 = date('Y-m-d');
@@ -29,7 +32,11 @@ class Salary extends CI_Controller {
         $data = array();
         if ($this->user_type == 'Admin') {
             $this->load->view('Salary/dashboard', $data);
-        } if ($this->user_type == 'Employee') {
+        }
+        if ($this->user_type == 'Admin') {
+            $this->load->view('Salary/dashboard', $data);
+        }
+        if ($this->user_type == 'Employee') {
             $loginuser = $this->session->userdata('logged_in');
 
             if (isset($loginuser["employee_id"])) {
@@ -51,7 +58,8 @@ class Salary extends CI_Controller {
         }
     }
 
-    public function allowanceCategories() {
+    public function allowanceCategories()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -88,7 +96,7 @@ class Salary extends CI_Controller {
         $data['list_data'] = $categories_data;
 
         $fields = array(
-            "id" => array("title" => "ID#", "width" => "100px", "depends" => "location_data",),
+            "id" => array("title" => "ID#", "width" => "100px", "depends" => "location_data", ),
         );
         foreach ($form_attr as $key => $value) {
             $fields[$key] = $value;
@@ -99,7 +107,8 @@ class Salary extends CI_Controller {
         $this->load->view('layout/curd', $data);
     }
 
-    public function locations() {
+    public function locations()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -139,7 +148,8 @@ class Salary extends CI_Controller {
         $this->load->view('layout/curd', $data);
     }
 
-    public function employeeLogin() {
+    public function employeeLogin()
+    {
         $querysql = "select se.id as id, name, email, employee_id, location from salary_employee as se join salary_location as sl on sl.id = se.location_id order by sl.id";
         $query = $this->db->query($querysql);
         $employee_data = $query->result_array($query);
@@ -173,8 +183,10 @@ class Salary extends CI_Controller {
                 if ($checkuserpre) {
                     $user_id = $checkuserpre->id;
                     ;
-                    $this->db->set(array('password' => md5($otpcheck),
-                        'password2' => $otpcheck));
+                    $this->db->set(array(
+                        'password' => md5($otpcheck),
+                        'password2' => $otpcheck
+                    ));
                     $this->db->where('id', $user_id);
                     $this->db->update('admin_users');
                     $user_id = $user_id;
@@ -208,7 +220,8 @@ class Salary extends CI_Controller {
         $this->load->view('Salary/employeePassword', $data);
     }
 
-    public function employee() {
+    public function employee()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -231,14 +244,14 @@ class Salary extends CI_Controller {
         $data['form_title'] = "Add Employee";
         $data['table_name'] = 'salary_employee';
         $form_attr = array(
-            "employee_id" => array("title" => "Employee ID", "required" => false, "place_holder" => "Employee ID", "type" => "text", "default" => "", "depends" => "", "width" => "100px",),
-            "name" => array("title" => "Name", "required" => true, "place_holder" => "Name", "type" => "text", "default" => "", "depends" => "", "width" => "280px",),
-            "base_salary" => array("title" => "Basic Salary", "required" => true, "place_holder" => "Basic Salary", "type" => "text", "default" => "", "depends" => "", "width" => "280px",),
-            "contact_no" => array("title" => "Contact No.", "required" => false, "place_holder" => "Contact No", "type" => "text", "default" => "", "depends" => "", "width" => "70px",),
-            "email" => array("title" => "Email ID", "required" => false, "place_holder" => "Email ID", "type" => "text", "default" => "", "depends" => "", "width" => "150px",),
-            "age" => array("title" => "Age", "required" => false, "place_holder" => "Age", "type" => "text", "default" => "", "depends" => "", "width" => "100px",),
-            "location_id" => array("title" => "Location", "required" => true, "place_holder" => "Location", "type" => "select", "default" => "", "depends" => "location_data", "width" => "200px",),
-            "hk_id" => array("title" => "HK ID", "required" => true, "place_holder" => "Hk ID#", "type" => "text", "default" => "", "depends" => "", "width" => "200px",),
+            "employee_id" => array("title" => "Employee ID", "required" => false, "place_holder" => "Employee ID", "type" => "text", "default" => "", "depends" => "", "width" => "100px", ),
+            "name" => array("title" => "Name", "required" => true, "place_holder" => "Name", "type" => "text", "default" => "", "depends" => "", "width" => "280px", ),
+            "base_salary" => array("title" => "Basic Salary", "required" => true, "place_holder" => "Basic Salary", "type" => "text", "default" => "", "depends" => "", "width" => "280px", ),
+            "contact_no" => array("title" => "Contact No.", "required" => false, "place_holder" => "Contact No", "type" => "text", "default" => "", "depends" => "", "width" => "70px", ),
+            "email" => array("title" => "Email ID", "required" => false, "place_holder" => "Email ID", "type" => "text", "default" => "", "depends" => "", "width" => "150px", ),
+            "age" => array("title" => "Age", "required" => false, "place_holder" => "Age", "type" => "text", "default" => "", "depends" => "", "width" => "100px", ),
+            "location_id" => array("title" => "Location", "required" => true, "place_holder" => "Location", "type" => "select", "default" => "", "depends" => "location_data", "width" => "200px", ),
+            "hk_id" => array("title" => "HK ID", "required" => true, "place_holder" => "Hk ID#", "type" => "text", "default" => "", "depends" => "", "width" => "200px", ),
         );
 
         if (isset($_POST['submitData'])) {
@@ -266,7 +279,8 @@ class Salary extends CI_Controller {
         $this->load->view('layout/curd', $data);
     }
 
-    function getSessionDates() {
+    function getSessionDates()
+    {
         $session_dates = $this->session->userdata('session_dates');
         if ($session_dates) {
             return $session_dates;
@@ -278,7 +292,8 @@ class Salary extends CI_Controller {
         }
     }
 
-    function setSessionsDates($salary_date, $mpf_date) {
+    function setSessionsDates($salary_date, $mpf_date)
+    {
         $session_dates = $this->session->userdata('session_dates');
         if ($session_dates) {
             if ($session_dates["salary_date"] != $salary_date) {
@@ -300,7 +315,8 @@ class Salary extends CI_Controller {
         }
     }
 
-    function create($employee_id) {
+    function create($employee_id)
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -410,7 +426,8 @@ class Salary extends CI_Controller {
         $this->load->view('Salary/addSalary', $data);
     }
 
-    function selectEmployee() {
+    function selectEmployee()
+    {
         $data["createpermission"] = false;
 
         switch ($this->user_type) {
@@ -455,7 +472,8 @@ class Salary extends CI_Controller {
         $this->load->view('Salary/employeelist', $data);
     }
 
-    function paySlip($salary_id) {
+    function paySlip($salary_id)
+    {
         $data["deletable"] = true;
         if ($this->user_type != 'Admin') {
             $data["deletable"] = false;
@@ -472,7 +490,8 @@ class Salary extends CI_Controller {
         $this->load->view("Salary/paySlip", $data);
     }
 
-    function paySlipPdf($salary_id, $viewmode = "D") {
+    function paySlipPdf($salary_id, $viewmode = "D")
+    {
 
         $salaryobj = $this->Salary_model->employeeSalarySingle($salary_id);
         $data["salaryobj"] = $salaryobj;
@@ -490,7 +509,7 @@ class Salary extends CI_Controller {
 
         $this->load->library('Pdf');
         $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
-//        $pdf->SetProtection(array('modify', 'copy', 'print'), $data["employee"]["employee_id"], "", 0, null);
+        //        $pdf->SetProtection(array('modify', 'copy', 'print'), $data["employee"]["employee_id"], "", 0, null);
         $pdf->AddPage();
         $pdf->SetTitle($filetitle);
         $pdf->writeHTML($htmloutput);
@@ -498,7 +517,8 @@ class Salary extends CI_Controller {
         $pdf->Output($filetitle, $viewmode);
     }
 
-    function salaryReport() {
+    function salaryReport()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -511,7 +531,8 @@ class Salary extends CI_Controller {
         $this->load->view('Salary/report', $data);
     }
 
-    function salaryReportXls() {
+    function salaryReportXls()
+    {
         $a_date = date("M-Y");
         if (isset($_GET["salary_date"])) {
             $a_date = $_GET["salary_date"];
@@ -525,7 +546,8 @@ class Salary extends CI_Controller {
         echo $html;
     }
 
-    function salaryReportPDF() {
+    function salaryReportPDF()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -542,7 +564,8 @@ class Salary extends CI_Controller {
         $this->m_pdf->pdf->Output($pdfFilePath, "D");
     }
 
-    function deletePayslip($id) {
+    function deletePayslip($id)
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -556,7 +579,8 @@ class Salary extends CI_Controller {
         redirect(site_url("Salary/selectEmployee?salary_date=$salarydate&select_month=1"));
     }
 
-    function salaryReportV2() {
+    function salaryReportV2()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -575,7 +599,8 @@ class Salary extends CI_Controller {
         $this->load->view('Salary/reportv2', $data);
     }
 
-    function salaryReporV2tXls() {
+    function salaryReporV2tXls()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -599,7 +624,8 @@ class Salary extends CI_Controller {
         echo $html;
     }
 
-    function salaryReportV2PDF() {
+    function salaryReportV2PDF()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -617,7 +643,8 @@ class Salary extends CI_Controller {
         echo $html = $this->load->view('Salary/reportbasev2', $data, true);
     }
 
-    function viewEmplyeeSalaryData($emp_id) {
+    function viewEmplyeeSalaryData($emp_id)
+    {
         $data["employee"] = $this->Curd_model->get_single2('salary_employee', $emp_id);
         $this->db->where("employee_id", $emp_id);
         $this->db->order_by("salary_date desc");
@@ -627,18 +654,20 @@ class Salary extends CI_Controller {
         return $data;
     }
 
-    function viewEmplyeeSalary($emp_id) {
+    function viewEmplyeeSalary($emp_id)
+    {
         $data = $this->viewEmplyeeSalaryData($emp_id);
         $this->load->view('Salary/salarylist', $data);
     }
 
-    function viewEmplyeeSalaryPDF($emp_id, $viewmode = "D") {
+    function viewEmplyeeSalaryPDF($emp_id, $viewmode = "D")
+    {
         $data = $this->viewEmplyeeSalaryData($emp_id);
         $html = $this->load->view('Salary/salarylistReport', $data, true);
         $filename = 'salary_report_' . $data["employee"]["employee_id"] . ".pdf";
         $this->load->library('Pdf');
         $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
-//        $pdf->SetProtection(array('modify', 'copy', 'print'), $data["employee"]["employee_id"], "", 0, null);
+        //        $pdf->SetProtection(array('modify', 'copy', 'print'), $data["employee"]["employee_id"], "", 0, null);
         $pdf->AddPage();
         $pdf->SetTitle($filename);
         $pdf->writeHTML($html);
@@ -646,7 +675,8 @@ class Salary extends CI_Controller {
         $pdf->Output($filename, $viewmode);
     }
 
-    function annulaSalaryData($startYear) {
+    function annulaSalaryData($startYear)
+    {
         $data = array();
         $report_title = "";
         $location_data = $this->Curd_model->get('salary_location');
@@ -689,14 +719,15 @@ class Salary extends CI_Controller {
         }
 
 
-//        $data = $this->viewEmplyeeSalaryData($emp_id);
+        //        $data = $this->viewEmplyeeSalaryData($emp_id);
         $data["salary_report"] = $salaryFinal;
         $data["salary_date_list"] = $dateData;
         $data["report_title"] = $report_title;
         return $data;
     }
 
-    function viewAnnualSalaryXls() {
+    function viewAnnualSalaryXls()
+    {
         $startYear = isset($_GET["startYear"]) ? $_GET["startYear"] : START_YEAR;
         $data = $this->annulaSalaryData($startYear);
         $html = $this->load->view('Salary/salarylistReportAnnual', $data, true);
@@ -707,7 +738,8 @@ class Salary extends CI_Controller {
         echo $html;
     }
 
-    function viewAnnualSalary() {
+    function viewAnnualSalary()
+    {
         $startYear = isset($_GET["startYear"]) ? $_GET["startYear"] : START_YEAR;
         $data = $this->annulaSalaryData($startYear);
         $data["startYear"] = $startYear;

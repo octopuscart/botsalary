@@ -140,4 +140,6 @@ class Service_model extends CI_Model {
             $this->db->order_by(key($order), $order[key($order)]);
         }
     }
+
+
 }
