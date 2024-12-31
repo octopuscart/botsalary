@@ -101,9 +101,21 @@ class HalalReports extends CI_Controller
                                 }
                             }
                         }
+                           
+                        $formvalue[$fskey]["value"] = $halaldata[$fsvalue["name"]];
+                        $formvalue[$fskey]["mock"] = $halaldata[$fsvalue["name"]];
                     } else {
-                        $fsvalue->value = $halaldata[$fsvalue->name];
-                        $fsvalue->mock = $halaldata[$fsvalue->name];
+                        
+                        if($isArray){
+                          
+                            $formvalue[$fskey]["value"] = $halaldata[$fsvalue["name"]];
+                            $formvalue[$fskey]["mock"] = $halaldata[$fsvalue["name"]];
+                        }
+                        else{
+                            $formvalue[$fskey]->value = $halaldata[$fsvalue->name];
+                            $formvalue[$fskey]->mock = $halaldata[$fsvalue->name];
+                        }
+                     
                     }
                 }
                 $halaformdata[$fkey] = $formvalue;

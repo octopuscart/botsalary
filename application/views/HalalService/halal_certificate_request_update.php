@@ -262,7 +262,7 @@ $isTest = true;
 
                                     </label>
                                     <input type="text" name="signatory_name" class="form-control"
-                                        id="id_for_signatory_name" value="<?php echo $isTest ? "Test Name" : "" ?>"
+                                        id="id_for_signatory_name" value="<?php echo $signatory_name; ?>"
                                         placeholder="">
                                 </div>
                                 <div class="form-group  halalformfield">
@@ -272,7 +272,7 @@ $isTest = true;
                                     </label>
                                     <input type="text" name="signatory_capacity" class="form-control"
                                         id="id_for_signatory_name"
-                                        value="<?php echo $isTest ? "Test Designation" : "" ?>" placeholder="">
+                                        value="<?php echo $signatory_capacity; ?>" placeholder="">
                                 </div>
                                 <div class="form-group  halalformfield">
                                     <label for="lable_for_date">
@@ -280,7 +280,7 @@ $isTest = true;
 
                                     </label>
                                     <input type="text" name="signatory_date" class="form-control"
-                                        id="id_for_signatory_name" placeholder="" value="<?php echo date("Y-m-d") ?>">
+                                        id="id_for_signatory_name" placeholder="" value="<?php echo $signatory_date; ?>">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -327,7 +327,7 @@ $isTest = true;
                                     </label>
                                     <textarea name="other_info" class="form-control" id="lable_for_{name}"
                                         maxlength="520"
-                                        placeholder="Max limit 520 char."><?php echo $isTest ? "Test Additional Information (Optional) 附加資訊（可選）" : "" ?></textarea>
+                                        placeholder="Max limit 520 char."><?php echo $other_info; ?></textarea>
                                     <small>Max char limit 520. 最大字元數限制 520。</small>
                                 </div>
                                 <p class="form-submit"><input name="submit" type="submit"
