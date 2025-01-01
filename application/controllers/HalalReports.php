@@ -21,7 +21,7 @@ class HalalReports extends CI_Controller
         $this->load->library('parser');
         $this->user_id = $this->session->userdata('logged_in')['login_id'];
         $this->user_type = $this->session->logged_in['user_type'];
-        $this->login_user = "HalalAdmin";
+        $this->login_user = ['Admin', 'HalalAdmin'];;
     }
 
     public function index()
@@ -29,7 +29,9 @@ class HalalReports extends CI_Controller
         $date1 = date('Y-m-d', strtotime('-30 days'));
         $date2 = date('Y-m-d');
         $data = array();
-        if ($this->user_type == $this->login_user) {
+    
+        if (in_array($this->user_type, $this->login_user)) 
+        {
             $this->db->order_by("id desc");
             $query = $this->db->get("hala_certification_form");
             $hala_certification_data = $query->result_array();
@@ -75,6 +77,9 @@ class HalalReports extends CI_Controller
         $this->db->where("id", $form_id);
         $query = $this->db->get("hala_certification_form");
         $halaldata = $query->row_array();
+        if(!$halaldata){
+            redirect("HalalReports");
+        }
 
         $data = array();
         $halaformdata = array();
@@ -132,7 +137,8 @@ class HalalReports extends CI_Controller
     function details($form_id)
     {
         $data = array();
-        if ($this->user_type == $this->login_user) {
+        if (in_array($this->user_type, $this->login_user)) {
+
             $data["halaformdata"] = $this->getDetails($form_id);
             $data["hid"] = $form_id;
             $this->load->view('HalalService/details', $data);
@@ -144,7 +150,8 @@ class HalalReports extends CI_Controller
     function reportPdf($form_id, $viewmode = "i")
     {
         $data = array();
-        if (1) {
+        if (in_array($this->user_type, $this->login_user)) 
+        {
             $halaformdata = $this->getDetails($form_id, true);
             //            print_r($halaformdata);
             $halaformdata["css"] = true;
@@ -192,11 +199,10 @@ class HalalReports extends CI_Controller
                 $br_file_path = "assets/halalfiles/brn";
                 $signature_file_status = $this->Curd_model->uploadfiles("signature", $signature_path, "jpg|png|jpeg", $form_id);
                 $bre_file_status = $this->Curd_model->uploadfiles("business_registration_no_file", $br_file_path, "pdf", $form_id);
-                print_r($bre_file_status);
-                if ($signature_file_status["status"] == "200") {
+                if ($signature_file_status && $signature_file_status["status"] == "200") {
                     $fieldinput["signatory_file"] = base_url($signature_path . "/" . $signature_file_status["filename"]);
                 }
-                if ($bre_file_status["status"] == "200") {
+                if ($bre_file_status && $bre_file_status["status"] == "200") {
                     $fieldinput["business_registration_file"] = base_url($br_file_path . "/" . $bre_file_status["filename"]);
                 }
             } catch (Exception $e) {
