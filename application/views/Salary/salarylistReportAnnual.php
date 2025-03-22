@@ -1,9 +1,11 @@
 <style>
-    .salarytable th, .salarytable td{
+    .salarytable th,
+    .salarytable td {
         padding: 0px 5px;
 
     }
-    .salarytable td{
+
+    .salarytable td {
         padding: 0px 5px;
         text-align: right;
     }
@@ -12,7 +14,7 @@
     <thead>
         <tr>
             <th colspan="15">
-                <?php echo $report_title;?>
+                <?php echo $report_title; ?>
             </th>
         </tr>
 
@@ -23,7 +25,9 @@
             <?php
             $dateTotalData = array();
             $hg_total = 0;
+            $hg_total_array = array();
             $vg_total = 0;
+            $vg_total_array = array();
             foreach ($salary_date_list as $key => $wslvalue) {
                 $dateTotalData[$wslvalue] = 0;
                 echo " <th>" . $wslvalue . "</th>";
@@ -42,13 +46,13 @@
                     color: black;">
                     <?php echo $lvalue["location"] ?>
                 </th>
-            <tr/>   
+                <tr />
 
-            <?php
-            $count = 1;
+                <?php
+                $count = 1;
 
-            foreach ($lvalue["salary"] as $skey => $svalue) {
-                ?>
+                foreach ($lvalue["salary"] as $skey => $svalue) {
+                    ?>
                 <tr>
                     <td><?php echo $count; ?></td>
 
@@ -58,8 +62,8 @@
                         ?>
                         <br>
                         <small> <?php
-                            echo $svalue["employee_id"];
-                            ?>
+                        echo $svalue["employee_id"];
+                        ?>
                         </small>
                     </td>
                     <?php
@@ -70,6 +74,7 @@
                         $htotal += $grsSalary;
                         $dateTotalData[$wslvalue] += $grsSalary;
                     }
+                    $hg_total_array[] = $htotal;
                     $hg_total += $htotal;
                     echo " <th>" . $htotal . "</th>";
                     ?>
@@ -77,25 +82,29 @@
                 </tr>
                 <?php
                 $count++;
-            }
+                }
         }
         ?>
         <tr>
             <th></th>
 
             <th style="width:200px">Total</th>
-                <?php
-                foreach ($salary_date_list as $key => $wslvalue) {
-                    $vg_total += $dateTotalData[$wslvalue];
-                    echo " <th>" . $dateTotalData[$wslvalue] . "</th>";
-                }
-                ?>
+            <?php
+            foreach ($salary_date_list as $key => $wslvalue) {
+                $vg_total += $dateTotalData[$wslvalue];
+                $vg_total_array[] = $dateTotalData[$wslvalue];
+                echo " <th>" . $dateTotalData[$wslvalue] . "</th>";
+            }
+            ?>
             <th>
                 <?php
-                echo $vg_total == $hg_total ? $hg_total : "Error";
+                echo round($vg_total) == round($hg_total) ? $hg_total : "Error";
                 ?>
             </th>
 
         </tr>
     </tbody>
 </table>
+<?php
+
+?>

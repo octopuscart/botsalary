@@ -545,7 +545,7 @@ class Salary extends CI_Controller {
         $this->load->library('m_pdf');
 
         $this->m_pdf->pdf->WriteHTML($html);
-        $this->m_pdf->pdf->Output($pdfFilePath, "D");
+        $this->m_pdf->pdf->Output($filename, "D");
     }
 
     function deletePayslip($id) {
@@ -555,9 +555,9 @@ class Salary extends CI_Controller {
         $this->db->where("id", $id);
         $this->db->delete("salary");
         $salarydate = $this->input->get("salary_date");
-        $this->db->where("salary_id", $salary_id);
+        $this->db->where("salary_id", $id);
         $query = $this->db->delete("salary_allowances_apply");
-        $this->db->where("salary_id", $salary_id);
+        $this->db->where("salary_id", $id);
         $query = $this->db->delete("salary_deduction_apply");
         redirect(site_url("Salary/selectEmployee?salary_date=$salarydate&select_month=1"));
     }
@@ -714,6 +714,7 @@ class Salary extends CI_Controller {
         $startYear = isset($_GET["startYear"]) ? $_GET["startYear"] : START_YEAR;
         $data = $this->annulaSalaryData($startYear);
         $html = $this->load->view('Salary/salarylistReportAnnual', $data, true);
+        $a_date = date("M-Y");
         $filename = 'annual_salary_report_' . $a_date . ".xls";
         ob_clean();
         header("Content-Disposition: attachment; filename=$filename");
