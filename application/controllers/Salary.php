@@ -700,7 +700,6 @@ class Salary extends CI_Controller {
         
         $dateDataFinal2 = array();
         foreach ($dataDateFinal as $key => $value) {
-            echo $value;
            $dateDataFinal2[$dateData[$value]] = $dateData[$value];
         }
         //        $data = $this->viewEmplyeeSalaryData($emp_id);
