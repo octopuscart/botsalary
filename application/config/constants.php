@@ -37,7 +37,7 @@ define('SEO_DESC', $configuration['seo_desc']);
 
 define('HEADERCSS', $globleConnectTheme['style_css']);
 
-define('START_YEAR', "2024");
+define('START_YEAR', $globleConnectReport['f_year']);
 
 $baselink = 'http://' . $_SERVER['SERVER_NAME'];
 
