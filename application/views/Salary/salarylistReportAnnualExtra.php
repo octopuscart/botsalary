@@ -1,0 +1,105 @@
+<style>
+    .salarytable th,
+    .salarytable td {
+        padding: 0px 5px;
+
+    }
+
+    .salarytable td {
+        padding: 0px 5px;
+        text-align: right;
+    }
+    .total-td{
+        text-align: right;
+    }
+</style>
+
+<table class="salarytable" border="1" style="color:black;font-size: 10px">
+    <thead>
+        <tr>
+            <th colspan="15">
+                <?php echo $report_title; ?>
+            </th>
+        </tr>
+
+        <tr>
+            <th>S. No.</th>
+
+            <th style="width:200px">Name</th>
+            <?php
+            $dateTotalData = array();
+            $hg_total = 0;
+            $hg_total_array = array();
+            $vg_total = 0;
+            $vg_total_array = array();
+            foreach ($salary_date_list as $key => $wslvalue) {
+                $dateTotalData[$wslvalue] = 0;
+                echo " <th>" . $wslvalue . "</th>";
+            }
+            ?>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $count = 1;
+        foreach ($salary_report as $lkey => $lvalue) {
+            ?>
+     
+
+
+            <tr>
+                <td><?php echo $count; ?></td>
+
+                <td style="text-align: left;">
+                    <?php
+                    echo $lvalue["name"];
+                    ?>
+                    <br>
+                    <small> <?php
+                    echo $lvalue["employee_id"];
+                    ?>
+                    </small>
+                </td>
+                <?php
+                $htotal = 0;
+                foreach ($salary_date_list as $key => $wslvalue) {
+                    $grsSalary = isset($lvalue["salaryData"][$wslvalue]) ? $lvalue["salaryData"][$wslvalue] : 0;
+                    echo " <td>" . $grsSalary . "</td>";
+                    $htotal += $grsSalary;
+                    $dateTotalData[$wslvalue] += $grsSalary;
+                }
+                $hg_total_array[] = $htotal;
+                $hg_total += $htotal;
+                echo " <th>" . $htotal . "</th>";
+                ?>
+
+            </tr>
+            <?php
+            $count++;
+
+        }
+        ?>
+        <tr>
+            <th></th>
+
+            <th style="width:200px">Total</th>
+            <?php
+            foreach ($salary_date_list as $key => $wslvalue) {
+                $vg_total += $dateTotalData[$wslvalue];
+                $vg_total_array[] = $dateTotalData[$wslvalue];
+                echo " <th>" . $dateTotalData[$wslvalue] . "</th>";
+            }
+            ?>
+            <th>
+                <?php
+                echo round($vg_total) == round($hg_total) ? $hg_total : "Error";
+                ?>
+            </th>
+
+        </tr>
+    </tbody>
+</table>
+<?php
+
+?>

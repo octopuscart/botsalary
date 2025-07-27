@@ -9,7 +9,7 @@ $menu_control = array();
 
 if ($this->user_type == 'Admin') {
     $order_menu = array(
-        "title" => "Salary Manegement 21",
+        "title" => "Salary Manegement",
         "icon" => "fa fa-list",
         "active" => "",
         "sub_menu" => array(
@@ -18,6 +18,18 @@ if ($this->user_type == 'Admin') {
             "Salary Report" => site_url("Salary/salaryReport"),
             "Salary Report Details" => site_url("Salary/salaryReportV2"),
             "Annual Gross Salary Report" => site_url("Salary/viewAnnualSalary")
+        ),
+    );
+    array_push($menu_control, $order_menu);
+    $order_menu = array(
+        "title" => "Additional Salary",
+        "icon" => "fa fa-list",
+        "active" => "",
+        "sub_menu" => array(
+            "Set Employee" => site_url("Salary/employeeExtra"),
+            "Create Salary" => site_url("Salary/createSalaryExtra"),
+
+            "Annual Gross Salary Report" => site_url("Salary/viewAnnualExtraSalary")
         ),
     );
     array_push($menu_control, $order_menu);

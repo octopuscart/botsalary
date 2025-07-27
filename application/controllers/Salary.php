@@ -2,9 +2,11 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Salary extends CI_Controller {
+class Salary extends CI_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->model('Salary_model');
         $this->load->model('User_model');
@@ -21,7 +23,8 @@ class Salary extends CI_Controller {
         $this->user_type = $this->session->logged_in['user_type'];
     }
 
-    public function index() {
+    public function index()
+    {
 
         $date1 = date('Y-m-d', strtotime('-30 days'));
         $date2 = date('Y-m-d');
@@ -55,7 +58,8 @@ class Salary extends CI_Controller {
         }
     }
 
-    public function allowanceCategories() {
+    public function allowanceCategories()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -92,7 +96,7 @@ class Salary extends CI_Controller {
         $data['list_data'] = $categories_data;
 
         $fields = array(
-            "id" => array("title" => "ID#", "width" => "100px", "depends" => "location_data",),
+            "id" => array("title" => "ID#", "width" => "100px", "depends" => "location_data", ),
         );
         foreach ($form_attr as $key => $value) {
             $fields[$key] = $value;
@@ -103,7 +107,8 @@ class Salary extends CI_Controller {
         $this->load->view('layout/curd', $data);
     }
 
-    public function locations() {
+    public function locations()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -143,7 +148,8 @@ class Salary extends CI_Controller {
         $this->load->view('layout/curd', $data);
     }
 
-    public function employeeLogin() {
+    public function employeeLogin()
+    {
         $querysql = "select se.id as id, name, email, employee_id, location from salary_employee as se join salary_location as sl on sl.id = se.location_id order by sl.id";
         $query = $this->db->query($querysql);
         $employee_data = $query->result_array($query);
@@ -214,7 +220,8 @@ class Salary extends CI_Controller {
         $this->load->view('Salary/employeePassword', $data);
     }
 
-    public function employee() {
+    public function employee()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -237,14 +244,14 @@ class Salary extends CI_Controller {
         $data['form_title'] = "Add Employee";
         $data['table_name'] = 'salary_employee';
         $form_attr = array(
-            "employee_id" => array("title" => "Employee ID", "required" => false, "place_holder" => "Employee ID", "type" => "text", "default" => "", "depends" => "", "width" => "100px",),
-            "name" => array("title" => "Name", "required" => true, "place_holder" => "Name", "type" => "text", "default" => "", "depends" => "", "width" => "280px",),
-            "base_salary" => array("title" => "Basic Salary", "required" => true, "place_holder" => "Basic Salary", "type" => "text", "default" => "", "depends" => "", "width" => "280px",),
-            "contact_no" => array("title" => "Contact No.", "required" => false, "place_holder" => "Contact No", "type" => "text", "default" => "", "depends" => "", "width" => "70px",),
-            "email" => array("title" => "Email ID", "required" => false, "place_holder" => "Email ID", "type" => "text", "default" => "", "depends" => "", "width" => "150px",),
-            "age" => array("title" => "Age", "required" => false, "place_holder" => "Age", "type" => "text", "default" => "", "depends" => "", "width" => "100px",),
-            "location_id" => array("title" => "Location", "required" => true, "place_holder" => "Location", "type" => "select", "default" => "", "depends" => "location_data", "width" => "200px",),
-            "hk_id" => array("title" => "HK ID", "required" => true, "place_holder" => "Hk ID#", "type" => "text", "default" => "", "depends" => "", "width" => "200px",),
+            "employee_id" => array("title" => "Employee ID", "required" => false, "place_holder" => "Employee ID", "type" => "text", "default" => "", "depends" => "", "width" => "100px", ),
+            "name" => array("title" => "Name", "required" => true, "place_holder" => "Name", "type" => "text", "default" => "", "depends" => "", "width" => "280px", ),
+            "base_salary" => array("title" => "Basic Salary", "required" => true, "place_holder" => "Basic Salary", "type" => "text", "default" => "", "depends" => "", "width" => "280px", ),
+            "contact_no" => array("title" => "Contact No.", "required" => false, "place_holder" => "Contact No", "type" => "text", "default" => "", "depends" => "", "width" => "70px", ),
+            "email" => array("title" => "Email ID", "required" => false, "place_holder" => "Email ID", "type" => "text", "default" => "", "depends" => "", "width" => "150px", ),
+            "age" => array("title" => "Age", "required" => false, "place_holder" => "Age", "type" => "text", "default" => "", "depends" => "", "width" => "100px", ),
+            "location_id" => array("title" => "Location", "required" => true, "place_holder" => "Location", "type" => "select", "default" => "", "depends" => "location_data", "width" => "200px", ),
+            "hk_id" => array("title" => "HK ID", "required" => true, "place_holder" => "Hk ID#", "type" => "text", "default" => "", "depends" => "", "width" => "200px", ),
         );
 
         if (isset($_POST['submitData'])) {
@@ -272,7 +279,8 @@ class Salary extends CI_Controller {
         $this->load->view('layout/curd', $data);
     }
 
-    function getSessionDates() {
+    function getSessionDates()
+    {
         $session_dates = $this->session->userdata('session_dates');
         if ($session_dates) {
             return $session_dates;
@@ -284,7 +292,8 @@ class Salary extends CI_Controller {
         }
     }
 
-    function setSessionsDates($salary_date, $mpf_date) {
+    function setSessionsDates($salary_date, $mpf_date)
+    {
         $session_dates = $this->session->userdata('session_dates');
         if ($session_dates) {
             if ($session_dates["salary_date"] != $salary_date) {
@@ -306,7 +315,8 @@ class Salary extends CI_Controller {
         }
     }
 
-    function create($employee_id) {
+    function create($employee_id)
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -328,7 +338,8 @@ class Salary extends CI_Controller {
 
         if (isset($_POST["submit"])) {
             $salarydata = $this->input->post();
-            $salary_date = $salarydata["salary_date"];
+            $salary_month = $this->input->post('salary_month'); // e.g., "2024-06"
+            $salary_date = $salary_month . '-01'; // "2024-06-01"
             $mpf_date = $salarydata["mpf_date"];
             $this->setSessionsDates($salary_date, $mpf_date);
 
@@ -416,7 +427,8 @@ class Salary extends CI_Controller {
         $this->load->view('Salary/addSalary', $data);
     }
 
-    function selectEmployee() {
+    function selectEmployee()
+    {
         $data["createpermission"] = false;
 
         switch ($this->user_type) {
@@ -461,7 +473,8 @@ class Salary extends CI_Controller {
         $this->load->view('Salary/employeelist', $data);
     }
 
-    function paySlip($salary_id) {
+    function paySlip($salary_id)
+    {
         $data["deletable"] = true;
         if ($this->user_type != 'Admin') {
             $data["deletable"] = false;
@@ -478,7 +491,8 @@ class Salary extends CI_Controller {
         $this->load->view("Salary/paySlip", $data);
     }
 
-    function paySlipPdf($salary_id, $viewmode = "D") {
+    function paySlipPdf($salary_id, $viewmode = "D")
+    {
 
         $salaryobj = $this->Salary_model->employeeSalarySingle($salary_id);
         $data["salaryobj"] = $salaryobj;
@@ -504,7 +518,8 @@ class Salary extends CI_Controller {
         $pdf->Output($filetitle, $viewmode);
     }
 
-    function salaryReport() {
+    function salaryReport()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -517,7 +532,8 @@ class Salary extends CI_Controller {
         $this->load->view('Salary/report', $data);
     }
 
-    function salaryReportXls() {
+    function salaryReportXls()
+    {
         $a_date = date("M-Y");
         if (isset($_GET["salary_date"])) {
             $a_date = $_GET["salary_date"];
@@ -531,7 +547,8 @@ class Salary extends CI_Controller {
         echo $html;
     }
 
-    function salaryReportPDF() {
+    function salaryReportPDF()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -548,7 +565,8 @@ class Salary extends CI_Controller {
         $this->m_pdf->pdf->Output($filename, "D");
     }
 
-    function deletePayslip($id) {
+    function deletePayslip($id)
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -562,7 +580,8 @@ class Salary extends CI_Controller {
         redirect(site_url("Salary/selectEmployee?salary_date=$salarydate&select_month=1"));
     }
 
-    function salaryReportV2() {
+    function salaryReportV2()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -581,7 +600,8 @@ class Salary extends CI_Controller {
         $this->load->view('Salary/reportv2', $data);
     }
 
-    function salaryReporV2tXls() {
+    function salaryReporV2tXls()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -605,7 +625,8 @@ class Salary extends CI_Controller {
         echo $html;
     }
 
-    function salaryReportV2PDF() {
+    function salaryReportV2PDF()
+    {
         if ($this->user_type != 'Admin') {
             redirect('UserManager/not_granted');
         }
@@ -623,7 +644,8 @@ class Salary extends CI_Controller {
         echo $html = $this->load->view('Salary/reportbasev2', $data, true);
     }
 
-    function viewEmplyeeSalaryData($emp_id) {
+    function viewEmplyeeSalaryData($emp_id)
+    {
         $data["employee"] = $this->Curd_model->get_single2('salary_employee', $emp_id);
         $this->db->where("employee_id", $emp_id);
         $this->db->order_by("salary_date desc");
@@ -633,12 +655,14 @@ class Salary extends CI_Controller {
         return $data;
     }
 
-    function viewEmplyeeSalary($emp_id) {
+    function viewEmplyeeSalary($emp_id)
+    {
         $data = $this->viewEmplyeeSalaryData($emp_id);
         $this->load->view('Salary/salarylist', $data);
     }
 
-    function viewEmplyeeSalaryPDF($emp_id, $viewmode = "D") {
+    function viewEmplyeeSalaryPDF($emp_id, $viewmode = "D")
+    {
         $data = $this->viewEmplyeeSalaryData($emp_id);
         $html = $this->load->view('Salary/salarylistReport', $data, true);
         $filename = 'salary_report_' . $data["employee"]["employee_id"] . ".pdf";
@@ -652,7 +676,8 @@ class Salary extends CI_Controller {
         $pdf->Output($filename, $viewmode);
     }
 
-    function annulaSalaryData($startYear) {
+    function annulaSalaryData($startYear)
+    {
         $data = array();
         $report_title = "";
         $location_data = $this->Curd_model->get('salary_location');
@@ -697,10 +722,10 @@ class Salary extends CI_Controller {
             array_push($salaryFinal[$evalue["location_id"]]["salary"], $evalue);
         }
         sort($dataDateFinal);
-        
+
         $dateDataFinal2 = array();
         foreach ($dataDateFinal as $key => $value) {
-           $dateDataFinal2[$dateData[$value]] = $dateData[$value];
+            $dateDataFinal2[$dateData[$value]] = $dateData[$value];
         }
         //        $data = $this->viewEmplyeeSalaryData($emp_id);
         $data["salary_report"] = $salaryFinal;
@@ -709,7 +734,8 @@ class Salary extends CI_Controller {
         return $data;
     }
 
-    function viewAnnualSalaryXls() {
+    function viewAnnualSalaryXls()
+    {
         $startYear = isset($_GET["startYear"]) ? $_GET["startYear"] : START_YEAR;
         $data = $this->annulaSalaryData($startYear);
         $html = $this->load->view('Salary/salarylistReportAnnual', $data, true);
@@ -721,12 +747,211 @@ class Salary extends CI_Controller {
         echo $html;
     }
 
-    function viewAnnualSalary() {
+    function viewAnnualSalary()
+    {
         $startYear = isset($_GET["startYear"]) ? $_GET["startYear"] : START_YEAR;
         $data = $this->annulaSalaryData($startYear);
         $data["startYear"] = $startYear;
         $this->load->view('Salary/annualSalary', $data);
     }
+
+    public function employeeExtra()
+    {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
+        $data = array();
+
+        $data['depends'] = [];
+
+        $data['title'] = "Additional Employee";
+        $data['description'] = "";
+        $data['form_title'] = "Add Additional Employee";
+        $data['table_name'] = 'salary_employee_extra';
+        $form_attr = array(
+            "name" => array("title" => "Name", "required" => true, "place_holder" => "Name", "type" => "text", "default" => "", "depends" => "", "width" => "280px", ),
+            "hk_id" => array("title" => "HK ID", "required" => true, "place_holder" => "Hk ID#", "type" => "text", "default" => "", "depends" => "", "width" => "200px", ),
+        );
+
+        if (isset($_POST['submitData'])) {
+            $postarray = array();
+            foreach ($form_attr as $key => $value) {
+                $postarray[$key] = $this->input->post($key);
+            }
+            $this->Curd_model->insert('salary_employee_extra', $postarray);
+            redirect("Salary/employeeExtra");
+        }
+
+
+        $categories_data = $this->Curd_model->get('salary_employee_extra', 'asc');
+        $data['list_data'] = $categories_data;
+
+        $fields = array(
+            "id" => array("title" => "ID#", "width" => "100px", "type" => "text"),
+        );
+        foreach ($form_attr as $key => $value) {
+            $fields[$key] = $value;
+        }
+
+        $data['fields'] = $fields;
+        $data['form_attr'] = $form_attr;
+        $this->load->view('layout/curd', $data);
+    }
+
+    public function createSalaryExtra()
+    {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
+
+        // At the top, after user_type check
+        $session_month = $this->session->userdata('last_salary_month');
+
+        // Step 1: Get selected month (from POST, GET, or session)
+        $selected_month = $this->input->post('salary_month') ?: $this->input->get('salary_month') ?: $session_month ?: date('Y-m');
+
+        // If a month is selected (via POST or GET), update the session
+        if ($this->input->post('salary_month') || $this->input->get('salary_month')) {
+            $this->session->set_userdata('last_salary_month', $selected_month);
+        }
+
+        $show_form = false;
+
+        // Step 2: If form submitted for salary creation
+        if ($this->input->post('submit_salary')) {
+            $salary_date = $this->input->post('salary_date');
+            $insert = [
+                'employee_id' => $this->input->post('employee_id'),
+                'salary_date' => $salary_date,
+                'net_salary' => $this->input->post('net_salary'),
+                'op_date' => date('Y-m-d'),
+                'op_time' => date('H:i:s'),
+            ];
+            $this->Curd_model->insert('salary_extra', $insert);
+            redirect('Salary/createSalaryExtra?salary_month=' . $salary_month);
+        }
+
+        // Step 3: If month is selected, show the salary creation form
+        if ($selected_month) {
+            $show_form = true;
+            $salary_date = $selected_month . '-01';
+
+            // Get employees who do NOT have a salary for this month
+            $all_employees = $this->Curd_model->get('salary_employee_extra', 'asc');
+            $this->db->select('employee_id');
+            $this->db->like('salary_date', $selected_month, 'after'); // matches any date in the selected month
+            $query = $this->db->get('salary_extra');
+            $existing = $query->result_array();
+            $existing_ids = array_column($existing, 'employee_id');
+
+            // Fetch all created salaries for the selected month
+            $this->db->select('se.name, se.hk_id, sx.net_salary, sx.salary_date');
+            $this->db->from('salary_extra sx');
+            $this->db->join('salary_employee_extra se', 'se.id = sx.employee_id');
+            $this->db->like('sx.salary_date', $selected_month, 'after');
+            $created_salaries = $this->db->get()->result_array();
+
+            // Calculate total net salary
+            $total_net_salary = 0;
+            foreach ($created_salaries as $row) {
+                $total_net_salary += floatval($row['net_salary']);
+            }
+
+            $employee_options = [];
+            foreach ($all_employees as $emp) {
+                if (!in_array($emp['id'], $existing_ids)) {
+                    $employee_options[$emp['id']] = $emp['name'] . ' (' . $emp['hk_id'] . ')';
+                }
+            }
+        } else {
+            $employee_options = [];
+        }
+
+        $data = [
+            'title' => 'Add Extra Salary',
+            'form_action' => site_url('Salary/createSalaryExtra'),
+            'selected_month' => $selected_month,
+            'show_form' => $show_form,
+            'employee_options' => $employee_options,
+            'salary_date' => $show_form ? $salary_date : '', // Pass salary_date to view
+            'created_salaries' => $created_salaries,
+            'total_net_salary' => $total_net_salary,
+        ];
+
+        $this->load->view('Salary/addSalaryExtra', $data);
+    }
+
+    
+    function annulaExtraSalaryData($startYear)
+    {
+        $data = array();
+        $report_title = "";
+        // No location for extra employees, so just get all extra employees
+        $employee_data = $this->Curd_model->get('salary_employee_extra', 'asc');
+        $dateData = array();
+        $dataDateFinal = [];
+        $fromDate = $startYear . "-04-01";
+        $endYear = $startYear + 1;
+        $endData = "$endYear-03-31";
+
+        $report_title = "Annual Extra Salary Report $startYear - $endData";
+        $salaryFinal = array();
+        foreach ($employee_data as $evalue) {
+            $emp_id = $evalue["id"];
+            $this->db->select("net_salary, salary_date");
+            $this->db->where("salary_date >=", $fromDate);
+            $this->db->where("salary_date <=", $endData);
+            $this->db->where("employee_id", $emp_id);
+            $this->db->order_by("salary_date asc");
+            $query = $this->db->get("salary_extra");
+            $salary_data = $query->result_array();
+            $salaryDataEmployee = array();
+            if (count($salary_data)) {
+                foreach ($salary_data as $dvalue) {
+                    $wsldate = date("M-Y", strtotime($dvalue["salary_date"]));
+                    $wsldate2 = date("Ym", strtotime($dvalue["salary_date"]));
+                    $dateData[$wsldate2] = $wsldate;
+                    $salaryDataEmployee[$wsldate] = $dvalue["net_salary"];
+                    $dataDateFinal[$wsldate2] = $wsldate2;
+                }
+            }
+            $evalue["salaryData"] = $salaryDataEmployee;
+            $salaryFinal[] = $evalue;
+        }
+        sort($dataDateFinal);
+
+        $dateDataFinal2 = array();
+        foreach ($dataDateFinal as $value) {
+            $dateDataFinal2[$dateData[$value]] = $dateData[$value];
+        }
+        $data["salary_report"] = $salaryFinal;
+        $data["salary_date_list"] = $dateDataFinal2;
+        $data["report_title"] = $report_title;
+        return $data;
+    }
+
+    function viewAnnualExtraSalaryXls()
+    {
+        $startYear = isset($_GET["startYear"]) ? $_GET["startYear"] : START_YEAR;
+        $data = $this->annulaExtraSalaryData($startYear);
+        $html = $this->load->view('Salary/salarylistReportAnnualExtra', $data, true);
+        $a_date = date("M-Y");
+        $filename = 'annual_salary_report_' . $a_date . ".xls";
+        ob_clean();
+        header("Content-Disposition: attachment; filename=$filename");
+        header("Content-Type: application/vnd.ms-excel");
+        echo $html;
+    }
+
+    function viewAnnualExtraSalary()
+    {
+        $startYear = isset($_GET["startYear"]) ? $_GET["startYear"] : START_YEAR;
+        $data = $this->annulaExtraSalaryData($startYear);
+        $data["startYear"] = $startYear;
+        $this->load->view('Salary/annualExtraSalary', $data);
+    }
+
+
 }
 
 ?>
