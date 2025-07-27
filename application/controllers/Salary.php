@@ -824,11 +824,12 @@ class Salary extends CI_Controller
                 'employee_id' => $this->input->post('employee_id'),
                 'salary_date' => $salary_date,
                 'net_salary' => $this->input->post('net_salary'),
+                'note' => $this->input->post('note'),
                 'op_date' => date('Y-m-d'),
                 'op_time' => date('H:i:s'),
             ];
             $this->Curd_model->insert('salary_extra', $insert);
-            redirect('Salary/createSalaryExtra?salary_month=' . $salary_month);
+            redirect('Salary/createSalaryExtra?salary_month=' . $selected_month);
         }
 
         // Step 3: If month is selected, show the salary creation form
@@ -845,7 +846,7 @@ class Salary extends CI_Controller
             $existing_ids = array_column($existing, 'employee_id');
 
             // Fetch all created salaries for the selected month
-            $this->db->select('se.name, se.hk_id, sx.net_salary, sx.salary_date');
+            $this->db->select('se.name, se.hk_id, sx.net_salary, sx.salary_date, sx.note, sx.id');
             $this->db->from('salary_extra sx');
             $this->db->join('salary_employee_extra se', 'se.id = sx.employee_id');
             $this->db->like('sx.salary_date', $selected_month, 'after');
@@ -879,6 +880,21 @@ class Salary extends CI_Controller
         ];
 
         $this->load->view('Salary/addSalaryExtra', $data);
+    }
+
+    public function deleteExtraSalary($id)
+    {
+        if ($this->user_type != 'Admin') {
+            redirect('UserManager/not_granted');
+        }
+        $selected_month = $this->input->get('salary_month') ?: $this->session->userdata('last_salary_month');
+        $this->db->where('id', $id);
+        $this->db->delete('salary_extra');
+        $redirect_url = site_url('Salary/createSalaryExtra');
+        if ($selected_month) {
+            $redirect_url .= '?salary_month=' . urlencode($selected_month);
+        }
+        redirect($redirect_url);
     }
 
     

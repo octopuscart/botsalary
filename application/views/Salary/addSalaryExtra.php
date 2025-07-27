@@ -78,6 +78,13 @@ $this->load->view('layout/topmenu');
                                 </div>
                             </div>
                             <div class="form-group form-group-bg row">
+                                <label for="note" class="col-sm-3 col-form-label"><b>Note</b></label>
+                                <div class="col-sm-6">
+                                    <textarea class="form-control" name="note" id="note" rows="2" placeholder="Enter note (optional)"><?php echo isset(
+                                        $_POST['note']) ? htmlspecialchars($_POST['note']) : '' ?></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-bg row">
                                 <div class="col-sm-9 offset-sm-3">
                                     <button type="submit" name="submit_salary" class="btn btn-success" value="submit">
                                         <i class="fa fa-plus"></i> Add Salary
@@ -91,7 +98,7 @@ $this->load->view('layout/topmenu');
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <?php if (!empty($created_salaries)): ?>
                 <div class="panel panel-default">
                     <div class="panel-heading"><b>Created Salaries for
@@ -104,6 +111,8 @@ $this->load->view('layout/topmenu');
                                     <th>HK ID</th>
                                     <th>Net Salary</th>
                                     <th>Salary Date</th>
+                                    <th>Note</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -113,6 +122,12 @@ $this->load->view('layout/topmenu');
                                         <td><?= htmlspecialchars($row['hk_id']) ?></td>
                                         <td><?= htmlspecialchars($row['net_salary']) ?></td>
                                         <td><?= htmlspecialchars($row['salary_date']) ?></td>
+                                        <td><?= htmlspecialchars($row['note']) ?></td>
+                                        <td>
+                                            <a href="<?= site_url('Salary/deleteExtraSalary/' . $row['id'] . '?salary_month=' . urlencode($selected_month)) ?>" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete this salary record?');">
+                                                Delete
+                                            </a>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
