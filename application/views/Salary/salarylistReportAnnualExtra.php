@@ -57,7 +57,7 @@
                     ?>
                     <br>
                     <small> <?php
-                    echo $lvalue["employee_id"];
+                    echo $lvalue["hk_id"];
                     ?>
                     </small>
                 </td>
