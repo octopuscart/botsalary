@@ -26,6 +26,7 @@
             <th>S. No.</th>
 
             <th style="width:200px">Name</th>
+            <th style="width:200px">Job Title</th>
             <?php
             $dateTotalData = array();
             $hg_total = 0;
@@ -61,6 +62,7 @@
                     ?>
                     </small>
                 </td>
+                <td></td>
                 <?php
                 $htotal = 0;
                 foreach ($salary_date_list as $key => $wslvalue) {
