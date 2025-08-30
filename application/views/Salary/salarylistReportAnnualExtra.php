@@ -84,7 +84,7 @@
         ?>
         <tr>
             <th></th>
-
+            <th></th>
             <th style="width:200px">Total</th>
             <?php
             foreach ($salary_date_list as $key => $wslvalue) {
