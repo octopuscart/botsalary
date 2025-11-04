@@ -338,8 +338,8 @@ class Salary extends CI_Controller
 
         if (isset($_POST["submit"])) {
             $salarydata = $this->input->post();
-            $salary_month = $this->input->post('salary_month'); // e.g., "2024-06"
-            $salary_date = $salary_month . '-01'; // "2024-06-01"
+            $salary_month = $this->input->post('salary_date'); // e.g., "2024-06"
+            $salary_date = $salary_month; // "2024-06-01"
             $mpf_date = $salarydata["mpf_date"];
             $this->setSessionsDates($salary_date, $mpf_date);
 
