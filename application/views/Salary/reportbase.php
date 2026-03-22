@@ -1,19 +1,21 @@
 <style>
-    .salarytable th, .salarytable td{
+    .salarytable th,
+    .salarytable td {
         padding: 0px 5px;
-       
-    } 
-   .salarytable td{
+
+    }
+
+    .salarytable td {
         padding: 0px 5px;
         text-align: right;
-    } 
+    }
 </style>
 <table class="salarytable" border="1" style="color:black;font-size: 10px">
     <thead>
         <tr>
-            <th colspan="12" class="text-center">
+            <th colspan="13" class="text-center">
                 <img src="<?php echo base_url(); ?>assets/img/logo.jpg" style="height: 80px;">
-                <h4>Staff  Salary and  MPF Details</h4>
+                <h4>Staff Salary and MPF Details</h4>
             </th>
         </tr>
         <tr>
@@ -22,7 +24,7 @@
             <th style="width:200px">Name</th>
             <th>Basic Salary</th>
             <th>Dedu.</th>
-            <th >Allow.</th>
+            <th>Allow.</th>
             <th>Adjst.</th>
             <th>MPF Salary</th>
             <th>Gross Salary</th>
@@ -31,7 +33,7 @@
             <th>Net Salary</th>
             <th>MPF Employer</th>
             <th>Total MPF</th>
-
+            <th>Gross Salary B</th>
         </tr>
     </thead>
     <tbody>
@@ -40,12 +42,13 @@
         $mpf_deduction_t2 = 0;
         $allownce_mpf_t2 = 0;
         $allownce_no_mpf_t2 = 0;
-        $mpf_salary_t2=0;
+        $mpf_salary_t2 = 0;
         $gross_salary_t2 = 0;
         $mpf_employee_t2 = 0;
         $net_salary_t2 = 0;
         $mpf_employer_t2 = 0;
         $total_mpf_t2 = 0;
+        $salary_acc_t2 = 0;
         foreach ($salary_report as $lkey => $lvalue) {
             ?>
             <tr style="background:orange;
@@ -54,22 +57,25 @@
                     color: black;">
                     <?php echo $lvalue["location"] ?>
                 </th>
-            <tr/>   
+                <tr />
 
-            <?php
-            $count = 1;
-            $temp_basic_salary_t = 0;
-            $mpf_deduction_t = 0;
-            $allownce_mpf_t = 0;
-            $allownce_no_mpf_t = 0;
-            $gross_salary_t = 0;
-            $mpf_employee_t = 0;
-            $net_salary_t = 0;
-            $mpf_employer_t = 0;
-            $mpf_salary_t = 0;
-            $total_mpf_t = 0;
-            foreach ($lvalue["salary"] as $skey => $svalue) {
-                ?>
+                <?php
+                $count = 1;
+                $temp_basic_salary_t = 0;
+                $mpf_deduction_t = 0;
+                $allownce_mpf_t = 0;
+                $allownce_no_mpf_t = 0;
+                $gross_salary_t = 0;
+                $mpf_employee_t = 0;
+                $net_salary_t = 0;
+                $mpf_employer_t = 0;
+                $mpf_salary_t = 0;
+                $total_mpf_t = 0;
+                $salary_acc_t = 0;
+                $allownce_no_mpf_applied_in_mpf_salary_t = 0;
+                foreach ($lvalue["salary"] as $skey => $svalue) {
+                    $allownce_no_mpf_applied_in_mpf_salary = $svalue["allownce_no_mpf_applied_in_mpf_salary"] ? $svalue["allownce_no_mpf_applied_in_mpf_salary"] : 0;
+                    ?>
                 <tr>
 
                     <td><?php echo $count; ?></td>
@@ -80,10 +86,10 @@
                         ?>
                         <br>
                         <small> <?php
-                            echo $svalue["employee"]["employee_id"];
-                            ?></small>
+                        echo $svalue["employee"]["employee_id"];
+                        ?></small>
                     </td>
-                   
+
                     <td>
                         <?php
                         $temp_basic_salary = $svalue["base_salary"];
@@ -105,91 +111,103 @@
                         $allownce_mpf = $svalue["allownce_mpf"];
                         echo $allownce_mpf;
                         $allownce_mpf_t += $allownce_mpf;
-                        ?> 
+                        ?>
                     </td>
                     <td>
                         <?php
                         $allownce_no_mpf = $svalue["allownce_no_mpf"];
                         echo $allownce_no_mpf;
                         $allownce_no_mpf_t += $allownce_no_mpf;
-                        ?> 
+                        ?>
                     </td>
                     <td>
                         <?php
-                        $mpf_salary = $svalue["salary_mpf"];
+                        $mpf_salary = ($svalue["salary_mpf"] + $allownce_no_mpf_applied_in_mpf_salary);
                         echo $mpf_salary;
                         $mpf_salary_t += $mpf_salary;
-                        ?> 
+                        ?>
                     </td>
                     <td>
                         <?php
                         $gross_salary = $svalue["gross_salary"];
                         echo $gross_salary;
                         $gross_salary_t += $gross_salary;
-                        ?> 
+                        ?>
                     </td>
                     <td>
                         <?php
                         $mpf_employee = $svalue["mpf_employee"];
                         echo "<span class='text-danger'>($mpf_employee)</span>";
                         $mpf_employee_t += $mpf_employee;
-                        ?> 
+                        ?>
                     </td>
                     <td>
                         <?php
                         $net_salary = $svalue["net_salary"];
                         echo $net_salary;
                         $net_salary_t += $net_salary;
-                        ?> 
+                        ?>
                     </td>
                     <td>
                         <?php
                         $mpf_employer = $svalue["mpf_employer"];
                         echo $mpf_employer;
                         $mpf_employer_t += $mpf_employer;
-                        ?> 
+                        ?>
                     </td>
                     <td>
                         <?php
                         echo $mpf_employer + $mpf_employee;
                         $total_mpf_t += $mpf_employer + $mpf_employee;
-                        ?> 
+                        ?>
                     </td>
+                    <td>
+                        <?php
+                        echo $mpf_salary;
+                        $salary_acc_t += $mpf_salary;
+                        ?>
+                    </td>
+
 
                 </tr>
 
 
                 <?php
                 $count++;
-            }
+                }
 
-            $temp_basic_salary_t2 += $temp_basic_salary_t;
-            $mpf_deduction_t2 += $mpf_deduction_t;
-            $allownce_mpf_t2 += $allownce_mpf_t;
-            $allownce_no_mpf_t2 += $allownce_no_mpf_t;
-            $mpf_salary_t2 += $mpf_salary_t;
-            $gross_salary_t2 += $gross_salary_t;
-            $mpf_employee_t2 += $mpf_employee_t;
-            $net_salary_t2 += $net_salary_t;
-            $mpf_employer_t2 += $mpf_employer_t;
-            $total_mpf_t2 += $total_mpf_t;
+                $temp_basic_salary_t2 += $temp_basic_salary_t;
+                $mpf_deduction_t2 += $mpf_deduction_t;
+                $allownce_mpf_t2 += $allownce_mpf_t;
+                $allownce_no_mpf_t2 += $allownce_no_mpf_t;
+                $mpf_salary_t2 += $mpf_salary_t;
+                $gross_salary_t2 += $gross_salary_t;
+                $mpf_employee_t2 += $mpf_employee_t;
+                $net_salary_t2 += $net_salary_t;
+                $mpf_employer_t2 += $mpf_employer_t;
+                $total_mpf_t2 += $total_mpf_t;
+                $salary_acc_t2 += $salary_acc_t;
 
-            $totalarray = [$temp_basic_salary_t,
-                $mpf_deduction_t,
-                $allownce_mpf_t,
-                $allownce_no_mpf_t,
-                $mpf_salary_t,
-                $gross_salary_t,
-                $mpf_employee_t,
-                $net_salary_t,
-                $mpf_employer_t,
-                $total_mpf_t,];
-            ?><tr style="background: #ffffff;
+                $totalarray = [
+                    $temp_basic_salary_t,
+                    $mpf_deduction_t,
+                    $allownce_mpf_t,
+                    $allownce_no_mpf_t,
+                    $mpf_salary_t,
+                    $gross_salary_t,
+                    $mpf_employee_t,
+                    $net_salary_t,
+                    $mpf_employer_t,
+                    $total_mpf_t,
+                    $salary_acc_t
+                ];
+                ?>
+            <tr style="background: #ffffff;
                 color: black;
                 border-top: 3px solid #000;
                 border-bottom: 3px solid #ff5722;">
                 <th colspan="2" class='text-right'>TOTAL</th>
-              
+
                 <?php
                 foreach ($totalarray as $key => $value) {
                     echo "<th class='text-right'>$value</th>";
@@ -200,8 +218,53 @@
             </tr>
             <?php
         }
+        $salary_additional_index = 1;
+        ?>
+        <th colspan="13" style="background:orange;
+                    color: black;">
+          Additional Salary for the month of <?php echo date("F, Y", strtotime($select_month)); ?>
+        </th>
+        <?php
+        $total_additional_salary = 0;
+        foreach ($salary_additional as $adkey => $advalue) {
+            $total_additional_salary += $advalue["salary_total"];
+            ?>
+            <tr>
+                <td><?php echo $salary_additional_index++; ?></td>
+                <td style="width:200px;text-align:left"><?php echo $advalue['name']; ?></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><?php echo $advalue['salary_total']; ?></td>
+            </tr>
+            <?php
+        }
+        ?>
+        <tr>
+                <th colspan="2" class='text-right'> TOTAL</th><td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <th class='text-right'><?php echo $total_additional_salary; ?></th>
+            </tr>
+        <?php
 
-        $totalarray2 = [$temp_basic_salary_t2,
+       $salary_acc_t2 += $total_additional_salary;
+        $totalarray2 = [
+            $temp_basic_salary_t2,
             $mpf_deduction_t2,
             $allownce_mpf_t2,
             $allownce_no_mpf_t2,
@@ -210,14 +273,17 @@
             $mpf_employee_t2,
             $net_salary_t2,
             $mpf_employer_t2,
-            $total_mpf_t2,];
-        ?><tr style="background: #ffffff;
+            $total_mpf_t2,
+            $salary_acc_t2
+        ];
+        ?>
+        <tr style="background: #ffffff;
             color: black;font-size: 13px;
             border-top: 3px solid #000;
             border-bottom: 3px solid #ff5722;">
-            
+
             <th colspan="2" class='text-right'>GRAND TOTAL</th>
-          
+
             <?php
             foreach ($totalarray2 as $key => $value) {
                 echo "<th class='text-right'>$value</th>";

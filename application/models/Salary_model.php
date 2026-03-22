@@ -38,6 +38,17 @@ class Salary_model extends CI_Model {
         return $amountobj ? $amountobj["amount"] : 0;
     }
 
+    function employeeAllownceNoMPFAppliedInMPFSalary($salary_id) {
+        $applicable_allowances = ["Arrears A", "Travelling  A"];
+        $this->db->select("amount as amount");
+        $this->db->where("salary_id", $salary_id);
+        $this->db->where("apply_mpf", "No");
+        $this->db->where_in("title", $applicable_allowances);
+        $query = $this->db->get("salary_allowances_apply");
+        $amountobj = $query->row_array();
+        return $amountobj ? $amountobj["amount"] : 0;
+    }
+
     function employeeDuductionNoMPF($salary_id) {
 
         $this->db->select("sum(amount) as amount");
@@ -77,13 +88,15 @@ class Salary_model extends CI_Model {
     }
 
     function mpfSalary($base_salary, $salary_id) {
+
         $mpfamount = $this->employeeAllownceMPF($salary_id);
         $mpfduduction = $this->employeeDuductionMPF($salary_id);
+      
         return ($base_salary-$mpfduduction) + $mpfamount;
     }
 
     function appliedMpf($first_date, $last_date) {
-        $querympf = "SELECT sa.title FROM salary as sl 
+        $querympf = "SELECT sa.title, sa.apply_mpf FROM salary as sl 
   join salary_allowances_apply as sa on sa.salary_id = sl.id 
   where sl.salary_date between '$first_date' and '$last_date' group by title
   order by apply_mpf";
@@ -91,7 +104,7 @@ class Salary_model extends CI_Model {
         $resultmpf = $query->result_array();
         $finallist = array();
         foreach ($resultmpf as $key => $value) {
-            $finallist[$value["title"]] = 0;
+            $finallist[$value["title"]] = array("apply_mpf" => $value["apply_mpf"], "amount" => 0);
         }
         return $finallist;
     }
@@ -127,6 +140,7 @@ class Salary_model extends CI_Model {
             $value["employee"] = $this->Curd_model->get_single2('salary_employee', $value["employee_id"]);
             $value["allownce_mpf"] = $this->employeeAllownceMPF($value["id"]);
             $value["allownce_no_mpf"] = $this->employeeAllownceNoMPF($value["id"]);
+            $value["allownce_no_mpf_applied_in_mpf_salary"] = $this->employeeAllownceNoMPFAppliedInMPFSalary($value["id"]);
             $value["deduction_mpf"] = $this->employeeDuductionMPF($value["id"]);
             $value["deduction_no_mpf"] = $this->employeeDuductionNoMPF($value["id"]);
             $value["salary_mpf"] = $this->mpfSalary($value["base_salary"], $value["id"]);

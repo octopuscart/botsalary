@@ -1,7 +1,9 @@
+
 <?php
 $this->load->view('layout/header');
 $this->load->view('layout/topmenu');
 ?>
+
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/treejs/themes/default/style.min.css">
 <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
 <link href="<?php echo base_url(); ?>assets/plugins/DataTables/css/data-table.css" rel="stylesheet" />
@@ -11,6 +13,8 @@ $this->load->view('layout/topmenu');
 <script src="<?php echo base_url(); ?>assets/treejs/jstree.min.js"></script>
 <link href="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet"  />
 
+<link href="<?php echo base_url(); ?>assets/plugins/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+<script src="<?php echo base_url(); ?>assets/plugins/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 
 
 <link href="<?php echo base_url(); ?>assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
@@ -30,58 +34,69 @@ $this->load->view('layout/topmenu');
     .primarytext{
         font-size: 15px;
     }
+    .pnlnotetable{
+        margin: 0px;
+
+    }
+    .pnlnotetable .headtdleft{
+        padding-left: 70px;
+        width:300px;
+    }
 </style>
 <!-- Main content -->
-<section class="content" >
+<section class="content" ng-controller="pnlControllerEdit">
     <div class="">
         <div class="well well-sm">
             <form action="" method="get">
                 <div class="form-group form-group-bg  row form-inline">
-                    <label class="form-label col-form-label col-lg-2"><b>Salary Month</b><br/><small>Click on Calendar Icon</small></label>
+                    <label class="form-label col-form-label col-lg-2"><b>Financial Report</b><br/><small>Click on Calendar Icon</small></label>
                     <div class="col-lg-4">
                         <div class="input-group date" >
-                            <input type="text" class="form-control" name="salary_date" style="background: white;
-                                   opacity: 1;" readonly=""  autoclose="true" value="<?php echo $select_month; ?>">
-                            <div class="input-group-addon">
-                                <span class="glyphicon glyphicon-th"></span>
-                            </div>
+                            <select class="form-control" name="startYear">
+                                <?php
+                                
+                                for ($yr = 2021; $yr <= START_YEAR; $yr++) {
+                                    $sYear = $yr;
+                                    $eYear = $yr + 1;
+                              
+                                    ?>
+                                <option value="<?php echo $sYear;?>" <?php echo $sYear == $startYear ?'selected':'' ?>><?php echo $sYear;?>-<?php echo $eYear;?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <button class="btn btn-success" type="submit" name="select_month" value="select_month">
                             <i class="fa fa-paragraph"></i>   GET REPORT
                         </button>
-                      
-                        <a class="btn btn-success" href="<?php echo site_url("Salary/salaryReporV2tXls")."?salary_date=$select_month";?>">
-                            <i class="fa fa-print"></i>   EXPORT REPORT
-                        </a>
-                        <a class="btn btn-success" target="_blank" href="<?php echo site_url("Salary/salaryReportV2PDF")."?salary_date=$select_month";?>">
+
+                        <button class="btn btn-success" type="button" onclick="printDiv('printArea')">
                             <i class="fa fa-print"></i>   PRINT REPORT
+                        </button>
+
+                        <a class="btn btn-success" href="<?php echo site_url("Salary/viewAnnualTotalSalaryXls?startYear=$startYear") ?>">
+                            <i class="fa fa-print"></i>   EXPORT XLS
                         </a>
-
-
                     </div>
                 </div>
             </form>
         </div>
         <div class="panel panel-inverse">
             <div class="panel-heading">
-                <h3 class="panel-title">Salary Report</h3>
-                
-            </div>
-            <div class="panel-body " style='overflow-x: auto;
-    zoom: 0.9;'>
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-sm btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                </div>
+                <h3 class="panel-title"><?php echo $report_title; ?></h3>
 
+            </div>
+
+            <div class="panel-body " id='printArea'>
                 <?php
-                $this->load->view('Salary/reportbase', array("salary_report" => $salary_report, "salary_month_str"=>$salary_month_str, "remark"=>false));
+                $this->load->view('Salary/salarylistReportAnnualTotal', array("salary_report" => $salary_report, "salary_date_list" => $salary_date_list, "report_title" => $report_title));
                 ?>
             </div>
-
-
         </div>
-
     </div>
-
 </section>
 <!-- end col-6 -->
 
@@ -89,13 +104,16 @@ $this->load->view('layout/topmenu');
 
 
 
+<script>
 
+</script>
 
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-daterangepicker/moment.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
 <script src="<?php echo base_url(); ?>assets/plugins/DataTables/js/jquery.dataTables.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/table-manage-default.demo.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/angular/accountController.js"></script>
 <script>
     function printDiv(divName) {
         var printContents = document.getElementById(divName).innerHTML;
@@ -107,16 +125,7 @@ $this->load->view('layout/topmenu');
 
         document.body.innerHTML = originalContents;
     }
-    $(function () {
 
-        $('.input-group.date').datepicker({
-            format: "M-yyyy",
-            viewMode: "months",
-            minViewMode: "months",
-            todayHighlight: true,
-            autoclose: true,
-        })
-    })
 </script>
 <?php
 $this->load->view('layout/footer');

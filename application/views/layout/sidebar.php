@@ -1,7 +1,7 @@
 <?php
 $userdata = $this->session->userdata('logged_in');
 if ($userdata) {
-    
+
 } else {
     redirect("Authentication/index", "refresh");
 }
@@ -17,7 +17,8 @@ if ($this->user_type == 'Admin') {
             "Create Salary" => site_url("Salary/selectEmployee"),
             "Salary Report" => site_url("Salary/salaryReport"),
             "Salary Report Details" => site_url("Salary/salaryReportV2"),
-            "Annual Gross Salary Report" => site_url("Salary/viewAnnualSalary")
+            "Annual Gross Salary Report" => site_url("Salary/viewAnnualSalary"),
+            "Annual Total Salary Report" => site_url("Salary/viewAnnualTotalSalary")
         ),
     );
     array_push($menu_control, $order_menu);
@@ -77,14 +78,14 @@ if ($this->user_type == 'Admin') {
         ),
     );
     array_push($menu_control, $bs_menu);
-    
-     $bs_menu = array(
+
+    $bs_menu = array(
         "title" => "Halal Form Management",
         "icon" => "fa fa-bookmark",
         "active" => "",
         "sub_menu" => array(
             "Reports" => site_url("HalalReports/index"),
-            "Add Form"=>site_url("HalalReports/halalCirtificateRequests")
+            "Add Form" => site_url("HalalReports/halalCirtificateRequests")
         ),
     );
     array_push($menu_control, $bs_menu);
@@ -173,7 +174,7 @@ if ($this->user_type == 'WebAdmin') {
         ),
     );
     array_push($menu_control, $web_menu2);
-    
+
     $web_menu2 = array(
         "title" => "Announcement",
         "icon" => "fa fa-bullhorn",
@@ -184,8 +185,8 @@ if ($this->user_type == 'WebAdmin') {
         ),
     );
     array_push($menu_control, $web_menu2);
-    
-    
+
+
     $web_menu2 = array(
         "title" => "Photo Gallery",
         "icon" => "fa fa-photo",
@@ -196,14 +197,14 @@ if ($this->user_type == 'WebAdmin') {
         ),
     );
     array_push($menu_control, $web_menu2);
-    
+
     $web_menu2 = array(
         "title" => "Settings",
         "icon" => "fa fa-file",
         "active" => "",
         "sub_menu" => array(
             "Add Files" => site_url("WebControl/contentFiles"),
-            "Set Service Email"=> site_url("WebControl/serviceEmailPageList")
+            "Set Service Email" => site_url("WebControl/serviceEmailPageList")
         ),
     );
     array_push($menu_control, $web_menu2);
@@ -216,7 +217,7 @@ if ($this->user_type == 'HalalAdmin') {
         "active" => "",
         "sub_menu" => array(
             "Reports" => site_url("HalalReports/index"),
-            "Add Form"=>site_url("HalalReports/halalCirtificateRequests")
+            "Add Form" => site_url("HalalReports/halalCirtificateRequests")
         ),
     );
     array_push($menu_control, $bs_menu);
@@ -242,12 +243,16 @@ foreach ($menu_control as $key => $value) {
         <ul class="nav">
             <li class="nav-profile">
                 <div class="image">
-                    <a href="javascript:;"><img src='<?php echo base_url(); ?>assets/profile_image/<?php echo $userdata['image'] ?>' alt="" class="media-object rounded-corner" style="    width: 35px;background: url(<?php echo base_url(); ?>assets/emoji/user.png);    height: 35px;background-size: cover;" /></a>
+                    <a href="javascript:;"><img
+                            src='<?php echo base_url(); ?>assets/profile_image/<?php echo $userdata['image'] ?>' alt=""
+                            class="media-object rounded-corner"
+                            style="    width: 35px;background: url(<?php echo base_url(); ?>assets/emoji/user.png);    height: 35px;background-size: cover;" /></a>
                 </div>
-                <div class="info textoverflow" >
+                <div class="info textoverflow">
 
                     <?php echo $userdata['first_name']; ?>
-                    <small class="textoverflow" title="<?php echo $userdata['username']; ?>"><?php echo $userdata['username']; ?></small>
+                    <small class="textoverflow"
+                        title="<?php echo $userdata['username']; ?>"><?php echo $userdata['username']; ?></small>
                 </div>
             </li>
         </ul>
@@ -260,8 +265,8 @@ foreach ($menu_control as $key => $value) {
 
                 <li class="has-sub <?php echo $mvalue['active']; ?>">
                     <a href="javascript:;">
-                        <b class="caret pull-right"></b>  
-                        <i class="<?php echo $mvalue['icon']; ?>"></i> 
+                        <b class="caret pull-right"></b>
+                        <i class="<?php echo $mvalue['icon']; ?>"></i>
                         <span><?php echo $mvalue['title']; ?></span>
                     </a>
                     <ul class="sub-menu">

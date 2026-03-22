@@ -83,7 +83,7 @@ class Salary_modelV2 extends CI_Model {
     }
 
     function appliedMpf($first_date, $last_date) {
-         $querympf = "SELECT sa.title FROM salary_v2 as sl 
+         $querympf = "SELECT sa.title, sa.apply_mpf FROM salary_v2 as sl 
   join salary_allowances_apply_v2 as sa on sa.salary_id = sl.id 
   where sl.salary_date between '$first_date' and '$last_date' group by title
   order by apply_mpf";

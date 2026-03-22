@@ -49,7 +49,7 @@
             <th>Total MPF</th>
             <?php
             $allownceslistdict = array();
-            foreach ($allownceslist as $key => $value) {
+            foreach ($allownceslist as $key => $value) {   
                 echo "<th>$key</th>";
                 $allownceslistdict[$key] = array("total" => 0, "gtotal" => 0);
             }
