@@ -34,6 +34,13 @@
             <th>MPF Employer</th>
             <th>Total MPF</th>
             <th>Gross Salary B</th>
+            <?php
+            $allownceslistdict = array();
+            foreach ($allownceslist as $key => $value) {
+                echo "<th>$key</th>";
+                $allownceslistdict[$key] = array("total" => 0, "gtotal" => 0);
+            }
+            ?>
         </tr>
     </thead>
     <tbody>
@@ -73,6 +80,10 @@
                 $total_mpf_t = 0;
                 $salary_acc_t = 0;
                 $allownce_no_mpf_applied_in_mpf_salary_t = 0;
+                foreach ($allownceslist as $key => $value) {
+
+                    $allownceslistdict[$key]["total"] = 0;
+                }
                 foreach ($lvalue["salary"] as $skey => $svalue) {
                     $allownce_no_mpf_applied_in_mpf_salary = $svalue["allownce_no_mpf_applied_in_mpf_salary"] ? $svalue["allownce_no_mpf_applied_in_mpf_salary"] : 0;
                     ?>
@@ -167,6 +178,13 @@
                         $salary_acc_t += $mpf_salary;
                         ?>
                     </td>
+                    <?php
+                    foreach ($svalue["allownceslist"] as $key => $value) {
+                       
+                        echo '<td>' . $value["amount"] . '</td>';
+                        $allownceslistdict[$key]["total"] += $value["amount"];
+                    }
+                    ?>
 
 
                 </tr>
@@ -213,6 +231,12 @@
                     echo "<th class='text-right'>$value</th>";
                 }
                 ?>
+                <?php
+                foreach ($allownceslistdict as $key => $value) {
+                    echo "<th class='text-right'>" . $allownceslistdict[$key]["total"] . "</th>";
+                    $allownceslistdict[$key]["gtotal"] += $allownceslistdict[$key]["total"];
+                }
+                ?>
 
 
             </tr>
@@ -222,7 +246,7 @@
         ?>
         <th colspan="13" style="background:orange;
                     color: black;">
-          Additional Salary for the month of <?php echo date("F, Y", strtotime($select_month)); ?>
+            Additional Salary for the month of <?php echo date("F, Y", strtotime($select_month)); ?>
         </th>
         <?php
         $total_additional_salary = 0;
@@ -248,21 +272,22 @@
         }
         ?>
         <tr>
-                <th colspan="2" class='text-right'> TOTAL</th><td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <th class='text-right'><?php echo $total_additional_salary; ?></th>
-            </tr>
+            <th colspan="2" class='text-right'> TOTAL</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <th class='text-right'><?php echo $total_additional_salary; ?></th>
+        </tr>
         <?php
 
-       $salary_acc_t2 += $total_additional_salary;
+        $salary_acc_t2 += $total_additional_salary;
         $totalarray2 = [
             $temp_basic_salary_t2,
             $mpf_deduction_t2,
@@ -287,6 +312,11 @@
             <?php
             foreach ($totalarray2 as $key => $value) {
                 echo "<th class='text-right'>$value</th>";
+            }
+            ?>
+            <?php
+            foreach ($allownceslistdict as $key => $value) {
+                echo "<th class='text-right'>" . $allownceslistdict[$key]["gtotal"] . "</th>";
             }
             ?>
 

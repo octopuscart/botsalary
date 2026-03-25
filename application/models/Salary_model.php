@@ -104,7 +104,7 @@ class Salary_model extends CI_Model {
         $resultmpf = $query->result_array();
         $finallist = array();
         foreach ($resultmpf as $key => $value) {
-            $finallist[$value["title"]] = array("apply_mpf" => $value["apply_mpf"], "amount" => 0);
+            $finallist[$value["title"]] = 0;
         }
         return $finallist;
     }
