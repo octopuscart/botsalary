@@ -531,6 +531,24 @@ class Salary extends CI_Controller
             $this->db->insert("salary_location_total", array("salary_date" => $first_date, "location_id" => $location_id, "amount" => $salary_acc_t));
         }
     }
+
+    function updateMonthlyEmployeeSalary($a_date, $employee_id, $location_id, $salary_acc_t)
+    {
+        $first_date = date("Y-m-01", strtotime($a_date));
+        $this->db->where('salary_date', $first_date);
+        $this->db->where('location_id', $location_id);
+        $this->db->where('employee_id', $employee_id);
+        $query = $this->db->get("salary_employee_location");
+        $sdata = $query->row_array();
+        if ($sdata) {
+            $this->db->where('id', $sdata["id"]);
+            $this->db->update("salary_employee_location", array("amount" => $salary_acc_t));
+        } else {
+            $this->db->insert("salary_employee_location", array("salary_date" => $first_date, "location_id" => $location_id, "employee_id" => $employee_id, "amount" => $salary_acc_t));
+        }
+    }
+
+
     function salaryReport()
     {
         if ($this->user_type != 'Admin') {
@@ -555,6 +573,7 @@ class Salary extends CI_Controller
                 $allownce_no_mpf_applied_in_mpf_salary = $svalue["allownce_no_mpf_applied_in_mpf_salary"] ? $svalue["allownce_no_mpf_applied_in_mpf_salary"] : 0;
                 $mpf_salary = ($svalue["salary_mpf"] + $allownce_no_mpf_applied_in_mpf_salary);
                 $salary_acc_t += $mpf_salary;
+                $this->updateMonthlyEmployeeSalary($a_date, $svalue["employee_id"], $lvalue["id"], $mpf_salary);
             }
             $this->updateMonthlySalary($a_date, $lvalue["id"], $salary_acc_t);
         }
@@ -764,6 +783,64 @@ class Salary extends CI_Controller
         return $data;
     }
 
+    function annulaSalaryDataMPFEmployee($startYear)
+    {
+        $data = array();
+        $report_title = "";
+        $location_data = $this->Curd_model->get('salary_location');
+
+        $salaryFinal = array();
+
+        foreach ($location_data as $key => $value) {
+            $value["salary"] = [];
+            $salaryFinal["" . $value["id"]] = $value;
+        }
+        $querysql = "select sl.id as location_id, se.id as id, name, employee_id, location from salary_employee as se join salary_location as sl on sl.id = se.location_id order by se.id";
+        $query = $this->db->query($querysql);
+        $employee_data = $query->result_array($query);
+        $dateData = array();
+        $dataDateFinal = [];
+        $fromDate = $startYear . "-04-01";
+        $startYear = $startYear;
+        $endYear = $startYear + 1;
+        $endData = "$endYear-03-31";
+
+        $report_title = "Annual Gross Salary Report $startYear - $endData";
+        foreach ($employee_data as $ekey => $evalue) {
+            $emp_id = $evalue["id"];
+            $this->db->select("amount as gross_salary, salary_date");
+            $this->db->where("salary_date between '$fromDate' and '$endData'");
+            $this->db->where("employee_id", $emp_id);
+            $this->db->order_by("salary_date asc");
+            $query = $this->db->get("salary_employee_location");
+            $salary_data = $query->result_array();
+            $salaryDataEmployee = array();
+            if (count($salary_data)) {
+                foreach ($salary_data as $dkey => $dvalue) {
+                    $wsldate = date("M-Y", strtotime($dvalue["salary_date"]));
+                    $wsldate2 = date("Ym", strtotime($dvalue["salary_date"]));
+                    $dateData[$wsldate2] = $wsldate;
+                    $salaryDataEmployee[$wsldate] = $dvalue["gross_salary"];
+                    $dataDateFinal[$wsldate2] = $wsldate2;
+                }
+            }
+
+            $evalue["salaryData"] = $salaryDataEmployee;
+            array_push($salaryFinal[$evalue["location_id"]]["salary"], $evalue);
+        }
+        sort($dataDateFinal);
+
+        $dateDataFinal2 = array();
+        foreach ($dataDateFinal as $key => $value) {
+            $dateDataFinal2[$dateData[$value]] = $dateData[$value];
+        }
+        //        $data = $this->viewEmplyeeSalaryData($emp_id);
+        $data["salary_report"] = $salaryFinal;
+        $data["salary_date_list"] = $dateDataFinal2;
+        $data["report_title"] = $report_title;
+        return $data;
+    }
+
     function viewAnnualSalaryXls()
     {
         $startYear = isset($_GET["startYear"]) ? $_GET["startYear"] : START_YEAR;
@@ -781,6 +858,14 @@ class Salary extends CI_Controller
     {
         $startYear = isset($_GET["startYear"]) ? $_GET["startYear"] : START_YEAR;
         $data = $this->annulaSalaryData($startYear);
+        $data["startYear"] = $startYear;
+        $this->load->view('Salary/annualSalary', $data);
+    }
+
+    function viewAnnualSalaryEmployee()
+    {
+        $startYear = isset($_GET["startYear"]) ? $_GET["startYear"] : START_YEAR;
+        $data = $this->annulaSalaryDataMPFEmployee($startYear);
         $data["startYear"] = $startYear;
         $this->load->view('Salary/annualSalary', $data);
     }

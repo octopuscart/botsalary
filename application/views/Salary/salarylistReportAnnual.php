@@ -28,8 +28,10 @@
             $hg_total_array = array();
             $vg_total = 0;
             $vg_total_array = array();
+            $employee_total_monthly_salary = array();
             foreach ($salary_date_list as $key => $wslvalue) {
                 $dateTotalData[$wslvalue] = 0;
+                $employee_total_monthly_salary[$wslvalue] = array();
                 echo " <th>" . $wslvalue . "</th>";
             }
             ?>
@@ -52,6 +54,7 @@
                 $count = 1;
 
                 foreach ($lvalue["salary"] as $skey => $svalue) {
+                    
                     ?>
                 <tr>
                     <td><?php echo $count; ?></td>
@@ -62,6 +65,7 @@
                         ?>
                         <br>
                         <small> <?php
+                        $employee_total_monthly_salary[$wslvalue][$svalue["location_id"]] = 0;
                         echo $svalue["employee_id"];
                         ?>
                         </small>
