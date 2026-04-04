@@ -18,6 +18,7 @@ if ($this->user_type == 'Admin') {
             "Salary Report" => site_url("Salary/salaryReport"),
             "Salary Report Details" => site_url("Salary/salaryReportV2"),
             "Annual Gross Salary Report" => site_url("Salary/viewAnnualSalary"),
+            "Annual Gross Salary by Employee" => site_url("Salary/viewAnnualSalaryEmployee"),
             "Annual Total Salary Report" => site_url("Salary/viewAnnualTotalSalary")
         ),
     );
