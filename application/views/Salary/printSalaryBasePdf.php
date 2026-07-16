@@ -1,8 +1,9 @@
 <table  style='width:100%;color:black;' cellspacing="5" cellpadding="1" >
     <tr>
         <th colspan="3" style="text-align: center;">
-            <img src="<?php echo base_url(); ?>assets/img/logo.jpg" width="400" height="90">
-            <h4>Monthly Payslip </h4>
+            <h2>THE INCORPORATED TRUSTEES OF <br/>THE ISLAMIC COMMUNITY FUND OF HONG KONG
+            </h2>
+             <h4>Monthly Payslip </h4>
         </th>
     </tr>
     <tr><td colspan="2"></td></tr>
